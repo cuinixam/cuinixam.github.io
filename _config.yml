@@ -94,6 +94,12 @@ defaults:
     values:
       layout: single
       author_profile: true
+  # _presentations
+  - scope:
+      path: "presentations"
+    values:
+      layout: single
+      author_profile: true
 
 category_archive:
   type: liquid
