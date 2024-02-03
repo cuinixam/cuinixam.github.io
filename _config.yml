@@ -75,6 +75,12 @@ footer:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/alexandru-maxiniuc-53604612"
 
+# Collections
+collections:
+  presentations:
+    output: true
+    permalink: /:collection/:path/
+
 defaults:
   # _posts
   - scope:
@@ -96,10 +102,12 @@ defaults:
       author_profile: true
   # _presentations
   - scope:
-      path: "presentations"
+      path: ""
+      type: presentations
     values:
       layout: single
-      author_profile: true
+      author_profile: false
+      share: true
 
 category_archive:
   type: liquid
