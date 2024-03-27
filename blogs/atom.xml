@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <id>https://cuinixam.github.io</id>
+  <title>Alexandru Maxiniuc</title>
+  <updated>2024-03-27T20:30:46.933671+00:00</updated>
+  <link href="https://cuinixam.github.io"/>
+  <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
+  <generator uri="https://ablog.readthedocs.io/" version="0.11.6">ABlog</generator>
+  <entry>
+    <id>https://cuinixam.github.io/blogs/2024/first_blog.html</id>
+    <title>My First Blog</title>
+    <updated>2024-03-23T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="my-first-blog"&gt;
+
+&lt;p&gt;This is my first blog post. I hope you enjoy it!&lt;/p&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://cuinixam.github.io/blogs/2024/first_blog.html"/>
+    <summary>This is my first blog post. I hope you enjoy it!</summary>
+    <category term="blog" label="blog"/>
+    <category term="first" label="first"/>
+    <published>2024-03-23T00:00:00+00:00</published>
+  </entry>
+</feed>
