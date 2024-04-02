@@ -1,4 +1,4 @@
-import { HORIZONTAL_SLIDES_SELECTOR } from '../utils/constants.js'
+import { HORIZONTAL_SLIDES_SELECTOR, HORIZONTAL_BACKGROUNDS_SELECTOR } from '../utils/constants.js'
 import { queryAll } from '../utils/util.js'
 
 const HIDE_SCROLLBAR_TIMEOUT = 500;
@@ -40,6 +40,7 @@ export default class ScrollView {
 		this.slideHTMLBeforeActivation = this.Reveal.getSlidesElement().innerHTML;
 
 		const horizontalSlides = queryAll( this.Reveal.getRevealElement(), HORIZONTAL_SLIDES_SELECTOR );
+		const horizontalBackgrounds = queryAll( this.Reveal.getRevealElement(), HORIZONTAL_BACKGROUNDS_SELECTOR );
 
 		this.viewportElement.classList.add( 'loading-scroll-mode', 'reveal-scroll' );
 
@@ -57,7 +58,7 @@ export default class ScrollView {
 
 		// Creates a new page element and appends the given slide/bg
 		// to it.
-		const createPageElement = ( slide, h, v ) => {
+		const createPageElement = ( slide, h, v, isVertical ) => {
 
 			let contentContainer;
 
@@ -76,8 +77,20 @@ export default class ScrollView {
 				page.className = 'scroll-page';
 				pageElements.push( page );
 
-				// Copy the presentation-wide background to each page
-				if( presentationBackground ) {
+				// This transfers over the background of the vertical stack containing
+				// the slide if it exists. Otherwise, it uses the presentation-wide
+				// background.
+				if( isVertical && horizontalBackgrounds.length > h ) {
+					const slideBackground = horizontalBackgrounds[h];
+					const pageBackground = window.getComputedStyle( slideBackground );
+
+					if( pageBackground && pageBackground.background ) {
+						page.style.background = pageBackground.background;
+					}
+					else if( presentationBackground ) {
+						page.style.background = presentationBackground;
+					}
+				} else if( presentationBackground ) {
 					page.style.background = presentationBackground;
 				}
 
@@ -110,7 +123,7 @@ export default class ScrollView {
 
 			if( this.Reveal.isVerticalStack( horizontalSlide ) ) {
 				horizontalSlide.querySelectorAll( 'section' ).forEach( ( verticalSlide, v ) => {
-					createPageElement( verticalSlide, h, v );
+					createPageElement( verticalSlide, h, v, true );
 				});
 			}
 			else {
@@ -277,7 +290,7 @@ export default class ScrollView {
 		const pageHeight = useCompactLayout ? compactHeight : viewportHeight;
 
 		// The height that needs to be scrolled between scroll triggers
-		const scrollTriggerHeight = useCompactLayout ? compactHeight : viewportHeight;
+		this.scrollTriggerHeight = useCompactLayout ? compactHeight : viewportHeight;
 
 		this.viewportElement.style.setProperty( '--page-height', pageHeight + 'px' );
 		this.viewportElement.style.scrollSnapType = typeof config.scrollSnap === 'string' ? `y ${config.scrollSnap}` : '';
@@ -333,12 +346,12 @@ export default class ScrollView {
 			for( let i = 0; i < totalScrollTriggerCount + 1; i++ ) {
 				const triggerStick = document.createElement( 'div' );
 				triggerStick.className = 'scroll-snap-point';
-				triggerStick.style.height = scrollTriggerHeight + 'px';
+				triggerStick.style.height = this.scrollTriggerHeight + 'px';
 				triggerStick.style.scrollSnapAlign = useCompactLayout ? 'center' : 'start';
 				page.pageElement.appendChild( triggerStick );
 
 				if( i === 0 ) {
-					triggerStick.style.marginTop = -scrollTriggerHeight + 'px';
+					triggerStick.style.marginTop = -this.scrollTriggerHeight + 'px';
 				}
 			}
 
@@ -355,7 +368,7 @@ export default class ScrollView {
 			}
 
 			// Add scroll padding based on how many scroll triggers we have
-			page.scrollPadding = scrollTriggerHeight * totalScrollTriggerCount;
+			page.scrollPadding = this.scrollTriggerHeight * totalScrollTriggerCount;
 
 			// The total height including scrollable space
 			page.totalHeight = page.pageHeight + page.scrollPadding;
@@ -696,6 +709,24 @@ export default class ScrollView {
 			}, HIDE_SCROLLBAR_TIMEOUT );
 
 		}
+
+	}
+
+	/**
+	 * Scroll to the previous page.
+	 */
+	prev() {
+
+		this.viewportElement.scrollTop -= this.scrollTriggerHeight;
+
+	}
+
+	/**
+	 * Scroll to the next page.
+	 */
+	next() {
+
+		this.viewportElement.scrollTop += this.scrollTriggerHeight;
 
 	}
 
