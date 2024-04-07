@@ -1,3 +1,5 @@
+(presentations)=
+
 # Presentations
 
 `````{grid} 2
@@ -15,6 +17,6 @@ Here are some highlights on the projects/applications I have been working over t
 :img-top: presentations/yanga/images/assembly_line_colorful-th.png
 :link: yanga/presentation.html
 
-Designing a build system for engineering software product lines.
+YANGA - designing a build environment for engineering software product lines.
 ````
 `````
