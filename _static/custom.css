@@ -51,7 +51,7 @@ div.timeline div.card {
 
 div.timeline div.left {
     text-align: justify;
-    border-right: 1px solid var(--pst-color-border);
+    border-right: 3px solid var(--pst-color-border);
 }
 
 div.timeline div.entry.left,
@@ -59,7 +59,8 @@ div.timeline div.entry.right {
     text-align: left;
 }
 
-div.timeline div.entry::after {
+div.timeline div.entry.right::before,
+div.timeline div.entry.left::after {
     width: 1em;
     height: 1em;
     background: var(--pst-color-background);
@@ -68,7 +69,7 @@ div.timeline div.entry::after {
     top: 0.8rem;
     display: block;
     position: relative;
-    border: 1px var(--pst-color-text-base) solid;
+    border: 4px var(--pst-color-text-base) solid;
     z-index: 999;
 }
 
@@ -76,10 +77,9 @@ div.timeline div.entry.left::after {
     right: -1.3em;
 }
 
-div.timeline div.entry.right::after {
+div.timeline div.entry.right::before {
     left: -1.3em;
 }
-
 
 /* Blog post comments */
 .gsc-reactions {
