@@ -64,7 +64,7 @@ May I see how to you do this?
 
 ## <span class="highlighted-yellow-transparent-background">Pipeline</span>
 
-<!-- .slide: data-background-image="conveyor_isometric.jpg" -->
+<!-- .slide: data-background-image="images/conveyor_isometric.jpg" -->
 
 <div class="bottom-aligned-text">
 <a href="http://www.freepik.com">Designed by macrovector / Freepik</a> <!-- .element: class="highlighted-yellow-transparent-background-small" -->
@@ -74,7 +74,7 @@ May I see how to you do this?
 
 ## Pipeline
 
-<img src="conveyor_isometric.jpg" height="150" class="rounded-corners">
+<img src="images/conveyor_isometric.jpg" height="150" class="rounded-corners">
 <!-- .element: style="width: 30%" -->
 
 ```yaml [1-10]
