@@ -2,23 +2,328 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2024-04-07T19:15:56.407563+00:00</updated>
+  <updated>2024-10-03T07:55:24.926185+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
-  <generator uri="https://ablog.readthedocs.io/" version="0.11.6">ABlog</generator>
+  <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
   <entry>
-    <id>https://cuinixam.github.io/blogs/2024/first_blog.html</id>
-    <title>My First Blog</title>
-    <updated>2024-03-23T00:00:00+00:00</updated>
-    <content type="html">&lt;section id="my-first-blog"&gt;
+    <id>https://cuinixam.github.io/blogs/2024/efficiently_embedding_git_information_in_c_projects.html</id>
+    <title>Efficiently Embedding Git Information in C Projects</title>
+    <updated>2024-10-01T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="efficiently-embedding-git-information-in-c-projects"&gt;
 
-&lt;p&gt;This is my first blog post. I hope you enjoy it!&lt;/p&gt;
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In software development, embedding Git metadata (like commit IDs, branches, and tags) into your binaries is useful for debugging and traceability. However, how you integrate this information can significantly impact your build times and workflow efficiency. This post explores the challenges of embedding Git information in C projects using CMake and proposes an optimized solution.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="current-approaches"&gt;
+&lt;h2&gt;Current Approaches&lt;/h2&gt;
+&lt;section id="project-one-command-line-defines"&gt;
+&lt;h3&gt;Project One: Command-Line Defines&lt;/h3&gt;
+&lt;p&gt;In the first project, Git information is passed directly as compiler command-line arguments using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;add_compile_options&lt;/span&gt;&lt;/code&gt; in CMake:&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_compile_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DGIT_CUR_COMMIT=\&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;${GIT_CUR_COMMIT}\&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DGIT_CUR_USER=\&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;${GIT_CUR_USER}\&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;These defines are then used in the codebase to embed Git metadata:&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;uint8&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;git_commit&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GIT_CUR_COMMIT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Simplicity: Easy to implement and understand.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Direct Integration: Git information is directly available in the code via macros.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Disadvantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Inefficient Builds: Any change in the command-line arguments (e.g., a new commit ID) invalidates the build cache, forcing a full recompilation.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Poor Incremental Build Support: Full builds slow down development, especially in large product with multiple variants.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Inconsistent Updates: The file generation relies on the CMake configure step, which may not run if no CMake files have changed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="project-two-generated-source-file"&gt;
+&lt;h3&gt;Project Two: Generated Source File&lt;/h3&gt;
+&lt;p&gt;The second project generates a C source file during the CMake configuration step:&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;GIT_INFO_TEMPLATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/src/git_info.c.in&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;GIT_INFO_FILE_OUT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/Src/git_info.c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nb"&gt;add_custom_target&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;version_info&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_COMMAND&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DUPDATE_VERSION_INFORMATION_REQUESTED=1&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DVERSION_INFORMATION_FILE=&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_TEMPLATE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DVERSION_INFORMATION_FILE_OUT=&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_FILE_OUT&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-DGIT_VARIANT=&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;VARIANT&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;-P&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/src/gitinfo.cmake&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;BYPRODUCTS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_FILE_OUT&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nb"&gt;spl_add_source&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_FILE_OUT&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;spl_create_component&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Selective Compilation: Only the generated file re-compiles when Git information changes.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Improved Build Times: Reduces the need for full recompilations.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Disadvantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Inefficient Builds: The generated file is recompiled every time, even if the Git information hasn’t changed.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Complexity: Adds extra steps and dependencies in the build process.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="proposed-solution-embedding-git-information-in-the-binary"&gt;
+&lt;h2&gt;Proposed Solution: Embedding Git Information in the Binary&lt;/h2&gt;
+&lt;p&gt;To overcome the problems of current methods, we propose embedding Git information directly into the binary (using Intel-HEX format) after the build process. This approach eliminates unnecessary recompilation and simplifies the build process by embedding Git metadata in a dedicated memory section.&lt;/p&gt;
+&lt;section id="create-the-git-information-source-files"&gt;
+&lt;h3&gt;Create the git information source files&lt;/h3&gt;
+&lt;p&gt;We need to have:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;global constants for the Git information&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;compiler directives to place the constants in a specific memory section&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;git_info.c&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;quot;git_info.h&amp;quot;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define GITINFO_START_SEC_CONST&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;quot;git_info_mem_map.h&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;git_commit&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;GIT_COMMIT_LENGTH&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0123456701234567&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define GITINFO_STOP_SEC_CONST&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;quot;git_info_mem_map.h&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.c&lt;/span&gt;&lt;/code&gt; file contains dummy Git information and is used only for a placeholder. The actual Git information will be updated after the build process.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;git_info_mem_map.h&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#if defined( GITINFO_START_SEC_CONST )&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma protect&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma section nearrom &amp;quot;GitInfoSection&amp;quot;&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma section farrom &amp;quot;GitInfoSection&amp;quot;&lt;/span&gt;
+&lt;span class="cp"&gt;# undef GITINFO_START_SEC_CONST&lt;/span&gt;
+&lt;span class="cp"&gt;# define START_SEC_CODE&lt;/span&gt;
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+
+&lt;span class="cp"&gt;#if defined( GITINFO_STOP_SEC_CONST )&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma endprotect&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma section nearrom restore&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma section farrom restore&lt;/span&gt;
+&lt;span class="cp"&gt;# undef GITINFO_STOP_SEC_CONST&lt;/span&gt;
+&lt;span class="cp"&gt;# define STOP_SEC_CODE&lt;/span&gt;
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;GitInfoSection&lt;/span&gt;&lt;/code&gt; memory section shall be defined in the linker script.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;For other modules to access the Git information, we need to define the Git information in a header file:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;git_info.h&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#ifndef GIT_INFO_H&lt;/span&gt;
+&lt;span class="cp"&gt;#define GIT_INFO_H&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define GIT_COMMIT_LENGTH 16&lt;/span&gt;
+&lt;span class="k"&gt;extern&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;git_commit&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;GIT_COMMIT_LENGTH&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="linker-script-to-define-the-git-information-memory-section"&gt;
+&lt;h3&gt;Linker Script to Define the Git Information Memory Section&lt;/h3&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/* Start address to store the git information */
+#define GITINFO_ADDRESS                         (0xABCD)
+
+section_layout :vtc:linear
+{
+	group PFLASH0(fill = 0x00)
+	{
+		group GitInfoSectionGroup (ordered, run_addr=GITINFO_ADDRESS)
+		{
+			section &amp;quot;GitInfoSectionGroup_SEC&amp;quot; (fill, blocksize = 2, attributes = rx)
+			{
+					select &amp;quot;[.]rodata.GitInfoSection&amp;quot;;
+			}
+		}
+		&amp;quot;_GitInfoSectionGroup_START&amp;quot; = &amp;quot;_lc_gb_GitInfoSectionGroup&amp;quot;;
+		&amp;quot;_GitInfoSectionGroup_END&amp;quot; = (&amp;quot;_lc_ge_GitInfoSectionGroup&amp;quot; == 0) ? 0 : &amp;quot;_lc_ge_GitInfoSectionGroup&amp;quot; - 1;
+		&amp;quot;_GitInfoSectionGroup_LIMIT&amp;quot; = &amp;quot;_lc_ge_GitInfoSectionGroup&amp;quot;;
+	}
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This linker script defines a memory section &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;GitInfoSection&lt;/span&gt;&lt;/code&gt; at the specified address &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;GITINFO_ADDRESS&lt;/span&gt;&lt;/code&gt; to store the Git information.
+The constants defined in &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.c&lt;/span&gt;&lt;/code&gt; (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;rodata&lt;/span&gt;&lt;/code&gt;) will be placed in this memory section.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="cmake-script-to-update-the-git-information"&gt;
+&lt;h3&gt;CMake script to update the Git information&lt;/h3&gt;
+&lt;p&gt;We need to define custom commands to create a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.hex&lt;/span&gt;&lt;/code&gt; file containing the Git information.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Requirements&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.hex&lt;/span&gt;&lt;/code&gt; file shall only be generated if the git commit has changed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the command for checking the git commit shall always run, to make sure the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.hex&lt;/span&gt;&lt;/code&gt; file is up-to-date&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;As you might have noticed, we need to &lt;strong&gt;always&lt;/strong&gt; run the command for checking the git commit but &lt;strong&gt;only&lt;/strong&gt; generate the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.hex&lt;/span&gt;&lt;/code&gt; file if the git commit has changed. This is a bit tricky to achieve with CMake, but it is possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;section id="always-generate-git-commit-temporary-file"&gt;
+&lt;h4&gt;Always Generate Git Commit Temporary File&lt;/h4&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Purpose: Ensures the Git commit ID is updated every build.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mechanism: Uses a fictive output &lt;strong&gt;git_commit_force_update&lt;/strong&gt; to force the command to run every time.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_custom_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;OUTPUT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;__git_commit_force_update__&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;BYPRODUCTS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_TMP_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;git&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;describe&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--always&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--dirty&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--exclude&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;*&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--abbrev=8&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_TMP_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMENT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Generate the git commit tmp file&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;VERBATIM&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="update-git-commit-file-if-changed"&gt;
+&lt;h4&gt;Update Git Commit File if Changed&lt;/h4&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Purpose: Copies the temporary commit ID file to the final file only if it has changed.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mechanism: Uses copy_if_different to avoid unnecessary updates.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_custom_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;OUTPUT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_COMMAND&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;-E&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;copy_if_different&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_TMP_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMENT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Checking and updating git commit ID&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;__git_commit_force_update__&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_TMP_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;VERBATIM&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="create-git-info-hex-file"&gt;
+&lt;h4&gt;Create Git Info Hex File&lt;/h4&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Purpose: Converts the Git commit ID into a hex file at the specified address.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mechanism: Uses hextool to generate the hex file.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_custom_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;OUTPUT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;hextool&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;create&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--input-binary&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--offset&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITINFO_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--output&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_COMMIT_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMENT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Creating git info hex file&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;VERBATIM&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;Please notice the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--input-binary&lt;/span&gt;&lt;/code&gt; hextool option to read the git information as binary data directly from the file.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="merge-git-info-hex-file-with-the-binary"&gt;
+&lt;h3&gt;Merge Git Info Hex File with the Binary&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Purpose: Combines the main output hex file with the Git info hex file.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Output: Produces &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out_with_git_info.hex&lt;/span&gt;&lt;/code&gt; containing the embedded Git commit ID.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_custom_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;OUTPUT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out_with_git_info.hex&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;hextool&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;merge&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--file&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out.hex&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--file&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--output&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out_with_git_info.hex&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMENT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Merging git info to the output hex file&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out.hex&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;VERBATIM&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="process-flow-diagram"&gt;
+&lt;h3&gt;Process Flow Diagram&lt;/h3&gt;
+&lt;div class="mermaid"&gt;
+            flowchart TD
+    A[Start Build] --&amp;gt; B[Generate git_commit_tmp.txt]
+    B --&amp;gt; C{Has Commit ID Changed?}
+    C -- Yes --&amp;gt; D[Update git_commit.txt]
+    C -- No --&amp;gt; E[Skip Update]
+    D &amp;amp; E --&amp;gt; F[Create git_info.hex]
+    F --&amp;gt; G[Generate link_out.hex]
+    G --&amp;gt; H[Merge git_info.hex with link_out.hex]
+    H --&amp;gt; I[Produce link_out_with_git_info.hex]
+        &lt;/div&gt;&lt;/section&gt;
+&lt;section id="alternative-approach-as-post-build-command"&gt;
+&lt;h3&gt;Alternative approach as POST_BUILD command&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Purpose: Merges &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;git_info.hex&lt;/span&gt;&lt;/code&gt; directly into &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out.hex&lt;/span&gt;&lt;/code&gt; as a &lt;a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_custom_command.html#examples-build-events"&gt;POST_BUILD&lt;/a&gt; step, overwriting the original file.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mechanism:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Post-Build Command: Executes after the link target finishes building.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Force Relinking: Adds git_info.hex as a dependency to ensure that the linker runs again if the Git info changes.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Output: The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out.hex&lt;/span&gt;&lt;/code&gt; file now contains the embedded Git commit ID without creating a new file.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="linenos"&gt; 1&lt;/span&gt;&lt;span class="c"&gt;# Add post-build command to merge the git info to the link_out.hex.&lt;/span&gt;
+&lt;span class="linenos"&gt; 2&lt;/span&gt;&lt;span class="nb"&gt;add_custom_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="linenos"&gt; 3&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;TARGET&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;link&lt;/span&gt;
+&lt;span class="linenos"&gt; 4&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;POST_BUILD&lt;/span&gt;
+&lt;span class="linenos"&gt; 5&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;hextool&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;merge&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--file&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out.hex&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--file&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--output&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BINARY_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/link_out.hex&lt;/span&gt;
+&lt;span class="linenos"&gt; 6&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMENT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Merging git info to the output hex file&amp;quot;&lt;/span&gt;
+&lt;span class="hll"&gt;&lt;span class="linenos"&gt; 7&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c"&gt;# (!) Adding DEPENDS has no effect on POST_BUILD commands. So next line is useless.&lt;/span&gt;
+&lt;/span&gt;&lt;span class="linenos"&gt; 8&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="linenos"&gt; 9&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;VERBATIM&lt;/span&gt;
+&lt;span class="linenos"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;11&lt;/span&gt;
+&lt;span class="linenos"&gt;12&lt;/span&gt;&lt;span class="c"&gt;# (!) Force linking again if the git info hex has changed.&lt;/span&gt;
+&lt;span class="linenos"&gt;13&lt;/span&gt;&lt;span class="c"&gt;# This hack adds the git info hex file as a dependency to the src_git_info target. When the git info hex file changes, the src_git_info target will be considered out of date and will be rebuilt.&lt;/span&gt;
+&lt;span class="linenos"&gt;14&lt;/span&gt;&lt;span class="nb"&gt;set_property&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;TARGET&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;src_git_info&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PROPERTY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;INTERFACE_LINK_DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="mermaid"&gt;
+            flowchart TD
+    A[Start Build] --&amp;gt; B[Generate git_commit_tmp.txt]
+    B --&amp;gt; C{Has Commit ID Changed?}
+    C -- Yes --&amp;gt; D[Update git_commit.txt]
+    C -- No --&amp;gt; Z[End Build]
+    D --&amp;gt; F[Create git_info.hex]
+    F --&amp;gt; G{Has git_info.hex Changed?}
+    G -- Yes --&amp;gt; H[Link link_out.hex]
+    G -- No --&amp;gt; Z
+    H --&amp;gt; K[Merging git_info.hex into link_out.hex - Post-Build]
+    K --&amp;gt; L[Updated link_out.hex with Git info]
+    L --&amp;gt; Z
+        &lt;/div&gt;&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Single Output File: Avoids creating an extra hex file; simplifies deployment.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Always Updated: Ensures &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out.hex&lt;/span&gt;&lt;/code&gt; always contains the latest Git info.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Disadvantages&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Forced Relinking: Changes in git_info.hex cause the linker to run again, potentially increasing build times. Note: Only the linking step is rerun; source files are not recompiled.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Overwriting Output: Original &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out.hex&lt;/span&gt;&lt;/code&gt; is modified, which may not be desirable in all workflows.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;We have explored the challenges of embedding Git information in C projects and proposed an optimized solution using CMake and Intel-HEX format.
+This approach ensures that Git metadata is efficiently embedded in the firmware binary without unnecessary recompilations by:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Extracting the current Git commit ID during each build.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Updating the commit ID file only when changes occur to avoid unnecessary rebuilds.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Embedding the commit ID into the hex file at a specific memory address.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Merging the Git info hex file with the main output using one of the two approaches.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I hope this post is helpful in optimizing your build process.&lt;/p&gt;
+&lt;/section&gt;
 &lt;/section&gt;
 </content>
-    <link href="https://cuinixam.github.io/blogs/2024/first_blog.html"/>
-    <summary>This is my first blog post. I hope you enjoy it!</summary>
-    <category term="blog" label="blog"/>
-    <category term="first" label="first"/>
-    <published>2024-03-23T00:00:00+00:00</published>
+    <link href="https://cuinixam.github.io/blogs/2024/efficiently_embedding_git_information_in_c_projects.html"/>
+    <summary>In software development, embedding Git metadata (like commit IDs, branches, and tags) into your binaries is useful for debugging and traceability. However, how you integrate this information can significantly impact your build times and workflow efficiency. This post explores the challenges of embedding Git information in C projects using CMake and proposes an optimized solution.In the first project, Git information is passed directly as compiler command-line arguments using add_compile_options in CMake:</summary>
+    <category term="splgitpost-buildcmake" label="spl git post-build cmake"/>
+    <published>2024-10-01T00:00:00+00:00</published>
   </entry>
 </feed>

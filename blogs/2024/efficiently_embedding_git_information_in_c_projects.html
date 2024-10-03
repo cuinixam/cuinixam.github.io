@@ -1,0 +1,943 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Efficiently Embedding Git Information in C Projects &#8212; Alexandru Maxiniuc</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=4004345f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=7026087e"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2024/efficiently_embedding_git_information_in_c_projects';</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Oct 03, 2024"/> 
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  href="../../blogs/atom.xml"
+  title="Alexandru Maxiniuc"
+/>
+  
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/bio-photo-circle.png" class="logo__image only-light" alt="Alexandru Maxiniuc - Home"/>
+    <script>document.write(`<img src="../../_static/bio-photo-circle.png" class="logo__image only-dark" alt="Alexandru Maxiniuc - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blogs.html">
+    Blogs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../presentations.html">
+    Presentations
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cuinixam/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cuinixam.github.io/blogs/atom.xml" title="Blog RSS feed" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-rss fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Blog RSS feed</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blogs.html">
+    Blogs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../presentations.html">
+    Presentations
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cuinixam/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cuinixam.github.io/blogs/atom.xml" title="Blog RSS feed" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-rss fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Blog RSS feed</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__postcard">
+   
+  <h2>
+     
+    <i class="fa fa-calendar"></i>
+    
+    <span>01 October 2024</span>
+    
+  </h2>
+  <ul>
+    <div class="ablog-sidebar-item ablog__postcard2">
+      
+  <li id="ablog-sidebar-item category ablog__category">
+    <span>
+      
+      <i class="fa-fw fa fa-folder-open"></i>
+      
+    </span>
+     
+    <a href="../category/blog.html">blog</a>
+      
+  </li>
+   
+  <li id="ablog-sidebar-item tags ablog__tags">
+    <span>
+       
+      <i class="fa-fw fa fa-tag"></i>
+      
+    </span>
+     
+    <a href="../tag/spl-git-post-build-cmake.html">spl git post-build cmake</a>
+      
+  </li>
+   
+</div>
+  </ul>
+</div>
+</div>
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__recentposts">
+  <h3>
+    <a href="../../blogs.html">Recent Posts</a>
+  </h3>
+  <ul>
+     
+  </ul>
+</div>
+</div>
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__archive">
+  <h3>
+    <a href="../archive.html">Archives</a>
+  </h3>
+  <ul>
+     
+    <li>
+      <a href="../2024.html">2024 (1)</a>
+    </li>
+     
+  </ul>
+</div>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Efficiently...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                   <section id="efficiently-embedding-git-information-in-c-projects">
+<h1>Efficiently Embedding Git Information in C Projects<a class="headerlink" href="#efficiently-embedding-git-information-in-c-projects" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>In software development, embedding Git metadata (like commit IDs, branches, and tags) into your binaries is useful for debugging and traceability. However, how you integrate this information can significantly impact your build times and workflow efficiency. This post explores the challenges of embedding Git information in C projects using CMake and proposes an optimized solution.</p>
+</section>
+<section id="current-approaches">
+<h2>Current Approaches<a class="headerlink" href="#current-approaches" title="Link to this heading">#</a></h2>
+<section id="project-one-command-line-defines">
+<h3>Project One: Command-Line Defines<a class="headerlink" href="#project-one-command-line-defines" title="Link to this heading">#</a></h3>
+<p>In the first project, Git information is passed directly as compiler command-line arguments using <code class="docutils literal notranslate"><span class="pre">add_compile_options</span></code> in CMake:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_compile_options</span><span class="p">(</span>
+<span class="w">    </span><span class="s">-DGIT_CUR_COMMIT=\</span><span class="s2">&quot;${GIT_CUR_COMMIT}\&quot;</span>
+<span class="w">    </span><span class="s">-DGIT_CUR_USER=\</span><span class="s2">&quot;${GIT_CUR_USER}\&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>These defines are then used in the codebase to embed Git metadata:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">git_commit</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GIT_CUR_COMMIT</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>Simplicity: Easy to implement and understand.</p></li>
+<li><p>Direct Integration: Git information is directly available in the code via macros.</p></li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Inefficient Builds: Any change in the command-line arguments (e.g., a new commit ID) invalidates the build cache, forcing a full recompilation.</p></li>
+<li><p>Poor Incremental Build Support: Full builds slow down development, especially in large product with multiple variants.</p></li>
+<li><p>Inconsistent Updates: The file generation relies on the CMake configure step, which may not run if no CMake files have changed.</p></li>
+</ul>
+</section>
+<section id="project-two-generated-source-file">
+<h3>Project Two: Generated Source File<a class="headerlink" href="#project-two-generated-source-file" title="Link to this heading">#</a></h3>
+<p>The second project generates a C source file during the CMake configuration step:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">GIT_INFO_TEMPLATE</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/src/git_info.c.in</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">GIT_INFO_FILE_OUT</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/Src/git_info.c</span><span class="p">)</span>
+
+<span class="nb">add_custom_target</span><span class="p">(</span><span class="s">version_info</span><span class="w"> </span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span>
+<span class="w">    </span><span class="s">-DUPDATE_VERSION_INFORMATION_REQUESTED=1</span>
+<span class="w">    </span><span class="s">-DVERSION_INFORMATION_FILE=</span><span class="o">${</span><span class="nv">GIT_INFO_TEMPLATE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">-DVERSION_INFORMATION_FILE_OUT=</span><span class="o">${</span><span class="nv">GIT_INFO_FILE_OUT</span><span class="o">}</span>
+<span class="w">    </span><span class="s">-DGIT_VARIANT=</span><span class="o">${</span><span class="nv">VARIANT</span><span class="o">}</span>
+<span class="w">    </span><span class="s">-P</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/src/gitinfo.cmake</span>
+<span class="w">    </span><span class="s">BYPRODUCTS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_FILE_OUT</span><span class="o">}</span>
+<span class="p">)</span>
+
+<span class="nb">spl_add_source</span><span class="p">(</span><span class="o">${</span><span class="nv">GIT_INFO_FILE_OUT</span><span class="o">}</span><span class="p">)</span>
+<span class="nb">spl_create_component</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>Selective Compilation: Only the generated file re-compiles when Git information changes.</p></li>
+<li><p>Improved Build Times: Reduces the need for full recompilations.</p></li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Inefficient Builds: The generated file is recompiled every time, even if the Git information hasn’t changed.</p></li>
+<li><p>Complexity: Adds extra steps and dependencies in the build process.</p></li>
+</ul>
+</section>
+</section>
+<section id="proposed-solution-embedding-git-information-in-the-binary">
+<h2>Proposed Solution: Embedding Git Information in the Binary<a class="headerlink" href="#proposed-solution-embedding-git-information-in-the-binary" title="Link to this heading">#</a></h2>
+<p>To overcome the problems of current methods, we propose embedding Git information directly into the binary (using Intel-HEX format) after the build process. This approach eliminates unnecessary recompilation and simplifies the build process by embedding Git metadata in a dedicated memory section.</p>
+<section id="create-the-git-information-source-files">
+<h3>Create the git information source files<a class="headerlink" href="#create-the-git-information-source-files" title="Link to this heading">#</a></h3>
+<p>We need to have:</p>
+<ul class="simple">
+<li><p>global constants for the Git information</p></li>
+<li><p>compiler directives to place the constants in a specific memory section</p></li>
+</ul>
+<p><em>git_info.c</em></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;git_info.h&quot;</span>
+
+<span class="cp">#define GITINFO_START_SEC_CONST</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;git_info_mem_map.h&quot;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">git_commit</span><span class="p">[</span><span class="n">GIT_COMMIT_LENGTH</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0123456701234567&quot;</span><span class="p">;</span>
+
+<span class="cp">#define GITINFO_STOP_SEC_CONST</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;git_info_mem_map.h&quot;</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">git_info.c</span></code> file contains dummy Git information and is used only for a placeholder. The actual Git information will be updated after the build process.</p>
+</div>
+<p><em>git_info_mem_map.h</em></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#if defined( GITINFO_START_SEC_CONST )</span>
+<span class="cp">#pragma protect</span>
+<span class="cp">#pragma section nearrom &quot;GitInfoSection&quot;</span>
+<span class="cp">#pragma section farrom &quot;GitInfoSection&quot;</span>
+<span class="cp"># undef GITINFO_START_SEC_CONST</span>
+<span class="cp"># define START_SEC_CODE</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#if defined( GITINFO_STOP_SEC_CONST )</span>
+<span class="cp">#pragma endprotect</span>
+<span class="cp">#pragma section nearrom restore</span>
+<span class="cp">#pragma section farrom restore</span>
+<span class="cp"># undef GITINFO_STOP_SEC_CONST</span>
+<span class="cp"># define STOP_SEC_CODE</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GitInfoSection</span></code> memory section shall be defined in the linker script.</p>
+</div>
+<p>For other modules to access the Git information, we need to define the Git information in a header file:</p>
+<p><em>git_info.h</em></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef GIT_INFO_H</span>
+<span class="cp">#define GIT_INFO_H</span>
+
+<span class="cp">#define GIT_COMMIT_LENGTH 16</span>
+<span class="k">extern</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">git_commit</span><span class="p">[</span><span class="n">GIT_COMMIT_LENGTH</span><span class="p">];</span>
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</section>
+<section id="linker-script-to-define-the-git-information-memory-section">
+<h3>Linker Script to Define the Git Information Memory Section<a class="headerlink" href="#linker-script-to-define-the-git-information-memory-section" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/* Start address to store the git information */
+#define GITINFO_ADDRESS                         (0xABCD)
+
+section_layout :vtc:linear
+{
+	group PFLASH0(fill = 0x00)
+	{
+		group GitInfoSectionGroup (ordered, run_addr=GITINFO_ADDRESS)
+		{
+			section &quot;GitInfoSectionGroup_SEC&quot; (fill, blocksize = 2, attributes = rx)
+			{
+					select &quot;[.]rodata.GitInfoSection&quot;;
+			}
+		}
+		&quot;_GitInfoSectionGroup_START&quot; = &quot;_lc_gb_GitInfoSectionGroup&quot;;
+		&quot;_GitInfoSectionGroup_END&quot; = (&quot;_lc_ge_GitInfoSectionGroup&quot; == 0) ? 0 : &quot;_lc_ge_GitInfoSectionGroup&quot; - 1;
+		&quot;_GitInfoSectionGroup_LIMIT&quot; = &quot;_lc_ge_GitInfoSectionGroup&quot;;
+	}
+}
+</pre></div>
+</div>
+<p>This linker script defines a memory section <code class="docutils literal notranslate"><span class="pre">GitInfoSection</span></code> at the specified address <code class="docutils literal notranslate"><span class="pre">GITINFO_ADDRESS</span></code> to store the Git information.
+The constants defined in <code class="docutils literal notranslate"><span class="pre">git_info.c</span></code> (<code class="docutils literal notranslate"><span class="pre">rodata</span></code>) will be placed in this memory section.</p>
+</section>
+<section id="cmake-script-to-update-the-git-information">
+<h3>CMake script to update the Git information<a class="headerlink" href="#cmake-script-to-update-the-git-information" title="Link to this heading">#</a></h3>
+<p>We need to define custom commands to create a <code class="docutils literal notranslate"><span class="pre">git_info.hex</span></code> file containing the Git information.</p>
+<p><strong>Requirements</strong></p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">git_info.hex</span></code> file shall only be generated if the git commit has changed</p></li>
+<li><p>the command for checking the git commit shall always run, to make sure the <code class="docutils literal notranslate"><span class="pre">git_info.hex</span></code> file is up-to-date</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>As you might have noticed, we need to <strong>always</strong> run the command for checking the git commit but <strong>only</strong> generate the <code class="docutils literal notranslate"><span class="pre">git_info.hex</span></code> file if the git commit has changed. This is a bit tricky to achieve with CMake, but it is possible.</p>
+</div>
+<section id="always-generate-git-commit-temporary-file">
+<h4>Always Generate Git Commit Temporary File<a class="headerlink" href="#always-generate-git-commit-temporary-file" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Purpose: Ensures the Git commit ID is updated every build.</p></li>
+<li><p>Mechanism: Uses a fictive output <strong>git_commit_force_update</strong> to force the command to run every time.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">OUTPUT</span><span class="w"> </span><span class="s">__git_commit_force_update__</span>
+<span class="w">    </span><span class="s">BYPRODUCTS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_TMP_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">git</span><span class="w"> </span><span class="s">describe</span><span class="w"> </span><span class="s">--always</span><span class="w"> </span><span class="s">--dirty</span><span class="w"> </span><span class="s">--exclude</span><span class="w"> </span><span class="s">&#39;*&#39;</span><span class="w"> </span><span class="s">--abbrev=8</span><span class="w"> </span><span class="s">&gt;</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_TMP_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Generate the git commit tmp file&quot;</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="update-git-commit-file-if-changed">
+<h4>Update Git Commit File if Changed<a class="headerlink" href="#update-git-commit-file-if-changed" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Purpose: Copies the temporary commit ID file to the final file only if it has changed.</p></li>
+<li><p>Mechanism: Uses copy_if_different to avoid unnecessary updates.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">OUTPUT</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="s">-E</span><span class="w"> </span><span class="s">copy_if_different</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_TMP_FILE</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Checking and updating git commit ID&quot;</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">__git_commit_force_update__</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_TMP_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-git-info-hex-file">
+<h4>Create Git Info Hex File<a class="headerlink" href="#create-git-info-hex-file" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Purpose: Converts the Git commit ID into a hex file at the specified address.</p></li>
+<li><p>Mechanism: Uses hextool to generate the hex file.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">OUTPUT</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">hextool</span><span class="w"> </span><span class="s">create</span><span class="w"> </span><span class="s">--input-binary</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_FILE</span><span class="o">}</span><span class="w"> </span><span class="s">--offset</span><span class="w"> </span><span class="o">${</span><span class="nv">GITINFO_ADDRESS</span><span class="o">}</span><span class="w"> </span><span class="s">--output</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_COMMIT_FILE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Creating git info hex file&quot;</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please notice the <code class="docutils literal notranslate"><span class="pre">--input-binary</span></code> hextool option to read the git information as binary data directly from the file.</p>
+</div>
+</section>
+</section>
+<section id="merge-git-info-hex-file-with-the-binary">
+<h3>Merge Git Info Hex File with the Binary<a class="headerlink" href="#merge-git-info-hex-file-with-the-binary" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Purpose: Combines the main output hex file with the Git info hex file.</p></li>
+<li><p>Output: Produces <code class="docutils literal notranslate"><span class="pre">link_out_with_git_info.hex</span></code> containing the embedded Git commit ID.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">OUTPUT</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out_with_git_info.hex</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">hextool</span><span class="w"> </span><span class="s">merge</span><span class="w"> </span><span class="s">--file</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out.hex</span><span class="w"> </span><span class="s">--file</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span><span class="w"> </span><span class="s">--output</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out_with_git_info.hex</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Merging git info to the output hex file&quot;</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out.hex</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="process-flow-diagram">
+<h3>Process Flow Diagram<a class="headerlink" href="#process-flow-diagram" title="Link to this heading">#</a></h3>
+<div class="mermaid">
+            flowchart TD
+    A[Start Build] --&gt; B[Generate git_commit_tmp.txt]
+    B --&gt; C{Has Commit ID Changed?}
+    C -- Yes --&gt; D[Update git_commit.txt]
+    C -- No --&gt; E[Skip Update]
+    D &amp; E --&gt; F[Create git_info.hex]
+    F --&gt; G[Generate link_out.hex]
+    G --&gt; H[Merge git_info.hex with link_out.hex]
+    H --&gt; I[Produce link_out_with_git_info.hex]
+        </div></section>
+<section id="alternative-approach-as-post-build-command">
+<h3>Alternative approach as POST_BUILD command<a class="headerlink" href="#alternative-approach-as-post-build-command" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Purpose: Merges <code class="docutils literal notranslate"><span class="pre">git_info.hex</span></code> directly into <code class="docutils literal notranslate"><span class="pre">link_out.hex</span></code> as a <a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_custom_command.html#examples-build-events">POST_BUILD</a> step, overwriting the original file.</p></li>
+<li><p>Mechanism:</p>
+<ul>
+<li><p>Post-Build Command: Executes after the link target finishes building.</p></li>
+<li><p>Force Relinking: Adds git_info.hex as a dependency to ensure that the linker runs again if the Git info changes.</p></li>
+</ul>
+</li>
+<li><p>Output: The <code class="docutils literal notranslate"><span class="pre">link_out.hex</span></code> file now contains the embedded Git commit ID without creating a new file.</p></li>
+</ul>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c"># Add post-build command to merge the git info to the link_out.hex.</span>
+<span class="linenos"> 2</span><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="s">TARGET</span><span class="w"> </span><span class="s">link</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="s">POST_BUILD</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">hextool</span><span class="w"> </span><span class="s">merge</span><span class="w"> </span><span class="s">--file</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out.hex</span><span class="w"> </span><span class="s">--file</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span><span class="w"> </span><span class="s">--output</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/link_out.hex</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Merging git info to the output hex file&quot;</span>
+<span class="hll"><span class="linenos"> 7</span><span class="w">    </span><span class="c"># (!) Adding DEPENDS has no effect on POST_BUILD commands. So next line is useless.</span>
+</span><span class="linenos"> 8</span><span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="s">VERBATIM</span>
+<span class="linenos">10</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c"># (!) Force linking again if the git info hex has changed.</span>
+<span class="linenos">13</span><span class="c"># This hack adds the git info hex file as a dependency to the src_git_info target. When the git info hex file changes, the src_git_info target will be considered out of date and will be rebuilt.</span>
+<span class="linenos">14</span><span class="nb">set_property</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">src_git_info</span><span class="w"> </span><span class="s">PROPERTY</span><span class="w"> </span><span class="s">INTERFACE_LINK_DEPENDS</span><span class="w"> </span><span class="o">${</span><span class="nv">GIT_INFO_HEX_FILE</span><span class="o">}</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="mermaid">
+            flowchart TD
+    A[Start Build] --&gt; B[Generate git_commit_tmp.txt]
+    B --&gt; C{Has Commit ID Changed?}
+    C -- Yes --&gt; D[Update git_commit.txt]
+    C -- No --&gt; Z[End Build]
+    D --&gt; F[Create git_info.hex]
+    F --&gt; G{Has git_info.hex Changed?}
+    G -- Yes --&gt; H[Link link_out.hex]
+    G -- No --&gt; Z
+    H --&gt; K[Merging git_info.hex into link_out.hex - Post-Build]
+    K --&gt; L[Updated link_out.hex with Git info]
+    L --&gt; Z
+        </div><p><strong>Advantages</strong></p>
+<ul class="simple">
+<li><p>Single Output File: Avoids creating an extra hex file; simplifies deployment.</p></li>
+<li><p>Always Updated: Ensures <code class="docutils literal notranslate"><span class="pre">link_out.hex</span></code> always contains the latest Git info.</p></li>
+</ul>
+<p><strong>Disadvantages</strong></p>
+<ul class="simple">
+<li><p>Forced Relinking: Changes in git_info.hex cause the linker to run again, potentially increasing build times. Note: Only the linking step is rerun; source files are not recompiled.</p></li>
+<li><p>Overwriting Output: Original <code class="docutils literal notranslate"><span class="pre">link_out.hex</span></code> is modified, which may not be desirable in all workflows.</p></li>
+</ul>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>We have explored the challenges of embedding Git information in C projects and proposed an optimized solution using CMake and Intel-HEX format.
+This approach ensures that Git metadata is efficiently embedded in the firmware binary without unnecessary recompilations by:</p>
+<ul class="simple">
+<li><p>Extracting the current Git commit ID during each build.</p></li>
+<li><p>Updating the commit ID file only when changes occur to avoid unnecessary rebuilds.</p></li>
+<li><p>Embedding the commit ID into the hex file at a specific memory address.</p></li>
+<li><p>Merging the Git info hex file with the main output using one of the two approaches.</p></li>
+</ul>
+<p>I hope this post is helpful in optimizing your build process.</p>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+  </span>
+</div>
+  
+</div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#current-approaches">Current Approaches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#project-one-command-line-defines">Project One: Command-Line Defines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#project-two-generated-source-file">Project Two: Generated Source File</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proposed-solution-embedding-git-information-in-the-binary">Proposed Solution: Embedding Git Information in the Binary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-git-information-source-files">Create the git information source files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linker-script-to-define-the-git-information-memory-section">Linker Script to Define the Git Information Memory Section</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cmake-script-to-update-the-git-information">CMake script to update the Git information</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#always-generate-git-commit-temporary-file">Always Generate Git Commit Temporary File</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#update-git-commit-file-if-changed">Update Git Commit File if Changed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-git-info-hex-file">Create Git Info Hex File</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-git-info-hex-file-with-the-binary">Merge Git Info Hex File with the Binary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#process-flow-diagram">Process Flow Diagram</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-approach-as-post-build-command">Alternative approach as POST_BUILD command</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/blogs/2024/efficiently_embedding_git_information_in_c_projects.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Alexandru Maxiniuc.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

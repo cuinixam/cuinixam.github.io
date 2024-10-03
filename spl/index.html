@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPL</title>
+    <style>
+      svg.markmap {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+    <script src="../_static/js/markmap/markmap.js"></script>
+  </head>
+
+  <body>
+    <div class="markmap">
+      <script type="text/template">
+        ---
+        markmap:
+          maxWidth: 300
+          colorFreezeLevel: 2
+          initialExpandLevel: 2
+        ---
+
+        #  SPL
+
+        ## Entities
+
+        ### Product
+        ### Feature Model
+        ### Variant
+        ### Component
+        ### Sources
+        ### Tools
+
+        ## Pipeline
+
+        ### Bootstrap
+        #### Scoop Packages
+        #### Python Packages
+
+        ### Build
+        #### Select Variant
+        #### Select build target
+        ##### all
+        ##### reports
+        ##### link
+        #### Select build kit
+        ##### prod
+        ##### test
+
+        ## Concepts
+
+        ### Handle external dependencies
+
+        #### tools
+        ##### scoopfile.json
+        ##### pipfile
+
+        #### sources
+        ##### CMakeLists.txt
+        ###### FetchContent
+
+        #### servers
+        ##### Artifactory
+        ###### pypi
+        ####### pypi.org clone
+        ####### innersource
+        ###### tools installers
+        ##### BitBucket
+        ###### scoop-bucket
+        ###### bootstrap
+
+        ### Product configuration
+
+        #### What?
+        ##### sources
+        ##### tests
+        ##### docs
+        ##### build system
+        ##### tools
+
+        #### How?
+        ##### KConfig
+
+        ### CI
+
+        #### Trigger
+        ##### BitBucket
+        ##### Jenkins
+
+        #### Run
+        ##### build
+        ##### test
+        ##### reports
+
+        ### How to build
+
+        #### command line
+        ##### build.ps1
+
+        #### VSCode
+        ##### pytest
+        ##### cmake
+
+        ## References
+
+        - [SPL-Core](https://github.com/avengineers/spl-core)
+        - [YANGA](https://github.com/cuinixam/yanga)
+      </script>
+    </div>
+  </body>
+</html>
