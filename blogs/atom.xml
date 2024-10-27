@@ -2,10 +2,146 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2024-10-03T08:06:44.895478+00:00</updated>
+  <updated>2024-10-27T10:34:28.123838+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
+  <entry>
+    <id>https://cuinixam.github.io/blogs/2024/optimizing_tool_installation_in_spl_build_environments.html</id>
+    <title>Optimizing Tool Installation in SPL Build Environments</title>
+    <updated>2024-10-26T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="optimizing-tool-installation-in-spl-build-environments"&gt;
+
+&lt;p&gt;I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.&lt;/p&gt;
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-problem-inefficient-tool-installation"&gt;
+&lt;h2&gt;The Problem: Inefficient Tool Installation&lt;/h2&gt;
+&lt;p&gt;In our SPL build environments, all tools are being installed regardless of the specific needs of a developer or build target. This was not noticeable initially, but as the number of variants and use cases (e.g. different packaging formats, on target debugging, etc.) increased, the inefficiency became apparent.&lt;/p&gt;
+&lt;p&gt;Basically, there is an &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;install&lt;/span&gt;&lt;/code&gt; step at the beginning of the build pipeline that installs all the tools required by all variants and all possible build targets.&lt;/p&gt;
+&lt;p&gt;Some use cases where this inefficiency is particularly noticeable include:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;A developer working on a specific variant needs only a subset of tools.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A CI pipeline for running static analysis (e.g. Mathworks Polyspace) does not need to build or package the software.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The problem is more noticeable for developers spinning up a virtual machine (VM) to quickly test a change or for a developer setting up their environment for the first time.&lt;/p&gt;
+&lt;p&gt;On the other hand, when releasing a product, it is essential to ensure that all tools are available because we have to make sure that all variants are passing the defined quality gates.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="brainstorming"&gt;
+&lt;h2&gt;Brainstorming&lt;/h2&gt;
+&lt;section id="categorizing-tools-into-generic-variant-and-build-target-sets"&gt;
+&lt;h3&gt;💡 Categorizing Tools into Generic, Variant, and Build Target Sets&lt;/h3&gt;
+&lt;p&gt;Let us categorize tools into three distinct sets:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Generic Tools&lt;/strong&gt;: Tools required by all variants and build targets (e.g., CMake, Python).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Variant-Specific Tools&lt;/strong&gt;: Tools required only for certain variants (e.g., specific compilers for microcontrollers).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Build Target-Specific Tools&lt;/strong&gt;: Tools required for specific build targets (e.g., static analysis tools like Polyspace).&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Implementation Concept&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Separate Tool Dependency Files&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Generic Tool Dependencies File&lt;/strong&gt;: Contains tools common to all variants.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Variant-Specific Tool Dependencies Files&lt;/strong&gt;: Contains tools specific to a variant or overrides for generic tools.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Merging Process&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;When building a variant, merge the generic and variant-specific tool files, with the variant-specific tools overriding any conflicts.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Handling Build Target-Specific Tools&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Dynamically add tools based on the selected build target.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This means that the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;install&lt;/span&gt;&lt;/code&gt; step in the pipeline will install only the tools required for the specific variant and build target.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Considerations&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;While this idea provides a structured approach to managing tool dependencies, there are some challenges/limitations to consider:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Complexity in Linking Tools to Build Targets&lt;/strong&gt;: Tightly coupling tools to build targets might limit flexibility for other activities that require specific tools, such as generating reports or on-target debugging.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Aggregation of Tools for CI&lt;/strong&gt;: Collecting all tools from generic, variant, and build target files for CI builds might introduce complexity in managing tool versions and resolving conflicts.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="introducing-scopes-as-an-abstraction-layer"&gt;
+&lt;h3&gt;💡 Introducing “Scopes” as an Abstraction Layer&lt;/h3&gt;
+&lt;p&gt;One issue with the previous idea is the tight coupling of tools to build targets. The problem is that, in contrast to &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;variant&lt;/span&gt;&lt;/code&gt;, a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;build&lt;/span&gt; &lt;span class="pre"&gt;target&lt;/span&gt;&lt;/code&gt; is not a domain term in SPL engineering. It is a technical term from the build system. This tight coupling might lead to confusion and make the system less flexible.&lt;/p&gt;
+&lt;p&gt;To address this limitation, we proposed introducing &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;scopes&lt;/span&gt;&lt;/code&gt; as a higher-level abstraction.&lt;/p&gt;
+&lt;div class="admonition-scopes admonition"&gt;
+&lt;p class="admonition-title"&gt;Scopes&lt;/p&gt;
+&lt;p&gt;Scopes encompass a specific activity or domain within the development process, representing a set of tools, configurations and steps required for that activity.&lt;/p&gt;
+&lt;p&gt;Examples of scopes may include: &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Build&lt;/span&gt;&lt;/code&gt;, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;StaticAnalysis&lt;/span&gt;&lt;/code&gt;, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Debugging&lt;/span&gt;&lt;/code&gt;, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Reporting&lt;/span&gt;&lt;/code&gt;, and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Deployment&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Implementation Concept&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Scope-Specific Configuration Files&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Each scope has its own configuration that lists the tools required for that scope.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;It might also need to specify also what has to be done, which steps have to be executed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Merging Tool Dependencies&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Hierarchy&lt;/strong&gt;: Generic tools &amp;lt; Variant Build Tools &amp;lt; Scope-specific tools.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When building, the script merges tools from these files, with later ones overriding earlier ones in case of conflicts.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;There shall no be no variant specific tools anymore other than the toolchain for building the software.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Considerations&lt;/strong&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Complexity in Managing Scopes&lt;/strong&gt;: Managing a growing number of scopes might become complex.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;User Awareness&lt;/strong&gt;: Developers need to understand which scopes are relevant for their tasks.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;How are scopes related to build targets?&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="keep-current-solution-and-speed-up-installation-of-all-tools"&gt;
+&lt;h3&gt;💡 Keep current solution and speed up installation of all tools&lt;/h3&gt;
+&lt;p&gt;Another idea was to keep the current solution but speed up the installation process. This could be achieved by:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;CI jobs to install all tools on all agents&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Disable automatic installation of tools on developer machines. The developer can then install the required tools manually.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This idea is the least intrusive and requires the least amount of changes. However, it does not address the root cause of the problem. It is more of a workaround. 🙈&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="final-approach-introducing-scopes"&gt;
+&lt;h2&gt;Final Approach: Introducing Scopes&lt;/h2&gt;
+&lt;p&gt;Introducing “scopes” as an abstraction layer offers a more flexible and domain-aligned solution for optimizing tool installation in an SPL build environment.&lt;/p&gt;
+&lt;p&gt;Scopes align with the development process, makes it easier for developers and platform engineers to understand and manage not only tool dependencies but also the steps required for a specific activity.&lt;/p&gt;
+&lt;p&gt;The final approach involves:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Defining Scopes&lt;/strong&gt;: Identify and define scopes that represent activities or domains within the development process.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Scope-Specific Configuration Files&lt;/strong&gt;: Create configuration files for each scope that list the tools required for that scope.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Merging Tool Dependencies&lt;/strong&gt;: Merge tools from generic, variant build, and scope-specific files, with later ones overriding earlier ones in case of conflicts.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Implementing Scope-Specific Steps&lt;/strong&gt;: Define and implement steps for each scope that specify what has to be done, which tools have to be installed, and which steps have to be executed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This approach ensures that only the tools required for a specific activity are installed, optimizing the build environment and enhancing developer productivity.&lt;/p&gt;
+&lt;p&gt;There is one important aspect to consider: in the end one must be able insure a certain quality level for the software product as a whole. This means one needs to:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;define quality gates for the whole product and breaking them down to the individual variants&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;map scopes to quality gates for each variant. Different variants might have different quality gates based on their maturity (e.g., prototype, beta, street ready).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The topics of quality gates and maturity levels, although related, deserve a separate blog post and I will not go into detail here.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I hope this blog post has provided you with insights into the challenges of optimizing tool installation in SPL build environments and the thought process in addressing this challenge.&lt;/p&gt;
+&lt;p&gt;There will for sure be more questions to answer when actually implementing the solution but until then, keep fingers crossed and stay tuned for more updates on this topic.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://cuinixam.github.io/blogs/2024/optimizing_tool_installation_in_spl_build_environments.html"/>
+    <summary>I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.</summary>
+    <category term="null" label="null"/>
+    <published>2024-10-26T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://cuinixam.github.io/blogs/2024/efficiently_embedding_git_information_in_c_projects.html</id>
     <title>Efficiently Embedding Git Information in C Projects</title>
