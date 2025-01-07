@@ -2,10 +2,135 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2024-10-27T10:34:28.123838+00:00</updated>
+  <updated>2025-01-07T10:02:36.139507+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
+  <entry>
+    <id>https://cuinixam.github.io/blogs/2025/allocate_memory_sections.html</id>
+    <title>Allocate Code and Data to Specific Memory Sections</title>
+    <updated>2025-01-07T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="allocate-code-and-data-to-specific-memory-sections"&gt;
+
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;There was a question in our support channel about the memory sections from an external library.
+The colleague was trying to understand how the different sections were defined for the library and how they were placed in memory.
+When checking the linker configuration file (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;*.lsl&lt;/span&gt;&lt;/code&gt;) the observation was that the memory sections for:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;all the objects for our code, the section pattern was &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.&amp;lt;type&amp;gt;.&amp;lt;filename&amp;gt;.&amp;lt;symbol&amp;gt;&lt;/span&gt;&lt;/code&gt;. For example, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;select&lt;/span&gt; &lt;span class="pre"&gt;.text.component.main&lt;/span&gt;&lt;/code&gt; or &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;select&lt;/span&gt; &lt;span class="pre"&gt;.data.component.my_var&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the library, the section pattern was &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.&amp;lt;type&amp;gt;.&amp;lt;some_name&amp;gt;.&amp;lt;symbol&lt;/span&gt;&lt;/code&gt;. For example, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.rodata.adjustable_parameters.my_param&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The question was: how can we define the sections for the library in the linker script file and if they can use the same pattern as our code?&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="understanding-the-sections"&gt;
+&lt;h2&gt;Understanding the sections&lt;/h2&gt;
+&lt;section id="why-do-we-need-to-define-different-memory-sections"&gt;
+&lt;h3&gt;Why do we need to define different memory sections?&lt;/h3&gt;
+&lt;p&gt;When integrating code with different safety levels or from external libraries, it is important to separate the memory sections to restrict the access to certain areas of the memory only to specific code.
+This safety measure is important to avoid that a bug in one part of the code can corrupt the data of another part of the code.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="how-are-the-sections-defined"&gt;
+&lt;h3&gt;How are the sections defined?&lt;/h3&gt;
+&lt;p&gt;The SW architecture describes the logical allocation of the components based on different abstraction levels and safety requirements.
+Based on this and the memory map of the micro-controller, the sections are defined in the linker script file.&lt;/p&gt;
+&lt;p&gt;Here are some section types that are commonly used:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.text&lt;/span&gt;&lt;/code&gt; - the code section&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.data&lt;/span&gt;&lt;/code&gt; - the initialized data section&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.bss&lt;/span&gt;&lt;/code&gt; - the uninitialized data section&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.rodata&lt;/span&gt;&lt;/code&gt; - the read-only data section&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="how-does-my-c-code-ends-up-in-the-sections"&gt;
+&lt;h2&gt;How does my C code ends up in the sections?&lt;/h2&gt;
+&lt;p&gt;By default, the compiler generates the sections based on the file name and the symbol name.
+Let us consider the following code:&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;my_var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;my_func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;my_var&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The compiler will generate the following sections:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.text.my_file.my_func&lt;/span&gt;&lt;/code&gt; - the code of the function &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;my_func&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.data.my_file.my_var&lt;/span&gt;&lt;/code&gt; - the initialized data of the variable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;my_var&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the linker script file, we can &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;select&lt;/span&gt;&lt;/code&gt; the sections to be placed in the memory map.&lt;/p&gt;
+&lt;p&gt;In the memory group where this component &lt;em&gt;code&lt;/em&gt; shall be placed, we can refer to it as:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;select&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;my_file&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This means that all the sections that start with &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.text.my_file.&lt;/span&gt;&lt;/code&gt; will be placed in this memory group.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="renaming-the-sections"&gt;
+&lt;h2&gt;Renaming the sections&lt;/h2&gt;
+&lt;p&gt;Let’s say that one has some adjustable parameters which shall be allocated to a specific memory area.&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parameters_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;my_parameters&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;By default the compiler will generate a section named &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.rodata.my_file.my_parameters&lt;/span&gt;&lt;/code&gt; for the read-only data of the variable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;my_parameters&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If one wants to give a specific name to this section, one can instruct the compiler to use a specific section name.
+Depending on the compiler, there are different ways to do this.&lt;/p&gt;
+&lt;p&gt;When using the TASKING compiler, there is a special ´#pragma´ to define the section name.&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#pragma section all &amp;quot;sw_constants&amp;quot; &lt;/span&gt;&lt;span class="c1"&gt;// define the section name&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parameters_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;my_parameters&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="cp"&gt;#pragma section restore all &lt;/span&gt;&lt;span class="c1"&gt;// restore the default section name&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For more information see the TASKING User Guide, section 1.12.1 Rename Sections in the &lt;a class="reference internal" href="blogs/2025/allocate_memory_sections.html#references"&gt;&lt;span class="std std-ref"&gt;References&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;When using the GCC compiler, there is a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;__attribute__&lt;/span&gt;&lt;/code&gt; that can be used to define the section name.&lt;/p&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;parameters_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;my_parameters&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;__attribute__&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;section&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sw_constants&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;param2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;See more about the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;__attribute__&lt;/span&gt;&lt;/code&gt; in the &lt;a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute"&gt;GCC documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="answering-the-question-s"&gt;
+&lt;h2&gt;Answering the question(s)&lt;/h2&gt;
+&lt;p&gt;The linker configuration file (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;*.lsl&lt;/span&gt;&lt;/code&gt;) is used to define the memory layout, collect and group memory sections from objects and libraries.
+The compiler generates the sections based on the file name and the symbol name and type. The user can rename the sections using compiler specific directives.&lt;/p&gt;
+&lt;p&gt;The memory sections defined for the objects inside the library have a different pattern because there were renamed using the compiler specific directives (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pragma&lt;/span&gt;&lt;/code&gt; or &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;__attribute__&lt;/span&gt; &lt;span class="pre"&gt;section&lt;/span&gt;&lt;/code&gt;).
+One can not change the section names after the compilation and therefore must rely on naming conventions to know which sections are present in the library.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="references"&gt;
+&lt;span id="id1"&gt;&lt;/span&gt;&lt;h2&gt;References&lt;/h2&gt;
+&lt;aside class="system-message"&gt;
+&lt;p class="system-message-title"&gt;System Message: INFO/1 (&lt;span class="docutils literal"&gt;/home/runner/work/cuinixam.github.io/cuinixam.github.io/docs/blogs/2025/allocate_memory_sections.md&lt;/span&gt;, line 117); &lt;em&gt;&lt;a href="#id1"&gt;backlink&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Duplicate implicit target name: “references”.&lt;/p&gt;
+&lt;/aside&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_254.pdf"&gt;TASKING User Guide&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_847.pdf"&gt;GCC to TASKING Migration&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute"&gt;GCC documentation&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_MemoryMapping.pdf"&gt;AUTOSAR Memory Mapping&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://cuinixam.github.io/blogs/2025/allocate_memory_sections.html"/>
+    <summary>There was a question in our support channel about the memory sections from an external library.
+The colleague was trying to understand how the different sections were defined for the library and how they were placed in memory.
+When checking the linker configuration file (*.lsl) the observation was that the memory sections for:all the objects for our code, the section pattern was .&lt;type&gt;.&lt;filename&gt;.&lt;symbol&gt;. For example, select .text.component.main or select .data.component.my_var.</summary>
+    <category term="gcc" label="gcc"/>
+    <category term="linker" label="linker"/>
+    <category term="linkerscriptinglanguage" label="linker scripting language"/>
+    <category term="lsl" label="lsl"/>
+    <category term="memory" label="memory"/>
+    <category term="section" label="section"/>
+    <category term="tasking" label="tasking"/>
+    <published>2025-01-07T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://cuinixam.github.io/blogs/2024/optimizing_tool_installation_in_spl_build_environments.html</id>
     <title>Optimizing Tool Installation in SPL Build Environments</title>

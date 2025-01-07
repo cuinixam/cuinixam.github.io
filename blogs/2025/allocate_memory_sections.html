@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimizing Tool Installation in SPL Build Environments &#8212; Alexandru Maxiniuc</title>
+    <title>Allocate Code and Data to Specific Memory Sections &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2024/optimizing_tool_installation_in_spl_build_environments';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2025/allocate_memory_sections';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -393,7 +393,7 @@ document.write(`
      
     <i class="fa fa-calendar"></i>
     
-    <span>26 October 2024</span>
+    <span>07 January 2025</span>
     
   </h2>
   <ul>
@@ -406,28 +406,30 @@ document.write(`
       
     </span>
      
-    <a href="../category/spl.html">spl</a>
-     ,    
-    <a href="../category/yanga.html">yanga</a>
-     ,    
-    <a href="../category/build.html">build</a>
-     ,    
-    <a href="../category/optimization.html">optimization</a>
-     ,    
-    <a href="../category/tool.html">tool</a>
-     ,    
-    <a href="../category/dependency.html">dependency</a>
+    <a href="../category/learning.html">learning</a>
       
   </li>
    
   <li id="ablog-sidebar-item tags ablog__tags">
     <span>
        
-      <i class="fa-fw fa fa-tag"></i>
-      
+      <i class="fa-fw fa fa-tags"></i>
+       
     </span>
      
-    <a href="../tag/null.html">null</a>
+    <a href="../tag/linker.html">linker</a>
+        
+    <a href="../tag/section.html">section</a>
+        
+    <a href="../tag/memory.html">memory</a>
+        
+    <a href="../tag/linker-scripting-language.html">linker scripting language</a>
+        
+    <a href="../tag/lsl.html">lsl</a>
+        
+    <a href="../tag/gcc.html">gcc</a>
+        
+    <a href="../tag/tasking.html">tasking</a>
       
   </li>
    
@@ -443,13 +445,13 @@ document.write(`
   <ul>
      
     <li>
-      <a href="../2025/allocate_memory_sections.html">
-        07 January - Allocate Code and Data to Specific Memory Sections
+      <a href="../2024/optimizing_tool_installation_in_spl_build_environments.html">
+        26 October - Optimizing Tool Installation in SPL Build Environments
       </a>
     </li>
     
     <li>
-      <a href="efficiently_embedding_git_information_in_c_projects.html">
+      <a href="../2024/efficiently_embedding_git_information_in_c_projects.html">
         01 October - Efficiently Embedding Git Information in C Projects
       </a>
     </li>
@@ -509,7 +511,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Optimizing...</li>
+    <li class="breadcrumb-item active" aria-current="page">Allocate...</li>
   </ul>
 </nav>
 </div>
@@ -525,130 +527,107 @@ document.write(`
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="optimizing-tool-installation-in-spl-build-environments">
-<h1>Optimizing Tool Installation in SPL Build Environments<a class="headerlink" href="#optimizing-tool-installation-in-spl-build-environments" title="Link to this heading">#</a></h1>
-<p>I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.</p>
+                   <section id="allocate-code-and-data-to-specific-memory-sections">
+<h1>Allocate Code and Data to Specific Memory Sections<a class="headerlink" href="#allocate-code-and-data-to-specific-memory-sections" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.</p>
+<p>There was a question in our support channel about the memory sections from an external library.
+The colleague was trying to understand how the different sections were defined for the library and how they were placed in memory.
+When checking the linker configuration file (<code class="docutils literal notranslate"><span class="pre">*.lsl</span></code>) the observation was that the memory sections for:</p>
+<ul class="simple">
+<li><p>all the objects for our code, the section pattern was <code class="docutils literal notranslate"><span class="pre">.&lt;type&gt;.&lt;filename&gt;.&lt;symbol&gt;</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.text.component.main</span></code> or <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.data.component.my_var</span></code>.</p></li>
+<li><p>the library, the section pattern was <code class="docutils literal notranslate"><span class="pre">.&lt;type&gt;.&lt;some_name&gt;.&lt;symbol</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">.rodata.adjustable_parameters.my_param</span></code>.</p></li>
+</ul>
+<p>The question was: how can we define the sections for the library in the linker script file and if they can use the same pattern as our code?</p>
 </section>
-<section id="the-problem-inefficient-tool-installation">
-<h2>The Problem: Inefficient Tool Installation<a class="headerlink" href="#the-problem-inefficient-tool-installation" title="Link to this heading">#</a></h2>
-<p>In our SPL build environments, all tools are being installed regardless of the specific needs of a developer or build target. This was not noticeable initially, but as the number of variants and use cases (e.g. different packaging formats, on target debugging, etc.) increased, the inefficiency became apparent.</p>
-<p>Basically, there is an <code class="docutils literal notranslate"><span class="pre">install</span></code> step at the beginning of the build pipeline that installs all the tools required by all variants and all possible build targets.</p>
-<p>Some use cases where this inefficiency is particularly noticeable include:</p>
-<ul class="simple">
-<li><p>A developer working on a specific variant needs only a subset of tools.</p></li>
-<li><p>A CI pipeline for running static analysis (e.g. Mathworks Polyspace) does not need to build or package the software.</p></li>
-</ul>
-<p>The problem is more noticeable for developers spinning up a virtual machine (VM) to quickly test a change or for a developer setting up their environment for the first time.</p>
-<p>On the other hand, when releasing a product, it is essential to ensure that all tools are available because we have to make sure that all variants are passing the defined quality gates.</p>
+<section id="understanding-the-sections">
+<h2>Understanding the sections<a class="headerlink" href="#understanding-the-sections" title="Link to this heading">#</a></h2>
+<section id="why-do-we-need-to-define-different-memory-sections">
+<h3>Why do we need to define different memory sections?<a class="headerlink" href="#why-do-we-need-to-define-different-memory-sections" title="Link to this heading">#</a></h3>
+<p>When integrating code with different safety levels or from external libraries, it is important to separate the memory sections to restrict the access to certain areas of the memory only to specific code.
+This safety measure is important to avoid that a bug in one part of the code can corrupt the data of another part of the code.</p>
 </section>
-<section id="brainstorming">
-<h2>Brainstorming<a class="headerlink" href="#brainstorming" title="Link to this heading">#</a></h2>
-<section id="categorizing-tools-into-generic-variant-and-build-target-sets">
-<h3>💡 Categorizing Tools into Generic, Variant, and Build Target Sets<a class="headerlink" href="#categorizing-tools-into-generic-variant-and-build-target-sets" title="Link to this heading">#</a></h3>
-<p>Let us categorize tools into three distinct sets:</p>
-<ol class="arabic simple">
-<li><p><strong>Generic Tools</strong>: Tools required by all variants and build targets (e.g., CMake, Python).</p></li>
-<li><p><strong>Variant-Specific Tools</strong>: Tools required only for certain variants (e.g., specific compilers for microcontrollers).</p></li>
-<li><p><strong>Build Target-Specific Tools</strong>: Tools required for specific build targets (e.g., static analysis tools like Polyspace).</p></li>
-</ol>
-<p><strong>Implementation Concept</strong></p>
+<section id="how-are-the-sections-defined">
+<h3>How are the sections defined?<a class="headerlink" href="#how-are-the-sections-defined" title="Link to this heading">#</a></h3>
+<p>The SW architecture describes the logical allocation of the components based on different abstraction levels and safety requirements.
+Based on this and the memory map of the micro-controller, the sections are defined in the linker script file.</p>
+<p>Here are some section types that are commonly used:</p>
 <ul class="simple">
-<li><p><strong>Separate Tool Dependency Files</strong>:</p>
-<ul>
-<li><p><strong>Generic Tool Dependencies File</strong>: Contains tools common to all variants.</p></li>
-<li><p><strong>Variant-Specific Tool Dependencies Files</strong>: Contains tools specific to a variant or overrides for generic tools.</p></li>
-</ul>
-</li>
-<li><p><strong>Merging Process</strong>:</p>
-<ul>
-<li><p>When building a variant, merge the generic and variant-specific tool files, with the variant-specific tools overriding any conflicts.</p></li>
-</ul>
-</li>
-<li><p><strong>Handling Build Target-Specific Tools</strong>:</p>
-<ul>
-<li><p>Dynamically add tools based on the selected build target.</p></li>
-</ul>
-</li>
-</ul>
-<p>This means that the <code class="docutils literal notranslate"><span class="pre">install</span></code> step in the pipeline will install only the tools required for the specific variant and build target.</p>
-<p><strong>Considerations</strong></p>
-<p>While this idea provides a structured approach to managing tool dependencies, there are some challenges/limitations to consider:</p>
-<ul class="simple">
-<li><p><strong>Complexity in Linking Tools to Build Targets</strong>: Tightly coupling tools to build targets might limit flexibility for other activities that require specific tools, such as generating reports or on-target debugging.</p></li>
-<li><p><strong>Aggregation of Tools for CI</strong>: Collecting all tools from generic, variant, and build target files for CI builds might introduce complexity in managing tool versions and resolving conflicts.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.text</span></code> - the code section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.data</span></code> - the initialized data section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.bss</span></code> - the uninitialized data section</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.rodata</span></code> - the read-only data section</p></li>
 </ul>
 </section>
-<section id="introducing-scopes-as-an-abstraction-layer">
-<h3>💡 Introducing “Scopes” as an Abstraction Layer<a class="headerlink" href="#introducing-scopes-as-an-abstraction-layer" title="Link to this heading">#</a></h3>
-<p>One issue with the previous idea is the tight coupling of tools to build targets. The problem is that, in contrast to <code class="docutils literal notranslate"><span class="pre">variant</span></code>, a <code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">target</span></code> is not a domain term in SPL engineering. It is a technical term from the build system. This tight coupling might lead to confusion and make the system less flexible.</p>
-<p>To address this limitation, we proposed introducing <code class="docutils literal notranslate"><span class="pre">scopes</span></code> as a higher-level abstraction.</p>
-<div class="admonition-scopes admonition">
-<p class="admonition-title">Scopes</p>
-<p>Scopes encompass a specific activity or domain within the development process, representing a set of tools, configurations and steps required for that activity.</p>
-<p>Examples of scopes may include: <code class="docutils literal notranslate"><span class="pre">Build</span></code>, <code class="docutils literal notranslate"><span class="pre">StaticAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">Debugging</span></code>, <code class="docutils literal notranslate"><span class="pre">Reporting</span></code>, and <code class="docutils literal notranslate"><span class="pre">Deployment</span></code>.</p>
+</section>
+<section id="how-does-my-c-code-ends-up-in-the-sections">
+<h2>How does my C code ends up in the sections?<a class="headerlink" href="#how-does-my-c-code-ends-up-in-the-sections" title="Link to this heading">#</a></h2>
+<p>By default, the compiler generates the sections based on the file name and the symbol name.
+Let us consider the following code:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">my_func</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">my_var</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
-<p><strong>Implementation Concept</strong></p>
+<p>The compiler will generate the following sections:</p>
 <ul class="simple">
-<li><p><strong>Scope-Specific Configuration Files</strong>:</p>
-<ul>
-<li><p>Each scope has its own configuration that lists the tools required for that scope.</p></li>
-<li><p>It might also need to specify also what has to be done, which steps have to be executed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.text.my_file.my_func</span></code> - the code of the function <code class="docutils literal notranslate"><span class="pre">my_func</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.data.my_file.my_var</span></code> - the initialized data of the variable <code class="docutils literal notranslate"><span class="pre">my_var</span></code></p></li>
 </ul>
-</li>
-<li><p><strong>Merging Tool Dependencies</strong>:</p>
-<ul>
-<li><p><strong>Hierarchy</strong>: Generic tools &lt; Variant Build Tools &lt; Scope-specific tools.</p></li>
-<li><p>When building, the script merges tools from these files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p>There shall no be no variant specific tools anymore other than the toolchain for building the software.</p></li>
-</ul>
-</li>
-</ul>
-<p><strong>Considerations</strong></p>
+<p>In the linker script file, we can <code class="docutils literal notranslate"><span class="pre">select</span></code> the sections to be placed in the memory map.</p>
+<p>In the memory group where this component <em>code</em> shall be placed, we can refer to it as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">select</span> <span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">my_file</span><span class="o">.*</span>
+</pre></div>
+</div>
+<p>This means that all the sections that start with <code class="docutils literal notranslate"><span class="pre">.text.my_file.</span></code> will be placed in this memory group.</p>
+</section>
+<section id="renaming-the-sections">
+<h2>Renaming the sections<a class="headerlink" href="#renaming-the-sections" title="Link to this heading">#</a></h2>
+<p>Let’s say that one has some adjustable parameters which shall be allocated to a specific memory area.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>By default the compiler will generate a section named <code class="docutils literal notranslate"><span class="pre">.rodata.my_file.my_parameters</span></code> for the read-only data of the variable <code class="docutils literal notranslate"><span class="pre">my_parameters</span></code>.</p>
+<p>If one wants to give a specific name to this section, one can instruct the compiler to use a specific section name.
+Depending on the compiler, there are different ways to do this.</p>
+<p>When using the TASKING compiler, there is a special ´#pragma´ to define the section name.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma section all &quot;sw_constants&quot; </span><span class="c1">// define the section name</span>
+<span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="cp">#pragma section restore all </span><span class="c1">// restore the default section name</span>
+</pre></div>
+</div>
+<p>For more information see the TASKING User Guide, section 1.12.1 Rename Sections in the <a class="reference internal" href="#references"><span class="std std-ref">References</span></a>.</p>
+<p>When using the GCC compiler, there is a <code class="docutils literal notranslate"><span class="pre">__attribute__</span></code> that can be used to define the section name.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">section</span><span class="p">(</span><span class="s">&quot;sw_constants&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>See more about the <code class="docutils literal notranslate"><span class="pre">__attribute__</span></code> in the <a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute">GCC documentation</a>.</p>
+</section>
+<section id="answering-the-question-s">
+<h2>Answering the question(s)<a class="headerlink" href="#answering-the-question-s" title="Link to this heading">#</a></h2>
+<p>The linker configuration file (<code class="docutils literal notranslate"><span class="pre">*.lsl</span></code>) is used to define the memory layout, collect and group memory sections from objects and libraries.
+The compiler generates the sections based on the file name and the symbol name and type. The user can rename the sections using compiler specific directives.</p>
+<p>The memory sections defined for the objects inside the library have a different pattern because there were renamed using the compiler specific directives (<code class="docutils literal notranslate"><span class="pre">pragma</span></code> or <code class="docutils literal notranslate"><span class="pre">__attribute__</span> <span class="pre">section</span></code>).
+One can not change the section names after the compilation and therefore must rely on naming conventions to know which sections are present in the library.</p>
+</section>
+<section id="references">
+<span id="id1"></span><h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Complexity in Managing Scopes</strong>: Managing a growing number of scopes might become complex.</p></li>
-<li><p><strong>User Awareness</strong>: Developers need to understand which scopes are relevant for their tasks.</p>
-<ul>
-<li><p>How are scopes related to build targets?</p></li>
+<li><p><a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_254.pdf">TASKING User Guide</a></p></li>
+<li><p><a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_847.pdf">GCC to TASKING Migration</a></p></li>
+<li><p><a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute">GCC documentation</a></p></li>
+<li><p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_MemoryMapping.pdf">AUTOSAR Memory Mapping</a></p></li>
 </ul>
-</li>
-</ul>
-</section>
-<section id="keep-current-solution-and-speed-up-installation-of-all-tools">
-<h3>💡 Keep current solution and speed up installation of all tools<a class="headerlink" href="#keep-current-solution-and-speed-up-installation-of-all-tools" title="Link to this heading">#</a></h3>
-<p>Another idea was to keep the current solution but speed up the installation process. This could be achieved by:</p>
-<ul class="simple">
-<li><p>CI jobs to install all tools on all agents</p></li>
-<li><p>Disable automatic installation of tools on developer machines. The developer can then install the required tools manually.</p></li>
-</ul>
-<p>This idea is the least intrusive and requires the least amount of changes. However, it does not address the root cause of the problem. It is more of a workaround. 🙈</p>
-</section>
-</section>
-<section id="final-approach-introducing-scopes">
-<h2>Final Approach: Introducing Scopes<a class="headerlink" href="#final-approach-introducing-scopes" title="Link to this heading">#</a></h2>
-<p>Introducing “scopes” as an abstraction layer offers a more flexible and domain-aligned solution for optimizing tool installation in an SPL build environment.</p>
-<p>Scopes align with the development process, makes it easier for developers and platform engineers to understand and manage not only tool dependencies but also the steps required for a specific activity.</p>
-<p>The final approach involves:</p>
-<ol class="arabic simple">
-<li><p><strong>Defining Scopes</strong>: Identify and define scopes that represent activities or domains within the development process.</p></li>
-<li><p><strong>Scope-Specific Configuration Files</strong>: Create configuration files for each scope that list the tools required for that scope.</p></li>
-<li><p><strong>Merging Tool Dependencies</strong>: Merge tools from generic, variant build, and scope-specific files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p><strong>Implementing Scope-Specific Steps</strong>: Define and implement steps for each scope that specify what has to be done, which tools have to be installed, and which steps have to be executed.</p></li>
-</ol>
-<p>This approach ensures that only the tools required for a specific activity are installed, optimizing the build environment and enhancing developer productivity.</p>
-<p>There is one important aspect to consider: in the end one must be able insure a certain quality level for the software product as a whole. This means one needs to:</p>
-<ul class="simple">
-<li><p>define quality gates for the whole product and breaking them down to the individual variants</p></li>
-<li><p>map scopes to quality gates for each variant. Different variants might have different quality gates based on their maturity (e.g., prototype, beta, street ready).</p></li>
-</ul>
-<p>The topics of quality gates and maturity levels, although related, deserve a separate blog post and I will not go into detail here.</p>
-</section>
-<section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
-<p>I hope this blog post has provided you with insights into the challenges of optimizing tool installation in SPL build environments and the thought process in addressing this challenge.</p>
-<p>There will for sure be more questions to answer when actually implementing the solution but until then, keep fingers crossed and stay tuned for more updates on this topic.</p>
 </section>
 </section>
 
@@ -657,23 +636,16 @@ document.write(`
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
      
-    <a href="efficiently_embedding_git_information_in_c_projects.html">
+    <a href="../2024/optimizing_tool_installation_in_spl_build_environments.html">
       
       <i class="fa fa-arrow-circle-left"></i>
       
-      <span>Efficiently Embedding Git Information in C Projects</span>
+      <span>Optimizing Tool Installation in SPL Build Environments</span>
     </a>
     
   </span>
   <span class="ablog__spacer">&nbsp;</span>
   <span class="ablog__next">
-     
-    <a href="../2025/allocate_memory_sections.html">
-      <span>Allocate Code and Data to Specific Memory Sections</span>
-      
-      <i class="fa fa-arrow-circle-right"></i>
-      
-    </a>
     
   </span>
 </div>
@@ -708,22 +680,22 @@ document.write(`
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-inefficient-tool-installation">The Problem: Inefficient Tool Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brainstorming">Brainstorming</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorizing-tools-into-generic-variant-and-build-target-sets">💡 Categorizing Tools into Generic, Variant, and Build Target Sets</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introducing-scopes-as-an-abstraction-layer">💡 Introducing “Scopes” as an Abstraction Layer</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-current-solution-and-speed-up-installation-of-all-tools">💡 Keep current solution and speed up installation of all tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-sections">Understanding the sections</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-do-we-need-to-define-different-memory-sections">Why do we need to define different memory sections?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-are-the-sections-defined">How are the sections defined?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-approach-introducing-scopes">Final Approach: Introducing Scopes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-my-c-code-ends-up-in-the-sections">How does my C code ends up in the sections?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renaming-the-sections">Renaming the sections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#answering-the-question-s">Answering the question(s)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../../_sources/blogs/2024/optimizing_tool_installation_in_spl_build_environments.md.txt">
+    <a href="../../_sources/blogs/2025/allocate_memory_sections.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
