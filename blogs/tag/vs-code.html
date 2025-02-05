@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Posts tagged lsl &#8212; Alexandru Maxiniuc</title>
+    <title>Posts tagged vs code &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -45,7 +45,7 @@
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/lsl';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/vs-code';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -56,7 +56,7 @@
   rel="alternate"
   type="application/atom+xml"
   href="../../blogs/atom.xml"
-  title="Posts tagged lsl"
+  title="Posts tagged vs code"
 />
   
   </head>
@@ -467,7 +467,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Posts tagged lsl</li>
+    <li class="breadcrumb-item active" aria-current="page">Posts tagged vs code</li>
   </ul>
 </nav>
 </div>
@@ -488,20 +488,20 @@ document.write(`
   <h1>
     
     <span
-      >Posts tagged  lsl 
+      >Posts tagged  vs code 
     </span>
   </h1>
    
   <div class="section ablog-post">
     <h2 class="ablog-post-title">
-      <a href="../2025/allocate_memory_sections.html">Allocate Code and Data to Specific Memory Sections</a>
+      <a href="../2025/vs_code_ctest.html">Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest</a>
     </h2>
     <ul class="ablog-archive">
       <li>
          
         <i class="fa fa-calendar"></i>
         
-        <span>07 January 2025</span>
+        <span>05 February 2025</span>
         
       </li>
       <div class="ablog-sidebar-item ablog__postcard2">
@@ -524,32 +524,29 @@ document.write(`
        
     </span>
      
-    <a href="linker.html">linker</a>
+    <a href="cmake.html">cmake</a>
         
-    <a href="section.html">section</a>
+    <a href="ctest.html">ctest</a>
         
-    <a href="memory.html">memory</a>
+    <a href="gtest.html">gtest</a>
         
-    <a href="linker-scripting-language.html">linker scripting language</a>
+    <a href="#">vs code</a>
         
-    <a href="#">lsl</a>
-        
-    <a href="gcc.html">gcc</a>
-        
-    <a href="tasking.html">tasking</a>
+    <a href="testing.html">testing</a>
       
   </li>
    
 </div>
     </ul>
-    <p class="ablog-post-excerpt"><p>There was a question in our support channel about the memory sections from an external library.
-The colleague was trying to understand how the different sections were defined for the library and how they were placed in memory.
-When checking the linker configuration file (<code class="docutils literal notranslate"><span class="pre">*.lsl</span></code>) the observation was that the memory sections for:</p>
-<p>all the objects for our code, the section pattern was <code class="docutils literal notranslate"><span class="pre">.&lt;type&gt;.&lt;filename&gt;.&lt;symbol&gt;</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.text.component.main</span></code> or <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.data.component.my_var</span></code>.</p>
-</p>
+    <p class="ablog-post-excerpt"><p>Many C/C++ projects rely on CMake, GoogleTest (GTest), and GoogleMock (GMock) for unit testing.
+Sometimes developers want to see and run/debug these tests directly in their IDE.</p>
+<p>In this blog post, I will show how to make the unit tests visible in Visual Studio Code (VS Code) using CTest and GoogleTest.
+I will start by explaining the standard way to build and run the tests with CMake.
+Then we will see how CTest can help us discover the tests and how to display them in the VS Code interface.</p>
+<img alt="NOT_BUILT tests displayed" src="../../_images/not_build_tests.png" /></p>
 
     <p class="ablog-post-expand">
-      <a href="../2025/allocate_memory_sections.html"><em>Read more ...</em></a>
+      <a href="../2025/vs_code_ctest.html"><em>Read more ...</em></a>
     </p>
     <hr />
   </div>

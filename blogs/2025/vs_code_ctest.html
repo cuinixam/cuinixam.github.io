@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest &#8212; Alexandru Maxiniuc</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=4004345f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=7026087e"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2025/vs_code_ctest';</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+    <meta name="docbuild:last-update" content="Feb 05, 2025"/> 
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  href="../../blogs/atom.xml"
+  title="Alexandru Maxiniuc"
+/>
+  
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/bio-photo-circle.png" class="logo__image only-light" alt="Alexandru Maxiniuc - Home"/>
+    <script>document.write(`<img src="../../_static/bio-photo-circle.png" class="logo__image only-dark" alt="Alexandru Maxiniuc - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blogs.html">
+    Blogs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../presentations.html">
+    Presentations
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cuinixam/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cuinixam.github.io/blogs/atom.xml" title="Blog RSS feed" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-rss fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Blog RSS feed</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About me
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../blogs.html">
+    Blogs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../presentations.html">
+    Presentations
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cuinixam/" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" title="LinkedIn" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-linkedin fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://cuinixam.github.io/blogs/atom.xml" title="Blog RSS feed" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-rss fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Blog RSS feed</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__postcard">
+   
+  <h2>
+     
+    <i class="fa fa-calendar"></i>
+    
+    <span>05 February 2025</span>
+    
+  </h2>
+  <ul>
+    <div class="ablog-sidebar-item ablog__postcard2">
+      
+  <li id="ablog-sidebar-item category ablog__category">
+    <span>
+      
+      <i class="fa-fw fa fa-folder-open"></i>
+      
+    </span>
+     
+    <a href="../category/learning.html">learning</a>
+      
+  </li>
+   
+  <li id="ablog-sidebar-item tags ablog__tags">
+    <span>
+       
+      <i class="fa-fw fa fa-tags"></i>
+       
+    </span>
+     
+    <a href="../tag/cmake.html">cmake</a>
+        
+    <a href="../tag/ctest.html">ctest</a>
+        
+    <a href="../tag/gtest.html">gtest</a>
+        
+    <a href="../tag/vs-code.html">vs code</a>
+        
+    <a href="../tag/testing.html">testing</a>
+      
+  </li>
+   
+</div>
+  </ul>
+</div>
+</div>
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__recentposts">
+  <h3>
+    <a href="../../blogs.html">Recent Posts</a>
+  </h3>
+  <ul>
+     
+    <li>
+      <a href="allocate_memory_sections.html">
+        07 January - Allocate Code and Data to Specific Memory Sections
+      </a>
+    </li>
+    
+    <li>
+      <a href="../2024/optimizing_tool_installation_in_spl_build_environments.html">
+        26 October - Optimizing Tool Installation in SPL Build Environments
+      </a>
+    </li>
+    
+    <li>
+      <a href="../2024/efficiently_embedding_git_information_in_c_projects.html">
+        01 October - Efficiently Embedding Git Information in C Projects
+      </a>
+    </li>
+    
+  </ul>
+</div>
+</div>
+        <div class="sidebar-primary-item">
+<div class="ablog-sidebar-item ablog__archive">
+  <h3>
+    <a href="../archive.html">Archives</a>
+  </h3>
+  <ul>
+     
+    <li>
+      <a href="../2025.html">2025 (2)</a>
+    </li>
+      
+    <li>
+      <a href="../2024.html">2024 (2)</a>
+    </li>
+     
+  </ul>
+</div>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Making Unit...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                   <section id="making-unit-tests-visible-in-visual-studio-code-with-ctest-and-googletest">
+<h1>Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest<a class="headerlink" href="#making-unit-tests-visible-in-visual-studio-code-with-ctest-and-googletest" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Many C/C++ projects rely on CMake, GoogleTest (GTest), and GoogleMock (GMock) for unit testing.
+Sometimes developers want to see and run/debug these tests directly in their IDE.</p>
+<p>In this blog post, I will show how to make the unit tests visible in Visual Studio Code (VS Code) using CTest and GoogleTest.
+I will start by explaining the standard way to build and run the tests with CMake.
+Then we will see how CTest can help us discover the tests and how to display them in the VS Code interface.</p>
+</section>
+<section id="building-and-running-tests-with-cmake-and-googletest">
+<h2>Building and Running Tests with CMake and GoogleTest<a class="headerlink" href="#building-and-running-tests-with-cmake-and-googletest" title="Link to this heading">#</a></h2>
+<p>In a typical setup one defines executables for each “component” with its own sources and unit tests files.
+There are CMake custom targets for every component to link the component sources and the test sources and execute the tests.</p>
+<p>An instructive example of a CMakeLists.txt file is shown below:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="nb">project</span><span class="p">(</span><span class="s">MyProject</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">14</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">set</span><span class="p">(</span><span class="s">gtest_force_shared_crt</span><span class="w"> </span><span class="s">ON</span><span class="w"> </span><span class="s">CACHE</span><span class="w"> </span><span class="s">BOOL</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s">FORCE</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c"># Add GoogleTest components</span>
+<span class="linenos"> 9</span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/build/external/gtest</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BUILD_DIR</span><span class="o">}</span><span class="s">/.gtest</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c"># Configure directories to search for headers</span>
+<span class="linenos">12</span><span class="nb">include_directories</span><span class="p">(</span>
+<span class="linenos">13</span><span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span>
+<span class="linenos">14</span><span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/build/external/gtest/googletest/include</span>
+<span class="linenos">15</span><span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_SOURCE_DIR</span><span class="o">}</span><span class="s">/build/external/gtest/googlemock/include</span>
+<span class="linenos">16</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c"># Create the test executable</span>
+<span class="linenos">19</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">greeter</span><span class="w"> </span><span class="s">greeter.c</span><span class="w"> </span><span class="s">greeter_test.cc</span><span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">greeter</span><span class="w"> </span><span class="s">GTest::gtest_main</span><span class="w"> </span><span class="s">GTest::gmock_main</span><span class="w"> </span><span class="s">pthread</span><span class="p">)</span>
+<span class="linenos">22</span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">greeter</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-ggdb</span><span class="w"> </span><span class="s">--coverage</span><span class="p">)</span>
+<span class="linenos">23</span><span class="nb">target_link_options</span><span class="p">(</span><span class="s">greeter</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">--coverage</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="c"># Run the test executable, generate JUnit report and return success independent of the test result</span>
+<span class="linenos">26</span><span class="nb">add_custom_target</span><span class="p">(</span><span class="s">greeter_test</span><span class="w"> </span><span class="s">ALL</span>
+<span class="linenos">27</span><span class="w">    </span><span class="s">BYPRODUCTS</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BUILD_DIR</span><span class="o">}</span><span class="s">/greeter_junit.xml</span>
+<span class="linenos">28</span><span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">greeter</span>
+<span class="linenos">29</span><span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">greeter</span><span class="w"> </span><span class="s">--gtest_output=</span><span class="s2">&quot;xml:greeter_junit.xml&quot;</span><span class="w"> </span><span class="s">||</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="s">-E</span><span class="w"> </span><span class="s">true</span>
+<span class="linenos">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What this basically does is:</p>
+<ul class="simple">
+<li><p>create a test executable <code class="docutils literal notranslate"><span class="pre">greeter</span></code> that links the sources <code class="docutils literal notranslate"><span class="pre">greeter.c</span></code> and <code class="docutils literal notranslate"><span class="pre">greeter_test.cc</span></code> with the GoogleTest libraries</p></li>
+<li><p>create a custom target <code class="docutils literal notranslate"><span class="pre">greeter_test</span></code> that runs the test executable and generates a JUnit report</p></li>
+</ul>
+<p>To build and run the tests, one would typically execute the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-S<span class="w"> </span>.
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+</pre></div>
+</div>
+<p>This will build all targets and generate the test executable <code class="docutils literal notranslate"><span class="pre">greeter</span></code> and the JUnit report <code class="docutils literal notranslate"><span class="pre">greeter_junit.xml</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">greeter_junit.xml</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="linenos">2</span><span class="nt">&lt;testsuites</span><span class="w"> </span><span class="na">tests=</span><span class="s">&quot;2&quot;</span><span class="w"> </span><span class="na">failures=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">disabled=</span><span class="s">&quot;0&quot;</span><span class="w"> </span><span class="na">errors=</span><span class="s">&quot;0&quot;</span><span class="w"> </span><span class="na">time=</span><span class="s">&quot;0.&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;AllTests&quot;</span><span class="nt">&gt;</span>
+<span class="linenos">3</span><span class="w">  </span><span class="nt">&lt;testsuite</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;GreeterTest&quot;</span><span class="w"> </span><span class="na">tests=</span><span class="s">&quot;2&quot;</span><span class="w"> </span><span class="na">failures=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">disabled=</span><span class="s">&quot;0&quot;</span><span class="w"> </span><span class="na">skipped=</span><span class="s">&quot;0&quot;</span><span class="w"> </span><span class="na">errors=</span><span class="s">&quot;0&quot;</span><span class="w"> </span><span class="na">time=</span><span class="s">&quot;0.&quot;</span><span class="w"> </span><span class="nt">&gt;</span>
+<span class="linenos">4</span><span class="w">    </span><span class="nt">&lt;testcase</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;Greeting1&quot;</span><span class="w"> </span><span class="na">file=</span><span class="s">&quot;greeter_test.cc&quot;</span><span class="w"> </span><span class="na">line=</span><span class="s">&quot;14&quot;</span><span class="w"> </span><span class="na">status=</span><span class="s">&quot;run&quot;</span><span class="w"> </span><span class="na">result=</span><span class="s">&quot;completed&quot;</span><span class="w"> </span><span class="na">time=</span><span class="s">&quot;0.&quot;</span><span class="w"> </span><span class="na">classname=</span><span class="s">&quot;GreeterTest&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="nt">&lt;/testsuite&gt;</span>
+<span class="linenos">6</span><span class="nt">&lt;/testsuites&gt;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="discovering-tests">
+<h2>Discovering Tests<a class="headerlink" href="#discovering-tests" title="Link to this heading">#</a></h2>
+<p>Let us first shortly discuss on how one would discover the tests in the project.</p>
+<p>Having the tests source files, one could try to parse them and extract the test cases.
+However, this is not a trivial task and it is error-prone.
+Imagine that a test is only enabled if a certain preprocessor definition is set.
+One should properly parse the (preprocessed) test source files to determine the list of relevant tests.
+I am not even touching on how creative some developers might be on creating their on macros to define tests.</p>
+<p>Another approach is to “ask” the test executable to list the tests.
+This has the disadvantage that the test executable must be built and run.
+On the good side, the test executable knows exactly which tests are available and can provide additional information about them.</p>
+<p>Indeed, the GTTest framework provides a way to list the tests.
+Running the test executable with the <code class="docutils literal notranslate"><span class="pre">--gtest_list_tests</span></code> flag will list all the tests and their test cases.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">greeter</span><span class="o">.</span><span class="n">exe</span> <span class="o">--</span><span class="n">gtest_list_tests</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Calling the test executable with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option will print all the available options.</p>
+</div>
+<p>We will go with the second approach and determine the tests by running the test executable.
+CMake has a built-in tool called CTest that can help us with this.</p>
+<section id="defining-and-running-tests-with-ctest">
+<h3>Defining and running tests with CTest<a class="headerlink" href="#defining-and-running-tests-with-ctest" title="Link to this heading">#</a></h3>
+<p>CTest is a testing tool that is part of the CMake suite.
+CMake facilitates testing through special commands and the CTest executable.</p>
+<p>The integration is quite simple. One needs to “enable testing” and define tests using the <code class="docutils literal notranslate"><span class="pre">add_test</span></code> command:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include</span><span class="p">(</span><span class="s">CTest</span><span class="p">)</span><span class="w"> </span><span class="c"># automatically calls enable_testing()</span>
+<span class="nb">add_test</span><span class="p">(</span><span class="s">NAME</span><span class="w"> </span><span class="s">greeter_test</span><span class="w"> </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">greeter</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">add_test</span></code> command has a simple syntax:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NAME</span></code> - the name of the test, can be any string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">COMMAND</span></code> - the command to run the test, in our case the test executable <code class="docutils literal notranslate"><span class="pre">greeter</span></code>. This can be any command that is run in the shell and returns a status code (non-zero for failure).</p></li>
+</ul>
+<p>To run the tests, one would execute the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<span class="n">ctest</span>
+</pre></div>
+</div>
+<p>CTest has many options to control the test execution, like running only a specific test, running tests in parallel, or generating a JUnit report.
+For more information check the help or the documentation.</p>
+<section id="details-on-how-cmake-ctest-work">
+<h4>Details on how CMake/CTest work<a class="headerlink" href="#details-on-how-cmake-ctest-work" title="Link to this heading">#</a></h4>
+<p>When testing is enabled, CMake generates a <code class="docutils literal notranslate"><span class="pre">CTestTestfile.cmake</span></code> file in the build directory.
+This file will include all the tests defined with the <code class="docutils literal notranslate"><span class="pre">add_test</span></code> command.
+When running <code class="docutils literal notranslate"><span class="pre">ctest</span></code>, CTest will read this file and execute the tests.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># CMake generated Testfile</span>
+<span class="nb">add_test</span><span class="p">(</span><span class="s s-Multiline">[=[greeter_test]=]</span><span class="w"> </span><span class="s2">&quot;C:/project/build/greeter.exe&quot;</span><span class="p">)</span>
+<span class="nb">set_tests_properties</span><span class="p">(</span><span class="s s-Multiline">[=[greeter_test]=]</span><span class="w"> </span><span class="s">PROPERTIES</span><span class="w">  </span><span class="s">_BACKTRACE_TRIPLES</span><span class="w"> </span><span class="s2">&quot;C:/project/CMakeLists.txt;34;add_test;C:/project/CMakeLists.txt;0;&quot;</span><span class="p">)</span>
+<span class="nb">subdirs</span><span class="p">(</span><span class="s2">&quot;/.gtest&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This file is generated during CMake configure and does not require the test executable to be built.
+It is only used by CTest to run the tests, like having a target to run the test executable.</p>
+</div>
+</section>
+</section>
+<section id="discovering-tests-with-googletest-ctest-integration">
+<h3>Discovering tests with GoogleTest CTest integration<a class="headerlink" href="#discovering-tests-with-googletest-ctest-integration" title="Link to this heading">#</a></h3>
+<p>CMake provides a helpful module <code class="docutils literal notranslate"><span class="pre">GoogleTest</span></code> which simplifies test discovery and registration when using GTest:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include</span><span class="p">(</span><span class="s">CTest</span><span class="p">)</span>
+<span class="nb">include</span><span class="p">(</span><span class="s">GoogleTest</span><span class="p">)</span>
+
+<span class="c"># Automatically discover all GoogleTest test cases in the greeter binary</span>
+<span class="nb">gtest_discover_tests</span><span class="p">(</span><span class="s">greeter</span>
+<span class="w">    </span><span class="c"># Optional: specify a WORKING_DIRECTORY or other properties</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This approach removes the need to manually call add_test(NAME &lt;some_name&gt; COMMAND &lt;test_executable&gt;) for each test.
+Instead, <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests</span></code> takes care of enumerating them by parsing the output of the actual test binary.</p>
+<section id="details-on-how-googletest-ctest-integration-works">
+<h4>Details on how GoogleTest CTest integration works<a class="headerlink" href="#details-on-how-googletest-ctest-integration-works" title="Link to this heading">#</a></h4>
+<p>When using <code class="docutils literal notranslate"><span class="pre">gtest_discover_tests</span></code>, CMake generates a <code class="docutils literal notranslate"><span class="pre">CTestTestfile.cmake</span></code> file that includes the tests discovered by GoogleTest.</p>
+<p>After CMake configure (no tests executable are yet built nor executed) there is a <code class="docutils literal notranslate"><span class="pre">CTestTestfile.cmake</span></code> file that includes the tests discovered by GoogleTest.
+There is a <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;_include.cmake</span></code> file generated for every component which is just defines a dummy test.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">greeeter[1]_include.cmake</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="s">EXISTS</span><span class="w"> </span><span class="s2">&quot;C:/build/greeter[1]_tests.cmake&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">include</span><span class="p">(</span><span class="s2">&quot;C:/build/greeter[1]_tests.cmake&quot;</span><span class="p">)</span>
+<span class="nb">else</span><span class="p">()</span>
+<span class="w">  </span><span class="nb">add_test</span><span class="p">(</span><span class="s">greeter_NOT_BUILT</span><span class="w"> </span><span class="s">greeter_NOT_BUILT</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Executing <code class="docutils literal notranslate"><span class="pre">ctest</span></code> will fail because the command <code class="docutils literal notranslate"><span class="pre">greeter_NOT_BUILT</span></code> does not exist.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>CMake will add a custom command (see <code class="docutils literal notranslate"><span class="pre">build.ninja</span></code> build file) to generate the <code class="docutils literal notranslate"><span class="pre">greeter_tests.cmake</span></code> file.
+This command will run the test executable and parse the output to generate the test cases.</p>
+</div>
+<p>After building the test executable, the <code class="docutils literal notranslate"><span class="pre">greeeter[1]_tests.cmake</span></code> file is generated and this contains all tests discovered by GoogleTest.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">greeeter[1]_tests.cmake</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_test</span><span class="p">(</span><span class="s s-Multiline">[=[GreeterTest.Greeting1]=]</span><span class="w">  </span><span class="s">C:/project/build/greeter.exe</span><span class="w"> </span><span class="s s-Multiline">[==[--gtest_filter=GreeterTest.Greeting1]==]</span><span class="w"> </span><span class="s">--gtest_also_run_disabled_tests</span><span class="p">)</span>
+<span class="nb">set_tests_properties</span><span class="p">(</span><span class="s s-Multiline">[=[GreeterTest.Greeting1]=]</span><span class="w">  </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">WORKING_DIRECTORY</span><span class="w"> </span><span class="s">C:/project/build</span><span class="w"> </span><span class="s">SKIP_REGULAR_EXPRESSION</span><span class="w"> </span><span class="s s-Multiline">[==[\[  SKIPPED \]]==]</span><span class="p">)</span>
+<span class="nb">add_test</span><span class="p">(</span><span class="s s-Multiline">[=[GreeterTest.Greeting2]=]</span><span class="w">  </span><span class="s">C:/project/build/greeter.exe</span><span class="w"> </span><span class="s s-Multiline">[==[--gtest_filter=GreeterTest.Greeting2]==]</span><span class="w"> </span><span class="s">--gtest_also_run_disabled_tests</span><span class="p">)</span>
+<span class="nb">set_tests_properties</span><span class="p">(</span><span class="s s-Multiline">[=[GreeterTest.Greeting2]=]</span><span class="w">  </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">WORKING_DIRECTORY</span><span class="w"> </span><span class="s">C:/project/build</span><span class="w"> </span><span class="s">SKIP_REGULAR_EXPRESSION</span><span class="w"> </span><span class="s s-Multiline">[==[\[  SKIPPED \]]==]</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="w">  </span><span class="s">greeter_TESTS</span><span class="w"> </span><span class="s">GreeterTest.Greeting1</span><span class="w"> </span><span class="s">GreeterTest.Greeting2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Executing <code class="docutils literal notranslate"><span class="pre">ctest</span></code> will now run the tests and generate the JUnit report.</p>
+</section>
+</section>
+<section id="vs-code-integration">
+<h3>VS Code integration<a class="headerlink" href="#vs-code-integration" title="Link to this heading">#</a></h3>
+<p>The CMake Tools extension for VS Code supports since version 1.14 a Test Explorer for CTest.
+The extension will automatically detect the CTest tests from the generated CTest files and display them in the Test Explorer.</p>
+<p>This means that one can run, debug, and see the test results directly in the VS Code interface.</p>
+<p>Of course, this approach inherits all the “limitations” of discovering the tests with CTest.
+After CMake configure, one will see only “_NOT_BUILT” tests in the Test Explorer.</p>
+<p><img alt="NOT_BUILT tests displayed" src="../../_images/not_build_tests.png" /></p>
+<p>Only after building the test executable, the tests will be visible.</p>
+<p><img alt="All tests displayed" src="../../_images/all_tests.png" /></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When executing the tests from the Test Explorer, before running the tests, the CMake Tools extension will start the current select CMake build target.
+This might be confusing if one switches between build targets and suddenly when executing a test, a target is build which has nothing to do with the test.</p>
+<p>I think their idea is to ensure that the test executable is built before running the tests, to update the test cases.</p>
+</div>
+<p>When executing single tests, CTest is called with the <code class="docutils literal notranslate"><span class="pre">--tests-regex</span></code> option to run only the selected tests.
+The problem is that when a test fails there is no way to go from the Test Explorer to the failing test.
+This is a general issue with CTest that there is no automatic traceability between the test name and the test source file and line.
+There is another VS Code extension <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=fredericbonnet.cmake-test-adapter">CMake Test Explorer</a>
+which attempts to address this issue by using the CTest properties feature. I did not test this extension. Maybe in a future blog post.</p>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>Integrating the unit tests in the VS Code interface is a nice feature to have. CTest and GoogleTest provide a good way to discover and run the tests.
+While not perfect, the integration with the CMake Tools extension for VS Code is a good start.
+One can run, debug, and see the test results directly in the VS Code interface.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html">Testing With CMake and CTest</a></p></li>
+<li><p><a class="reference external" href="https://github.com/microsoft/vscode-cmake-tools">VS Code CMake Tools Extension</a></p></li>
+</ul>
+</section>
+</section>
+
+<div class="section ablog__blog_comments">
+     
+<div class="section ablog__prev-next">
+  <span class="ablog__prev">
+     
+    <a href="allocate_memory_sections.html">
+      
+      <i class="fa fa-arrow-circle-left"></i>
+      
+      <span>Allocate Code and Data to Specific Memory Sections</span>
+    </a>
+    
+  </span>
+  <span class="ablog__spacer">&nbsp;</span>
+  <span class="ablog__next">
+    
+  </span>
+</div>
+  
+</div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-and-running-tests-with-cmake-and-googletest">Building and Running Tests with CMake and GoogleTest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discovering-tests">Discovering Tests</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-and-running-tests-with-ctest">Defining and running tests with CTest</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#details-on-how-cmake-ctest-work">Details on how CMake/CTest work</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discovering-tests-with-googletest-ctest-integration">Discovering tests with GoogleTest CTest integration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#details-on-how-googletest-ctest-integration-works">Details on how GoogleTest CTest integration works</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs-code-integration">VS Code integration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/blogs/2025/vs_code_ctest.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Alexandru Maxiniuc.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

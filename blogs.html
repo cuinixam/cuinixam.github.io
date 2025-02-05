@@ -51,7 +51,7 @@
     <link rel="search" title="Search" href="search.html" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jan 07, 2025"/> 
+    <meta name="docbuild:last-update" content="Feb 05, 2025"/> 
 <link
   rel="alternate"
   type="application/atom+xml"
@@ -399,7 +399,7 @@ document.write(`
     </li>
       
     <li>
-      <a href="blogs/category/learning.html">learning (1)</a>
+      <a href="blogs/category/learning.html">learning (2)</a>
     </li>
       
     <li>
@@ -432,7 +432,19 @@ document.write(`
   <ul class="ablog-cloud">
      
     <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/cmake.html">cmake</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/ctest.html">ctest</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/gcc.html">gcc</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/gtest.html">gtest</a>
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
@@ -466,6 +478,14 @@ document.write(`
     <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/tasking.html">tasking</a>
     </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/testing.html">testing</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/vs-code.html">vs code</a>
+    </li>
      
   </ul>
 </div>
@@ -478,7 +498,7 @@ document.write(`
   <ul>
      
     <li>
-      <a href="blogs/2025.html">2025 (1)</a>
+      <a href="blogs/2025.html">2025 (2)</a>
     </li>
       
     <li>
@@ -547,6 +567,65 @@ document.write(`
     </span>
   </h1>
    
+  <div class="section ablog-post">
+    <h2 class="ablog-post-title">
+      <a href="blogs/2025/vs_code_ctest.html">Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest</a>
+    </h2>
+    <ul class="ablog-archive">
+      <li>
+         
+        <i class="fa fa-calendar"></i>
+        
+        <span>05 February 2025</span>
+        
+      </li>
+      <div class="ablog-sidebar-item ablog__postcard2">
+      
+  <li id="ablog-sidebar-item category ablog__category">
+    <span>
+      
+      <i class="fa-fw fa fa-folder-open"></i>
+      
+    </span>
+     
+    <a href="blogs/category/learning.html">learning</a>
+      
+  </li>
+   
+  <li id="ablog-sidebar-item tags ablog__tags">
+    <span>
+       
+      <i class="fa-fw fa fa-tags"></i>
+       
+    </span>
+     
+    <a href="blogs/tag/cmake.html">cmake</a>
+        
+    <a href="blogs/tag/ctest.html">ctest</a>
+        
+    <a href="blogs/tag/gtest.html">gtest</a>
+        
+    <a href="blogs/tag/vs-code.html">vs code</a>
+        
+    <a href="blogs/tag/testing.html">testing</a>
+      
+  </li>
+   
+</div>
+    </ul>
+    <p class="ablog-post-excerpt"><p>Many C/C++ projects rely on CMake, GoogleTest (GTest), and GoogleMock (GMock) for unit testing.
+Sometimes developers want to see and run/debug these tests directly in their IDE.</p>
+<p>In this blog post, I will show how to make the unit tests visible in Visual Studio Code (VS Code) using CTest and GoogleTest.
+I will start by explaining the standard way to build and run the tests with CMake.
+Then we will see how CTest can help us discover the tests and how to display them in the VS Code interface.</p>
+<img alt="NOT_BUILT tests displayed" src="_images/not_build_tests.png" /></p>
+
+    <p class="ablog-post-expand">
+      <a href="blogs/2025/vs_code_ctest.html"><em>Read more ...</em></a>
+    </p>
+    <hr />
+  </div>
+  
   <div class="section ablog-post">
     <h2 class="ablog-post-title">
       <a href="blogs/2025/allocate_memory_sections.html">Allocate Code and Data to Specific Memory Sections</a>

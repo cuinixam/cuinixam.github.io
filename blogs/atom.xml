@@ -2,10 +2,244 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-01-07T10:02:36.139507+00:00</updated>
+  <updated>2025-02-05T16:32:25.108679+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
+  <entry>
+    <id>https://cuinixam.github.io/blogs/2025/vs_code_ctest.html</id>
+    <title>Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest</title>
+    <updated>2025-02-05T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="making-unit-tests-visible-in-visual-studio-code-with-ctest-and-googletest"&gt;
+
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Many C/C++ projects rely on CMake, GoogleTest (GTest), and GoogleMock (GMock) for unit testing.
+Sometimes developers want to see and run/debug these tests directly in their IDE.&lt;/p&gt;
+&lt;p&gt;In this blog post, I will show how to make the unit tests visible in Visual Studio Code (VS Code) using CTest and GoogleTest.
+I will start by explaining the standard way to build and run the tests with CMake.
+Then we will see how CTest can help us discover the tests and how to display them in the VS Code interface.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="building-and-running-tests-with-cmake-and-googletest"&gt;
+&lt;h2&gt;Building and Running Tests with CMake and GoogleTest&lt;/h2&gt;
+&lt;p&gt;In a typical setup one defines executables for each “component” with its own sources and unit tests files.
+There are CMake custom targets for every component to link the component sources and the test sources and execute the tests.&lt;/p&gt;
+&lt;p&gt;An instructive example of a CMakeLists.txt file is shown below:&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="linenos"&gt; 1&lt;/span&gt;&lt;span class="nb"&gt;cmake_minimum_required&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;VERSION&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;3.20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt; 2&lt;/span&gt;&lt;span class="nb"&gt;project&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;MyProject&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt; 3&lt;/span&gt;
+&lt;span class="linenos"&gt; 4&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;CMAKE_CXX_STANDARD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;14&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt; 5&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;CMAKE_CXX_STANDARD_REQUIRED&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;ON&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt; 6&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;gtest_force_shared_crt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;ON&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;CACHE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;BOOL&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;FORCE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt; 7&lt;/span&gt;
+&lt;span class="linenos"&gt; 8&lt;/span&gt;&lt;span class="c"&gt;# Add GoogleTest components&lt;/span&gt;
+&lt;span class="linenos"&gt; 9&lt;/span&gt;&lt;span class="nb"&gt;add_subdirectory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/build/external/gtest&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BUILD_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/.gtest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;10&lt;/span&gt;
+&lt;span class="linenos"&gt;11&lt;/span&gt;&lt;span class="c"&gt;# Configure directories to search for headers&lt;/span&gt;
+&lt;span class="linenos"&gt;12&lt;/span&gt;&lt;span class="nb"&gt;include_directories&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;span class="linenos"&gt;13&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="linenos"&gt;14&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/build/external/gtest/googletest/include&lt;/span&gt;
+&lt;span class="linenos"&gt;15&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_SOURCE_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/build/external/gtest/googlemock/include&lt;/span&gt;
+&lt;span class="linenos"&gt;16&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;17&lt;/span&gt;
+&lt;span class="linenos"&gt;18&lt;/span&gt;&lt;span class="c"&gt;# Create the test executable&lt;/span&gt;
+&lt;span class="linenos"&gt;19&lt;/span&gt;&lt;span class="nb"&gt;add_executable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter.c&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter_test.cc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;20&lt;/span&gt;
+&lt;span class="linenos"&gt;21&lt;/span&gt;&lt;span class="nb"&gt;target_link_libraries&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;GTest::gtest_main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;GTest::gmock_main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;pthread&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;22&lt;/span&gt;&lt;span class="nb"&gt;target_compile_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PRIVATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;-ggdb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--coverage&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;23&lt;/span&gt;&lt;span class="nb"&gt;target_link_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PRIVATE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--coverage&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="linenos"&gt;24&lt;/span&gt;
+&lt;span class="linenos"&gt;25&lt;/span&gt;&lt;span class="c"&gt;# Run the test executable, generate JUnit report and return success independent of the test result&lt;/span&gt;
+&lt;span class="linenos"&gt;26&lt;/span&gt;&lt;span class="nb"&gt;add_custom_target&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter_test&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;ALL&lt;/span&gt;
+&lt;span class="linenos"&gt;27&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;BYPRODUCTS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_BUILD_DIR&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="s"&gt;/greeter_junit.xml&lt;/span&gt;
+&lt;span class="linenos"&gt;28&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;
+&lt;span class="linenos"&gt;29&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--gtest_output=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;xml:greeter_junit.xml&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;||&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CMAKE_COMMAND&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;-E&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;true&lt;/span&gt;
+&lt;span class="linenos"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;What this basically does is:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;create a test executable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter&lt;/span&gt;&lt;/code&gt; that links the sources &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter.c&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter_test.cc&lt;/span&gt;&lt;/code&gt; with the GoogleTest libraries&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;create a custom target &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter_test&lt;/span&gt;&lt;/code&gt; that runs the test executable and generates a JUnit report&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To build and run the tests, one would typically execute the following commands:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cmake&lt;span class="w"&gt; &lt;/span&gt;-B&lt;span class="w"&gt; &lt;/span&gt;build&lt;span class="w"&gt; &lt;/span&gt;-S&lt;span class="w"&gt; &lt;/span&gt;.
+cmake&lt;span class="w"&gt; &lt;/span&gt;--build&lt;span class="w"&gt; &lt;/span&gt;build
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This will build all targets and generate the test executable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter&lt;/span&gt;&lt;/code&gt; and the JUnit report &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter_junit.xml&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="literal-block-wrapper docutils container" id="id1"&gt;
+&lt;div class="code-block-caption"&gt;&lt;span class="caption-text"&gt;greeter_junit.xml&lt;/span&gt;&lt;/div&gt;
+&lt;div class="highlight-xml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="linenos"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/span&gt;
+&lt;span class="linenos"&gt;2&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;testsuites&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;tests=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;failures=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;disabled=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;errors=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;time=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0.&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;AllTests&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="linenos"&gt;3&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;testsuite&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;GreeterTest&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;tests=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;failures=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;disabled=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;skipped=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;errors=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;time=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0.&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="linenos"&gt;4&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;testcase&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Greeting1&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;file=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;greeter_test.cc&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;line=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;14&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;status=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;run&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;result=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;completed&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;time=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0.&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="na"&gt;classname=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;GreeterTest&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class="linenos"&gt;5&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/testsuite&amp;gt;&lt;/span&gt;
+&lt;span class="linenos"&gt;6&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/testsuites&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="discovering-tests"&gt;
+&lt;h2&gt;Discovering Tests&lt;/h2&gt;
+&lt;p&gt;Let us first shortly discuss on how one would discover the tests in the project.&lt;/p&gt;
+&lt;p&gt;Having the tests source files, one could try to parse them and extract the test cases.
+However, this is not a trivial task and it is error-prone.
+Imagine that a test is only enabled if a certain preprocessor definition is set.
+One should properly parse the (preprocessed) test source files to determine the list of relevant tests.
+I am not even touching on how creative some developers might be on creating their on macros to define tests.&lt;/p&gt;
+&lt;p&gt;Another approach is to “ask” the test executable to list the tests.
+This has the disadvantage that the test executable must be built and run.
+On the good side, the test executable knows exactly which tests are available and can provide additional information about them.&lt;/p&gt;
+&lt;p&gt;Indeed, the GTTest framework provides a way to list the tests.
+Running the test executable with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--gtest_list_tests&lt;/span&gt;&lt;/code&gt; flag will list all the tests and their test cases.&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;greeter&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exe&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;gtest_list_tests&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;Calling the test executable with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--help&lt;/span&gt;&lt;/code&gt; option will print all the available options.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We will go with the second approach and determine the tests by running the test executable.
+CMake has a built-in tool called CTest that can help us with this.&lt;/p&gt;
+&lt;section id="defining-and-running-tests-with-ctest"&gt;
+&lt;h3&gt;Defining and running tests with CTest&lt;/h3&gt;
+&lt;p&gt;CTest is a testing tool that is part of the CMake suite.
+CMake facilitates testing through special commands and the CTest executable.&lt;/p&gt;
+&lt;p&gt;The integration is quite simple. One needs to “enable testing” and define tests using the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;add_test&lt;/span&gt;&lt;/code&gt; command:&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;CTest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# automatically calls enable_testing()&lt;/span&gt;
+&lt;span class="nb"&gt;add_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;NAME&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter_test&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;COMMAND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;add_test&lt;/span&gt;&lt;/code&gt; command has a simple syntax:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;NAME&lt;/span&gt;&lt;/code&gt; - the name of the test, can be any string&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;COMMAND&lt;/span&gt;&lt;/code&gt; - the command to run the test, in our case the test executable &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter&lt;/span&gt;&lt;/code&gt;. This can be any command that is run in the shell and returns a status code (non-zero for failure).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To run the tests, one would execute the following command:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt;
+&lt;span class="n"&gt;ctest&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;CTest has many options to control the test execution, like running only a specific test, running tests in parallel, or generating a JUnit report.
+For more information check the help or the documentation.&lt;/p&gt;
+&lt;section id="details-on-how-cmake-ctest-work"&gt;
+&lt;h4&gt;Details on how CMake/CTest work&lt;/h4&gt;
+&lt;p&gt;When testing is enabled, CMake generates a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CTestTestfile.cmake&lt;/span&gt;&lt;/code&gt; file in the build directory.
+This file will include all the tests defined with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;add_test&lt;/span&gt;&lt;/code&gt; command.
+When running &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;ctest&lt;/span&gt;&lt;/code&gt;, CTest will read this file and execute the tests.&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;# CMake generated Testfile&lt;/span&gt;
+&lt;span class="nb"&gt;add_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[greeter_test]=]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;C:/project/build/greeter.exe&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set_tests_properties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[greeter_test]=]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PROPERTIES&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;_BACKTRACE_TRIPLES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;C:/project/CMakeLists.txt;34;add_test;C:/project/CMakeLists.txt;0;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;subdirs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/.gtest&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;This file is generated during CMake configure and does not require the test executable to be built.
+It is only used by CTest to run the tests, like having a target to run the test executable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="discovering-tests-with-googletest-ctest-integration"&gt;
+&lt;h3&gt;Discovering tests with GoogleTest CTest integration&lt;/h3&gt;
+&lt;p&gt;CMake provides a helpful module &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;GoogleTest&lt;/span&gt;&lt;/code&gt; which simplifies test discovery and registration when using GTest:&lt;/p&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;CTest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;GoogleTest&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Automatically discover all GoogleTest test cases in the greeter binary&lt;/span&gt;
+&lt;span class="nb"&gt;gtest_discover_tests&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c"&gt;# Optional: specify a WORKING_DIRECTORY or other properties&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This approach removes the need to manually call add_test(NAME &amp;lt;some_name&amp;gt; COMMAND &amp;lt;test_executable&amp;gt;) for each test.
+Instead, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;gtest_discover_tests&lt;/span&gt;&lt;/code&gt; takes care of enumerating them by parsing the output of the actual test binary.&lt;/p&gt;
+&lt;section id="details-on-how-googletest-ctest-integration-works"&gt;
+&lt;h4&gt;Details on how GoogleTest CTest integration works&lt;/h4&gt;
+&lt;p&gt;When using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;gtest_discover_tests&lt;/span&gt;&lt;/code&gt;, CMake generates a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CTestTestfile.cmake&lt;/span&gt;&lt;/code&gt; file that includes the tests discovered by GoogleTest.&lt;/p&gt;
+&lt;p&gt;After CMake configure (no tests executable are yet built nor executed) there is a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CTestTestfile.cmake&lt;/span&gt;&lt;/code&gt; file that includes the tests discovered by GoogleTest.
+There is a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;component&amp;gt;_include.cmake&lt;/span&gt;&lt;/code&gt; file generated for every component which is just defines a dummy test.&lt;/p&gt;
+&lt;div class="literal-block-wrapper docutils container" id="id2"&gt;
+&lt;div class="code-block-caption"&gt;&lt;span class="caption-text"&gt;greeeter[1]_include.cmake&lt;/span&gt;&lt;/div&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;EXISTS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;C:/build/greeter[1]_tests.cmake&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;include&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;C:/build/greeter[1]_tests.cmake&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;else&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;add_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;greeter_NOT_BUILT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;greeter_NOT_BUILT&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;endif&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Executing &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;ctest&lt;/span&gt;&lt;/code&gt; will fail because the command &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter_NOT_BUILT&lt;/span&gt;&lt;/code&gt; does not exist.&lt;/p&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;CMake will add a custom command (see &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;build.ninja&lt;/span&gt;&lt;/code&gt; build file) to generate the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeter_tests.cmake&lt;/span&gt;&lt;/code&gt; file.
+This command will run the test executable and parse the output to generate the test cases.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;After building the test executable, the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;greeeter[1]_tests.cmake&lt;/span&gt;&lt;/code&gt; file is generated and this contains all tests discovered by GoogleTest.&lt;/p&gt;
+&lt;div class="literal-block-wrapper docutils container" id="id3"&gt;
+&lt;div class="code-block-caption"&gt;&lt;span class="caption-text"&gt;greeeter[1]_tests.cmake&lt;/span&gt;&lt;/div&gt;
+&lt;div class="highlight-cmake notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;add_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[GreeterTest.Greeting1]=]&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;C:/project/build/greeter.exe&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s s-Multiline"&gt;[==[--gtest_filter=GreeterTest.Greeting1]==]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--gtest_also_run_disabled_tests&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set_tests_properties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[GreeterTest.Greeting1]=]&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;PROPERTIES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;WORKING_DIRECTORY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;C:/project/build&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;SKIP_REGULAR_EXPRESSION&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s s-Multiline"&gt;[==[\[  SKIPPED \]]==]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;add_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[GreeterTest.Greeting2]=]&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;C:/project/build/greeter.exe&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s s-Multiline"&gt;[==[--gtest_filter=GreeterTest.Greeting2]==]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;--gtest_also_run_disabled_tests&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set_tests_properties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s s-Multiline"&gt;[=[GreeterTest.Greeting2]=]&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;PROPERTIES&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;WORKING_DIRECTORY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;C:/project/build&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;SKIP_REGULAR_EXPRESSION&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s s-Multiline"&gt;[==[\[  SKIPPED \]]==]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;greeter_TESTS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;GreeterTest.Greeting1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;GreeterTest.Greeting2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Executing &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;ctest&lt;/span&gt;&lt;/code&gt; will now run the tests and generate the JUnit report.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="vs-code-integration"&gt;
+&lt;h3&gt;VS Code integration&lt;/h3&gt;
+&lt;p&gt;The CMake Tools extension for VS Code supports since version 1.14 a Test Explorer for CTest.
+The extension will automatically detect the CTest tests from the generated CTest files and display them in the Test Explorer.&lt;/p&gt;
+&lt;p&gt;This means that one can run, debug, and see the test results directly in the VS Code interface.&lt;/p&gt;
+&lt;p&gt;Of course, this approach inherits all the “limitations” of discovering the tests with CTest.
+After CMake configure, one will see only “_NOT_BUILT” tests in the Test Explorer.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="NOT_BUILT tests displayed" src="https://cuinixam.github.io/_images/not_build_tests.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Only after building the test executable, the tests will be visible.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="All tests displayed" src="https://cuinixam.github.io/_images/all_tests.png" /&gt;&lt;/p&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;When executing the tests from the Test Explorer, before running the tests, the CMake Tools extension will start the current select CMake build target.
+This might be confusing if one switches between build targets and suddenly when executing a test, a target is build which has nothing to do with the test.&lt;/p&gt;
+&lt;p&gt;I think their idea is to ensure that the test executable is built before running the tests, to update the test cases.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;When executing single tests, CTest is called with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--tests-regex&lt;/span&gt;&lt;/code&gt; option to run only the selected tests.
+The problem is that when a test fails there is no way to go from the Test Explorer to the failing test.
+This is a general issue with CTest that there is no automatic traceability between the test name and the test source file and line.
+There is another VS Code extension &lt;a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=fredericbonnet.cmake-test-adapter"&gt;CMake Test Explorer&lt;/a&gt;
+which attempts to address this issue by using the CTest properties feature. I did not test this extension. Maybe in a future blog post.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Integrating the unit tests in the VS Code interface is a nice feature to have. CTest and GoogleTest provide a good way to discover and run the tests.
+While not perfect, the integration with the CMake Tools extension for VS Code is a good start.
+One can run, debug, and see the test results directly in the VS Code interface.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="references"&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html"&gt;Testing With CMake and CTest&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://github.com/microsoft/vscode-cmake-tools"&gt;VS Code CMake Tools Extension&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://cuinixam.github.io/blogs/2025/vs_code_ctest.html"/>
+    <summary>Many C/C++ projects rely on CMake, GoogleTest (GTest), and GoogleMock (GMock) for unit testing.
+Sometimes developers want to see and run/debug these tests directly in their IDE.In this blog post, I will show how to make the unit tests visible in Visual Studio Code (VS Code) using CTest and GoogleTest.
+I will start by explaining the standard way to build and run the tests with CMake.
+Then we will see how CTest can help us discover the tests and how to display them in the VS Code interface.NOT_BUILT tests displayed</summary>
+    <category term="cmake" label="cmake"/>
+    <category term="ctest" label="ctest"/>
+    <category term="gtest" label="gtest"/>
+    <category term="testing" label="testing"/>
+    <category term="vscode" label="vs code"/>
+    <published>2025-02-05T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://cuinixam.github.io/blogs/2025/allocate_memory_sections.html</id>
     <title>Allocate Code and Data to Specific Memory Sections</title>
