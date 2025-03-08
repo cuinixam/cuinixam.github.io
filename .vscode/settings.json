@@ -26,5 +26,6 @@
     "titleBar.inactiveBackground": "#ff774d99",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.color": "#ff774d"
+  "peacock.color": "#ff774d",
+  "cSpell.userWords": ["homelab", "imager", "bootloader"]
 }
