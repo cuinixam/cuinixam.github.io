@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-03-08T14:18:25.739568+00:00</updated>
+  <updated>2025-03-08T16:47:00.797960+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
@@ -366,6 +366,158 @@ When checking the linker configuration file (*.lsl) the observation was that the
     <published>2025-01-07T00:00:00+00:00</published>
   </entry>
   <entry>
+    <id>https://cuinixam.github.io/blogs/2024/homelab_setup_main_machine.html</id>
+    <title>Homelab - setup main machine</title>
+    <updated>2024-11-17T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="homelab-setup-main-machine"&gt;
+
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;When starting my homelab journey, I needed a main machine to manage all devices and services in my network. Many homelab enthusiasts typically choose Linux for this purpose. However, my primary computer runs Windows 11, so I decided to use &lt;a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install"&gt;WSL2&lt;/a&gt; with an Ubuntu distribution to fulfill this role.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="installing-wsl2"&gt;
+&lt;h2&gt;Installing WSL2&lt;/h2&gt;
+&lt;p&gt;I followed the instructions provided in the &lt;a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install"&gt;official documentation&lt;/a&gt; to install WSL2 and had Ubuntu up and running quickly.&lt;/p&gt;
+&lt;section id="network-configuration"&gt;
+&lt;h3&gt;Network configuration&lt;/h3&gt;
+&lt;p&gt;By default, WSL2 uses &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;NAT&lt;/span&gt;&lt;/code&gt; networking mode, assigning dynamic IP addresses, which prevents access to other devices in the local network, like routers and Raspberry Pis. To solve this, I switched WSL2 to &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;mirrored&lt;/span&gt;&lt;/code&gt; network mode via the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;WSL&lt;/span&gt; &lt;span class="pre"&gt;Settings&lt;/span&gt;&lt;/code&gt;. After shutting down (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;wsl&lt;/span&gt; &lt;span class="pre"&gt;--shutdown&lt;/span&gt;&lt;/code&gt;) and restarting WSL2 (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;wsl&lt;/span&gt;&lt;/code&gt;), I could successfully ping other devices in my network:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ping&lt;span class="w"&gt; &lt;/span&gt;router.local
+ping&lt;span class="w"&gt; &lt;/span&gt;rpi3.local
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="using-vs-code-remote-wsl"&gt;
+&lt;h3&gt;Using VS Code Remote - WSL&lt;/h3&gt;
+&lt;p&gt;I found the easiest way to interact with files inside WSL2 was to use the &lt;a class="reference external" href="https://code.visualstudio.com/docs/remote/wsl"&gt;VS Code Remote - WSL&lt;/a&gt; extension. Installing this extension allowed me to seamlessly edit files inside the Ubuntu distribution directly through VS Code’s interface.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="installing-ansible"&gt;
+&lt;h2&gt;Installing Ansible&lt;/h2&gt;
+&lt;p&gt;To automate the configuration of remote devices, I chose Ansible. Following the instructions from Ansible’s &lt;a class="reference external" href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx"&gt;installation page&lt;/a&gt;, I created a script called &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap_main_machine.sh&lt;/span&gt;&lt;/code&gt; to install both &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pipx&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;ansible&lt;/span&gt;&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Install pipx - see https://pipx.pypa.io/stable/&lt;/span&gt;
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;pipx
+pipx&lt;span class="w"&gt; &lt;/span&gt;ensurepath
+
+&lt;span class="c1"&gt;# Install ansible - see https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html&lt;/span&gt;
+pipx&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;--include-deps&lt;span class="w"&gt; &lt;/span&gt;ansible
+ansible&lt;span class="w"&gt; &lt;/span&gt;--version
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;section id="creating-the-ansible-inventory"&gt;
+&lt;h3&gt;Creating the Ansible inventory&lt;/h3&gt;
+&lt;p&gt;I created an Ansible inventory file named &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;inventory.yml&lt;/span&gt;&lt;/code&gt; within a new directory &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;~/ansible&lt;/span&gt;&lt;/code&gt;. It lists the devices I want to manage:&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;all&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;rpi3test.local&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;ansible_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;pi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;I initially tested my Ansible setup using the ping module:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/ansible/inventory.yml&lt;span class="w"&gt; &lt;/span&gt;rpi3test.local&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;ping
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This attempt failed, showing the following SSH error:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rpi3test.local | UNREACHABLE! =&amp;gt; {
+    &amp;quot;changed&amp;quot;: false,
+    &amp;quot;msg&amp;quot;: &amp;quot;Failed to connect to the host via ssh: pi@rpi3test.local: Permission denied (publickey,password).&amp;quot;,
+    &amp;quot;unreachable&amp;quot;: true
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Since I wasn’t using SSH keys yet, I tried providing the password explicitly with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--ask-pass&lt;/span&gt;&lt;/code&gt; option:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/ansible/inventory.yml&lt;span class="w"&gt; &lt;/span&gt;rpi3test.local&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;ping&lt;span class="w"&gt; &lt;/span&gt;--ask-pass
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;However, this still didn’t work due to a missing package:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rpi3test.local | FAILED! =&amp;gt; {
+    &amp;quot;msg&amp;quot;: &amp;quot;to use the &amp;#39;ssh&amp;#39; connection type with passwords or pkcs11_provider, you must install the sshpass program&amp;quot;
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To resolve this, I installed the required package:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;sshpass
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;After installing &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;sshpass&lt;/span&gt;&lt;/code&gt;, running the ping command with &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--ask-pass&lt;/span&gt;&lt;/code&gt; succeeded:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;rpi3test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;SUCCESS&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;ansible_facts&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;discovered_interpreter_python&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/usr/bin/python3.11&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;changed&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;ping&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;pong&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition important"&gt;
+&lt;p class="admonition-title"&gt;Important&lt;/p&gt;
+&lt;p&gt;It is not recommended to authenticate using passwords because this opens the possibility for brute force attacks. The best practice is to use SSH keys for authentication. We will cover this in the next section.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="creating-ssh-keys"&gt;
+&lt;h3&gt;Creating SSH keys&lt;/h3&gt;
+&lt;p&gt;To enhance security, I generated SSH keys specifically for Ansible connections using the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;ED25519&lt;/span&gt;&lt;/code&gt; algorithm:&lt;/p&gt;
+&lt;div class="highlight-bash notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh-keygen&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;ed25519&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;~/.ssh/ansible
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Next, I wrote an Ansible playbook to automate the process of copying SSH keys to the devices and disabling password authentication:&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Setup authentication&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;become&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create .ssh directory if it doesn&amp;#39;t exist&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/home/{{ ansible_user }}/.ssh&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;directory&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0700&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;owner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Copy public key from local .ssh directory&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;src&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;~/.ssh/ansible.pub&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/home/{{ ansible_user }}/.ssh/authorized_keys&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0600&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;owner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure password authentication is disabled in SSHD&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;lineinfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/ssh/sshd_config&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;regexp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^PasswordAuthentication&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PasswordAuthentication&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;no&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;notify&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Restart SSHD&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Lock password for {{ ansible_user }}&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ansible_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;password_lock&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;handlers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Restart SSHD&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sshd&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;restarted&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://cuinixam.github.io/blogs/2024/homelab_setup_main_machine.html"/>
+    <summary>When starting my homelab journey, I needed a main machine to manage all devices and services in my network. Many homelab enthusiasts typically choose Linux for this purpose. However, my primary computer runs Windows 11, so I decided to use WSL2 with an Ubuntu distribution to fulfill this role.I followed the instructions provided in the official documentation to install WSL2 and had Ubuntu up and running quickly.</summary>
+    <category term="ansible" label="ansible"/>
+    <category term="docker" label="docker"/>
+    <category term="gettingstarted" label="getting started"/>
+    <category term="homelab" label="homelab"/>
+    <category term="portainer" label="portainer"/>
+    <category term="setup" label="setup"/>
+    <published>2024-11-17T00:00:00+00:00</published>
+  </entry>
+  <entry>
     <id>https://cuinixam.github.io/blogs/2024/optimizing_tool_installation_in_spl_build_environments.html</id>
     <title>Optimizing Tool Installation in SPL Build Environments</title>
     <updated>2024-10-26T00:00:00+00:00</updated>
@@ -498,7 +650,12 @@ When checking the linker configuration file (*.lsl) the observation was that the
 </content>
     <link href="https://cuinixam.github.io/blogs/2024/optimizing_tool_installation_in_spl_build_environments.html"/>
     <summary>I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.</summary>
-    <category term="null" label="null"/>
+    <category term="build" label="build"/>
+    <category term="dependency" label="dependency"/>
+    <category term="optimization" label="optimization"/>
+    <category term="spl" label="spl"/>
+    <category term="tool" label="tool"/>
+    <category term="yanga" label="yanga"/>
     <published>2024-10-26T00:00:00+00:00</published>
   </entry>
   <entry>

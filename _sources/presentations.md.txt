@@ -5,20 +5,15 @@
 `````{grid} 2
 :gutter: 2
 
-````{grid-item-card}
-:text-align: justify
-:img-top: presentations/working_experience/images/working_place_embedded_engineer-th.png
-:link: /working_experience/presentation.html
 
-Here are some highlights on the projects/applications I have been working over the years.
-````
 ````{grid-item-card}
 :text-align: justify
 :img-top: presentations/yanga/images/assembly_line_colorful-th.png
-:link: /yanga/presentation.html
+:link: yanga/presentation.html
 
 YANGA - designing a build environment for engineering software product lines.
 ````
+
 
 ````{grid-item-card}
 :text-align: justify
@@ -26,7 +21,25 @@ YANGA - designing a build environment for engineering software product lines.
 :link: spl/index.html
 
 Mindmap as basis for discussing about SPL.
-
 ````
+
+
+````{grid-item-card}
+:text-align: justify
+:img-top: presentations/coding_dojo_ci_context/images/presentation_Logo.png
+:link: coding_dojo_ci_context/presentation.html
+
+Coding Dojo - Determine CI context.
+````
+
+
+````{grid-item-card}
+:text-align: justify
+:img-top: presentations/working_experience/images/working_place_embedded_engineer-th.png
+:link: working_experience/presentation.html
+
+Here are some highlights on the projects/applications I have been working over the years.
+````
+
 
 `````

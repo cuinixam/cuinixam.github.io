@@ -1,6 +1,6 @@
 ---
 tags: spl git post-build cmake
-category: blog
+category: learning
 date: 2024-10-01
 title: Efficiently Embedding Git Information in C Projects
 ---

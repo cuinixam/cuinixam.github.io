@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Allocate Code and Data to Specific Memory Sections &#8212; Alexandru Maxiniuc</title>
+    <title>Homelab - setup main machine &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -46,7 +46,7 @@
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2025/allocate_memory_sections';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2024/homelab_setup_main_machine';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -393,7 +393,7 @@ document.write(`
      
     <i class="fa fa-calendar"></i>
     
-    <span>07 January 2025</span>
+    <span>17 November 2024</span>
     
   </h2>
   <ul>
@@ -406,7 +406,7 @@ document.write(`
       
     </span>
      
-    <a href="../category/learning.html">learning</a>
+    <a href="../category/diy.html">diy</a>
       
   </li>
    
@@ -417,19 +417,17 @@ document.write(`
        
     </span>
      
-    <a href="../tag/linker.html">linker</a>
+    <a href="../tag/homelab.html">homelab</a>
         
-    <a href="../tag/section.html">section</a>
+    <a href="../tag/getting-started.html">getting started</a>
         
-    <a href="../tag/memory.html">memory</a>
+    <a href="../tag/setup.html">setup</a>
         
-    <a href="../tag/linker-scripting-language.html">linker scripting language</a>
+    <a href="../tag/docker.html">docker</a>
         
-    <a href="../tag/lsl.html">lsl</a>
+    <a href="../tag/ansible.html">ansible</a>
         
-    <a href="../tag/gcc.html">gcc</a>
-        
-    <a href="../tag/tasking.html">tasking</a>
+    <a href="../tag/portainer.html">portainer</a>
       
   </li>
    
@@ -445,25 +443,25 @@ document.write(`
   <ul>
      
     <li>
-      <a href="vs_code_ctest.html">
+      <a href="../2025/vs_code_ctest.html">
         05 February - Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest
       </a>
     </li>
     
     <li>
-      <a href="../2024/homelab_setup_main_machine.html">
-        17 November - Homelab - setup main machine
+      <a href="../2025/allocate_memory_sections.html">
+        07 January - Allocate Code and Data to Specific Memory Sections
       </a>
     </li>
     
     <li>
-      <a href="../2024/optimizing_tool_installation_in_spl_build_environments.html">
+      <a href="optimizing_tool_installation_in_spl_build_environments.html">
         26 October - Optimizing Tool Installation in SPL Build Environments
       </a>
     </li>
     
     <li>
-      <a href="../2024/efficiently_embedding_git_information_in_c_projects.html">
+      <a href="efficiently_embedding_git_information_in_c_projects.html">
         01 October - Efficiently Embedding Git Information in C Projects
       </a>
     </li>
@@ -523,7 +521,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Allocate...</li>
+    <li class="breadcrumb-item active" aria-current="page">Homelab -...</li>
   </ul>
 </nav>
 </div>
@@ -539,107 +537,141 @@ document.write(`
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="allocate-code-and-data-to-specific-memory-sections">
-<h1>Allocate Code and Data to Specific Memory Sections<a class="headerlink" href="#allocate-code-and-data-to-specific-memory-sections" title="Link to this heading">#</a></h1>
+                   <section id="homelab-setup-main-machine">
+<h1>Homelab - setup main machine<a class="headerlink" href="#homelab-setup-main-machine" title="Link to this heading">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>There was a question in our support channel about the memory sections from an external library.
-The colleague was trying to understand how the different sections were defined for the library and how they were placed in memory.
-When checking the linker configuration file (<code class="docutils literal notranslate"><span class="pre">*.lsl</span></code>) the observation was that the memory sections for:</p>
-<ul class="simple">
-<li><p>all the objects for our code, the section pattern was <code class="docutils literal notranslate"><span class="pre">.&lt;type&gt;.&lt;filename&gt;.&lt;symbol&gt;</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.text.component.main</span></code> or <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">.data.component.my_var</span></code>.</p></li>
-<li><p>the library, the section pattern was <code class="docutils literal notranslate"><span class="pre">.&lt;type&gt;.&lt;some_name&gt;.&lt;symbol</span></code>. For example, <code class="docutils literal notranslate"><span class="pre">.rodata.adjustable_parameters.my_param</span></code>.</p></li>
-</ul>
-<p>The question was: how can we define the sections for the library in the linker script file and if they can use the same pattern as our code?</p>
+<p>When starting my homelab journey, I needed a main machine to manage all devices and services in my network. Many homelab enthusiasts typically choose Linux for this purpose. However, my primary computer runs Windows 11, so I decided to use <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL2</a> with an Ubuntu distribution to fulfill this role.</p>
 </section>
-<section id="understanding-the-sections">
-<h2>Understanding the sections<a class="headerlink" href="#understanding-the-sections" title="Link to this heading">#</a></h2>
-<section id="why-do-we-need-to-define-different-memory-sections">
-<h3>Why do we need to define different memory sections?<a class="headerlink" href="#why-do-we-need-to-define-different-memory-sections" title="Link to this heading">#</a></h3>
-<p>When integrating code with different safety levels or from external libraries, it is important to separate the memory sections to restrict the access to certain areas of the memory only to specific code.
-This safety measure is important to avoid that a bug in one part of the code can corrupt the data of another part of the code.</p>
+<section id="installing-wsl2">
+<h2>Installing WSL2<a class="headerlink" href="#installing-wsl2" title="Link to this heading">#</a></h2>
+<p>I followed the instructions provided in the <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">official documentation</a> to install WSL2 and had Ubuntu up and running quickly.</p>
+<section id="network-configuration">
+<h3>Network configuration<a class="headerlink" href="#network-configuration" title="Link to this heading">#</a></h3>
+<p>By default, WSL2 uses <code class="docutils literal notranslate"><span class="pre">NAT</span></code> networking mode, assigning dynamic IP addresses, which prevents access to other devices in the local network, like routers and Raspberry Pis. To solve this, I switched WSL2 to <code class="docutils literal notranslate"><span class="pre">mirrored</span></code> network mode via the <code class="docutils literal notranslate"><span class="pre">WSL</span> <span class="pre">Settings</span></code>. After shutting down (<code class="docutils literal notranslate"><span class="pre">wsl</span> <span class="pre">--shutdown</span></code>) and restarting WSL2 (<code class="docutils literal notranslate"><span class="pre">wsl</span></code>), I could successfully ping other devices in my network:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ping<span class="w"> </span>router.local
+ping<span class="w"> </span>rpi3.local
+</pre></div>
+</div>
 </section>
-<section id="how-are-the-sections-defined">
-<h3>How are the sections defined?<a class="headerlink" href="#how-are-the-sections-defined" title="Link to this heading">#</a></h3>
-<p>The SW architecture describes the logical allocation of the components based on different abstraction levels and safety requirements.
-Based on this and the memory map of the micro-controller, the sections are defined in the linker script file.</p>
-<p>Here are some section types that are commonly used:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">.text</span></code> - the code section</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.data</span></code> - the initialized data section</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.bss</span></code> - the uninitialized data section</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.rodata</span></code> - the read-only data section</p></li>
-</ul>
+<section id="using-vs-code-remote-wsl">
+<h3>Using VS Code Remote - WSL<a class="headerlink" href="#using-vs-code-remote-wsl" title="Link to this heading">#</a></h3>
+<p>I found the easiest way to interact with files inside WSL2 was to use the <a class="reference external" href="https://code.visualstudio.com/docs/remote/wsl">VS Code Remote - WSL</a> extension. Installing this extension allowed me to seamlessly edit files inside the Ubuntu distribution directly through VS Code’s interface.</p>
 </section>
 </section>
-<section id="how-does-my-c-code-ends-up-in-the-sections">
-<h2>How does my C code ends up in the sections?<a class="headerlink" href="#how-does-my-c-code-ends-up-in-the-sections" title="Link to this heading">#</a></h2>
-<p>By default, the compiler generates the sections based on the file name and the symbol name.
-Let us consider the following code:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">my_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">my_func</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">my_var</span><span class="o">++</span><span class="p">;</span>
+<section id="installing-ansible">
+<h2>Installing Ansible<a class="headerlink" href="#installing-ansible" title="Link to this heading">#</a></h2>
+<p>To automate the configuration of remote devices, I chose Ansible. Following the instructions from Ansible’s <a class="reference external" href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pipx">installation page</a>, I created a script called <code class="docutils literal notranslate"><span class="pre">bootstrap_main_machine.sh</span></code> to install both <code class="docutils literal notranslate"><span class="pre">pipx</span></code> and <code class="docutils literal notranslate"><span class="pre">ansible</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pipx - see https://pipx.pypa.io/stable/</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>pipx
+pipx<span class="w"> </span>ensurepath
+
+<span class="c1"># Install ansible - see https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html</span>
+pipx<span class="w"> </span>install<span class="w"> </span>--include-deps<span class="w"> </span>ansible
+ansible<span class="w"> </span>--version
+</pre></div>
+</div>
+<section id="creating-the-ansible-inventory">
+<h3>Creating the Ansible inventory<a class="headerlink" href="#creating-the-ansible-inventory" title="Link to this heading">#</a></h3>
+<p>I created an Ansible inventory file named <code class="docutils literal notranslate"><span class="pre">inventory.yml</span></code> within a new directory <code class="docutils literal notranslate"><span class="pre">~/ansible</span></code>. It lists the devices I want to manage:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">all</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">rpi3test.local</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pi</span>
+</pre></div>
+</div>
+<p>I initially tested my Ansible setup using the ping module:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ansible<span class="w"> </span>-i<span class="w"> </span>~/ansible/inventory.yml<span class="w"> </span>rpi3test.local<span class="w"> </span>-m<span class="w"> </span>ping
+</pre></div>
+</div>
+<p>This attempt failed, showing the following SSH error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rpi3test.local | UNREACHABLE! =&gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh: pi@rpi3test.local: Permission denied (publickey,password).&quot;,
+    &quot;unreachable&quot;: true
+}
+</pre></div>
+</div>
+<p>Since I wasn’t using SSH keys yet, I tried providing the password explicitly with the <code class="docutils literal notranslate"><span class="pre">--ask-pass</span></code> option:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ansible<span class="w"> </span>-i<span class="w"> </span>~/ansible/inventory.yml<span class="w"> </span>rpi3test.local<span class="w"> </span>-m<span class="w"> </span>ping<span class="w"> </span>--ask-pass
+</pre></div>
+</div>
+<p>However, this still didn’t work due to a missing package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rpi3test.local | FAILED! =&gt; {
+    &quot;msg&quot;: &quot;to use the &#39;ssh&#39; connection type with passwords or pkcs11_provider, you must install the sshpass program&quot;
+}
+</pre></div>
+</div>
+<p>To resolve this, I installed the required package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>sshpass
+</pre></div>
+</div>
+<p>After installing <code class="docutils literal notranslate"><span class="pre">sshpass</span></code>, running the ping command with <code class="docutils literal notranslate"><span class="pre">--ask-pass</span></code> succeeded:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpi3test</span><span class="o">.</span><span class="n">local</span> <span class="o">|</span> <span class="n">SUCCESS</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="s2">&quot;ansible_facts&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;discovered_interpreter_python&quot;</span><span class="p">:</span> <span class="s2">&quot;/usr/bin/python3.11&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+    <span class="s2">&quot;ping&quot;</span><span class="p">:</span> <span class="s2">&quot;pong&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The compiler will generate the following sections:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">.text.my_file.my_func</span></code> - the code of the function <code class="docutils literal notranslate"><span class="pre">my_func</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.data.my_file.my_var</span></code> - the initialized data of the variable <code class="docutils literal notranslate"><span class="pre">my_var</span></code></p></li>
-</ul>
-<p>In the linker script file, we can <code class="docutils literal notranslate"><span class="pre">select</span></code> the sections to be placed in the memory map.</p>
-<p>In the memory group where this component <em>code</em> shall be placed, we can refer to it as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">select</span> <span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">my_file</span><span class="o">.*</span>
-</pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is not recommended to authenticate using passwords because this opens the possibility for brute force attacks. The best practice is to use SSH keys for authentication. We will cover this in the next section.</p>
 </div>
-<p>This means that all the sections that start with <code class="docutils literal notranslate"><span class="pre">.text.my_file.</span></code> will be placed in this memory group.</p>
 </section>
-<section id="renaming-the-sections">
-<h2>Renaming the sections<a class="headerlink" href="#renaming-the-sections" title="Link to this heading">#</a></h2>
-<p>Let’s say that one has some adjustable parameters which shall be allocated to a specific memory area.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="p">};</span>
+<section id="creating-ssh-keys">
+<h3>Creating SSH keys<a class="headerlink" href="#creating-ssh-keys" title="Link to this heading">#</a></h3>
+<p>To enhance security, I generated SSH keys specifically for Ansible connections using the <code class="docutils literal notranslate"><span class="pre">ED25519</span></code> algorithm:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519<span class="w"> </span>-f<span class="w"> </span>~/.ssh/ansible
 </pre></div>
 </div>
-<p>By default the compiler will generate a section named <code class="docutils literal notranslate"><span class="pre">.rodata.my_file.my_parameters</span></code> for the read-only data of the variable <code class="docutils literal notranslate"><span class="pre">my_parameters</span></code>.</p>
-<p>If one wants to give a specific name to this section, one can instruct the compiler to use a specific section name.
-Depending on the compiler, there are different ways to do this.</p>
-<p>When using the TASKING compiler, there is a special ´#pragma´ to define the section name.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma section all &quot;sw_constants&quot; </span><span class="c1">// define the section name</span>
-<span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="p">};</span>
-<span class="cp">#pragma section restore all </span><span class="c1">// restore the default section name</span>
+<p>Next, I wrote an Ansible playbook to automate the process of copying SSH keys to the devices and disabling password authentication:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup authentication</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create .ssh directory if it doesn&#39;t exist</span>
+<span class="w">      </span><span class="nt">file</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/{{ ansible_user }}/.ssh</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">directory</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0700&quot;</span>
+<span class="w">        </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_user</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">        </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_user</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Copy public key from local .ssh directory</span>
+<span class="w">      </span><span class="nt">copy</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/.ssh/ansible.pub&quot;</span>
+<span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/{{ ansible_user }}/.ssh/authorized_keys</span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0600&quot;</span>
+<span class="w">        </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_user</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">        </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_user</span><span class="nv"> </span><span class="s">}}&quot;</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure password authentication is disabled in SSHD</span>
+<span class="w">      </span><span class="nt">lineinfile</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/ssh/sshd_config</span>
+<span class="w">        </span><span class="nt">regexp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^PasswordAuthentication&quot;</span>
+<span class="w">        </span><span class="nt">line</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PasswordAuthentication</span><span class="nv"> </span><span class="s">no&quot;</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">      </span><span class="nt">notify</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Restart SSHD</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lock password for {{ ansible_user }}</span>
+<span class="w">      </span><span class="nt">user</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">ansible_user</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">        </span><span class="nt">password_lock</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+
+<span class="w">  </span><span class="nt">handlers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Restart SSHD</span>
+<span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sshd</span>
+<span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restarted</span>
 </pre></div>
 </div>
-<p>For more information see the TASKING User Guide, section 1.12.1 Rename Sections in the <a class="reference internal" href="#references"><span class="std std-ref">References</span></a>.</p>
-<p>When using the GCC compiler, there is a <code class="docutils literal notranslate"><span class="pre">__attribute__</span></code> that can be used to define the section name.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">parameters_t</span><span class="w"> </span><span class="n">my_parameters</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">section</span><span class="p">(</span><span class="s">&quot;sw_constants&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="p">.</span><span class="n">param2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-<p>See more about the <code class="docutils literal notranslate"><span class="pre">__attribute__</span></code> in the <a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute">GCC documentation</a>.</p>
 </section>
-<section id="answering-the-question-s">
-<h2>Answering the question(s)<a class="headerlink" href="#answering-the-question-s" title="Link to this heading">#</a></h2>
-<p>The linker configuration file (<code class="docutils literal notranslate"><span class="pre">*.lsl</span></code>) is used to define the memory layout, collect and group memory sections from objects and libraries.
-The compiler generates the sections based on the file name and the symbol name and type. The user can rename the sections using compiler specific directives.</p>
-<p>The memory sections defined for the objects inside the library have a different pattern because there were renamed using the compiler specific directives (<code class="docutils literal notranslate"><span class="pre">pragma</span></code> or <code class="docutils literal notranslate"><span class="pre">__attribute__</span> <span class="pre">section</span></code>).
-One can not change the section names after the compilation and therefore must rely on naming conventions to know which sections are present in the library.</p>
-</section>
-<section id="references">
-<span id="id1"></span><h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_254.pdf">TASKING User Guide</a></p></li>
-<li><p><a class="reference external" href="https://resources.tasking.com/sites/default/files/uberflip_docs/file_847.pdf">GCC to TASKING Migration</a></p></li>
-<li><p><a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-section-variable-attribute">GCC documentation</a></p></li>
-<li><p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_MemoryMapping.pdf">AUTOSAR Memory Mapping</a></p></li>
-</ul>
 </section>
 </section>
 
@@ -648,19 +680,19 @@ One can not change the section names after the compilation and therefore must re
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
      
-    <a href="../2024/homelab_setup_main_machine.html">
+    <a href="optimizing_tool_installation_in_spl_build_environments.html">
       
       <i class="fa fa-arrow-circle-left"></i>
       
-      <span>Homelab - setup main machine</span>
+      <span>Optimizing Tool Installation in SPL Build Environments</span>
     </a>
     
   </span>
   <span class="ablog__spacer">&nbsp;</span>
   <span class="ablog__next">
      
-    <a href="vs_code_ctest.html">
-      <span>Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest</span>
+    <a href="../2025/allocate_memory_sections.html">
+      <span>Allocate Code and Data to Specific Memory Sections</span>
       
       <i class="fa fa-arrow-circle-right"></i>
       
@@ -699,22 +731,23 @@ One can not change the section names after the compilation and therefore must re
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-sections">Understanding the sections</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-do-we-need-to-define-different-memory-sections">Why do we need to define different memory sections?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-are-the-sections-defined">How are the sections defined?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-wsl2">Installing WSL2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#network-configuration">Network configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-vs-code-remote-wsl">Using VS Code Remote - WSL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-my-c-code-ends-up-in-the-sections">How does my C code ends up in the sections?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renaming-the-sections">Renaming the sections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#answering-the-question-s">Answering the question(s)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-ansible">Installing Ansible</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-ansible-inventory">Creating the Ansible inventory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-ssh-keys">Creating SSH keys</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../../_sources/blogs/2025/allocate_memory_sections.md.txt">
+    <a href="../../_sources/blogs/2024/homelab_setup_main_machine.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

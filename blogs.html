@@ -387,35 +387,11 @@ document.write(`
   <ul>
      
     <li>
-      <a href="blogs/category/blog.html">blog (1)</a>
+      <a href="blogs/category/diy.html">diy (1)</a>
     </li>
       
     <li>
-      <a href="blogs/category/build.html">build (1)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/dependency.html">dependency (1)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/learning.html">learning (2)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/optimization.html">optimization (1)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/spl.html">spl (1)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/tool.html">tool (1)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/category/yanga.html">yanga (1)</a>
+      <a href="blogs/category/learning.html">learning (4)</a>
     </li>
      
   </ul>
@@ -432,6 +408,14 @@ document.write(`
   <ul class="ablog-cloud">
      
     <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/ansible.html">ansible</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/build.html">build</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/cmake.html">cmake</a>
     </li>
       
@@ -440,11 +424,27 @@ document.write(`
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/dependency.html">dependency</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/docker.html">docker</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/gcc.html">gcc</a>
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/getting-started.html">getting started</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/gtest.html">gtest</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/homelab.html">homelab</a>
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
@@ -464,11 +464,23 @@ document.write(`
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/null.html">null</a>
+      <a href="blogs/tag/optimization.html">optimization</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/portainer.html">portainer</a>
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/section.html">section</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/setup.html">setup</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/spl.html">spl</a>
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
@@ -484,7 +496,15 @@ document.write(`
     </li>
       
     <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/tool.html">tool</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
       <a href="blogs/tag/vs-code.html">vs code</a>
+    </li>
+      
+    <li class="ablog-cloud ablog-cloud-3">
+      <a href="blogs/tag/yanga.html">yanga</a>
     </li>
      
   </ul>
@@ -502,7 +522,7 @@ document.write(`
     </li>
       
     <li>
-      <a href="blogs/2024.html">2024 (2)</a>
+      <a href="blogs/2024.html">2024 (3)</a>
     </li>
      
   </ul>
@@ -690,6 +710,64 @@ When checking the linker configuration file (<code class="docutils literal notra
   
   <div class="section ablog-post">
     <h2 class="ablog-post-title">
+      <a href="blogs/2024/homelab_setup_main_machine.html">Homelab - setup main machine</a>
+    </h2>
+    <ul class="ablog-archive">
+      <li>
+         
+        <i class="fa fa-calendar"></i>
+        
+        <span>17 November 2024</span>
+        
+      </li>
+      <div class="ablog-sidebar-item ablog__postcard2">
+      
+  <li id="ablog-sidebar-item category ablog__category">
+    <span>
+      
+      <i class="fa-fw fa fa-folder-open"></i>
+      
+    </span>
+     
+    <a href="blogs/category/diy.html">diy</a>
+      
+  </li>
+   
+  <li id="ablog-sidebar-item tags ablog__tags">
+    <span>
+       
+      <i class="fa-fw fa fa-tags"></i>
+       
+    </span>
+     
+    <a href="blogs/tag/homelab.html">homelab</a>
+        
+    <a href="blogs/tag/getting-started.html">getting started</a>
+        
+    <a href="blogs/tag/setup.html">setup</a>
+        
+    <a href="blogs/tag/docker.html">docker</a>
+        
+    <a href="blogs/tag/ansible.html">ansible</a>
+        
+    <a href="blogs/tag/portainer.html">portainer</a>
+      
+  </li>
+   
+</div>
+    </ul>
+    <p class="ablog-post-excerpt"><p>When starting my homelab journey, I needed a main machine to manage all devices and services in my network. Many homelab enthusiasts typically choose Linux for this purpose. However, my primary computer runs Windows 11, so I decided to use <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL2</a> with an Ubuntu distribution to fulfill this role.</p>
+<p>I followed the instructions provided in the <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">official documentation</a> to install WSL2 and had Ubuntu up and running quickly.</p>
+</p>
+
+    <p class="ablog-post-expand">
+      <a href="blogs/2024/homelab_setup_main_machine.html"><em>Read more ...</em></a>
+    </p>
+    <hr />
+  </div>
+  
+  <div class="section ablog-post">
+    <h2 class="ablog-post-title">
       <a href="blogs/2024/optimizing_tool_installation_in_spl_build_environments.html">Optimizing Tool Installation in SPL Build Environments</a>
     </h2>
     <ul class="ablog-archive">
@@ -709,28 +787,28 @@ When checking the linker configuration file (<code class="docutils literal notra
       
     </span>
      
-    <a href="blogs/category/spl.html">spl</a>
-     ,    
-    <a href="blogs/category/yanga.html">yanga</a>
-     ,    
-    <a href="blogs/category/build.html">build</a>
-     ,    
-    <a href="blogs/category/optimization.html">optimization</a>
-     ,    
-    <a href="blogs/category/tool.html">tool</a>
-     ,    
-    <a href="blogs/category/dependency.html">dependency</a>
+    <a href="blogs/category/learning.html">learning</a>
       
   </li>
    
   <li id="ablog-sidebar-item tags ablog__tags">
     <span>
        
-      <i class="fa-fw fa fa-tag"></i>
-      
+      <i class="fa-fw fa fa-tags"></i>
+       
     </span>
      
-    <a href="blogs/tag/null.html">null</a>
+    <a href="blogs/tag/spl.html">spl</a>
+        
+    <a href="blogs/tag/yanga.html">yanga</a>
+        
+    <a href="blogs/tag/build.html">build</a>
+        
+    <a href="blogs/tag/optimization.html">optimization</a>
+        
+    <a href="blogs/tag/tool.html">tool</a>
+        
+    <a href="blogs/tag/dependency.html">dependency</a>
       
   </li>
    
@@ -767,7 +845,7 @@ When checking the linker configuration file (<code class="docutils literal notra
       
     </span>
      
-    <a href="blogs/category/blog.html">blog</a>
+    <a href="blogs/category/learning.html">learning</a>
       
   </li>
    

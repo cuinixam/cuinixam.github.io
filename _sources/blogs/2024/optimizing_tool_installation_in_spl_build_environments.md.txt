@@ -1,6 +1,6 @@
 ---
-tags:
-category: spl, yanga, build, optimization, tool, dependency
+tags: spl, yanga, build, optimization, tool, dependency
+category: learning
 date: 2024-10-26
 title: Optimizing Tool Installation in SPL Build Environments
 ---
