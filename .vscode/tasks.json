@@ -63,9 +63,9 @@
     },
     {
       "label": "autobuild docs",
-      "command": ".venv/bin/poetry run sphinx-autobuild ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
+      "command": ".venv/bin/poetry run sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
       "windows": {
-        "command": ".venv/Scripts/poetry run sphinx-autobuild ${workspaceFolder}/docs ${workspaceFolder}/build/docs"
+        "command": ".venv/Scripts/poetry run sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs"
       },
       "type": "shell",
       "presentation": {
