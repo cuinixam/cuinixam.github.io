@@ -47,7 +47,7 @@ _30 minutes_
 @dataclass
 class CIContext:
     #: CI system where the build is running
-    ci_system_name: str
+    name: str
     #: Whether the build is for a pull request
     is_pull_request: bool
     #: The branch to merge into
