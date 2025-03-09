@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://cuinixam.github.io</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-03-09T15:46:13.318820+00:00</updated>
+  <updated>2025-03-09T16:12:11.707702+00:00</updated>
   <link href="https://cuinixam.github.io"/>
   <link href="https://cuinixam.github.io/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.11">ABlog</generator>
@@ -314,8 +314,7 @@ Every time we add a new CI system, we need to modify this method. This is a viol
     &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Hmm, we still have to modify the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detect_ci_context&lt;/span&gt;&lt;/code&gt; method every time we add a new CI system detector 🫣.
-On top, we have to also add the new value in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CISystem&lt;/span&gt;&lt;/code&gt; enumeration.&lt;/p&gt;
+&lt;p&gt;Hmm, we still have to modify the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detect_ci_context&lt;/span&gt;&lt;/code&gt; method every time we add a new CI system detector 😧 and the new value in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CISystem&lt;/span&gt;&lt;/code&gt; enumeration.&lt;/p&gt;
 &lt;p&gt;One solution could be to &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link&lt;/span&gt;&lt;/code&gt; the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CISystem&lt;/span&gt;&lt;/code&gt; enumeration with the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CIDetector&lt;/span&gt;&lt;/code&gt; class.&lt;/p&gt;
 &lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CISystem&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Enum&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;UNKNOWN&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# Special case for unknown&lt;/span&gt;
@@ -330,8 +329,8 @@ On top, we have to also add the new value in the &lt;code class="docutils litera
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;detector_class&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;detector_class&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;I assume that some of you might be surprised to see that one can add extra arguments to an enumeration member.
-What we’ve done is to add a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detector_class&lt;/span&gt;&lt;/code&gt; attribute to each enumeration member to link it with the detector class. This way, we can create a detector for each CI system and the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detect_ci_context&lt;/span&gt;&lt;/code&gt; method will only iterate over the detectors and return the first result.&lt;/p&gt;
+&lt;p&gt;Some of you might be surprised to see that one can add extra arguments to an enumeration member.&lt;/p&gt;
+&lt;p&gt;What we’ve done is to add a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detector_class&lt;/span&gt;&lt;/code&gt; attribute to each enumeration member to link it with the detector class. This way, we can create a detector for each CI system and the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;detect_ci_context&lt;/span&gt;&lt;/code&gt; method will only iterate over the detectors and return the first result.&lt;/p&gt;
 &lt;div class="highlight-python notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;detect_ci_context&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;CIContext&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;ci_context&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Optional&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;CIContext&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
     &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ci_system&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;CISystem&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -359,10 +358,11 @@ What we’ve done is to add a &lt;code class="docutils literal notranslate"&gt;&
 &lt;p&gt;We’ve learned how to:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;p&gt;incrementally implement the solution using TDD, refactoring, and design patterns.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;learned how to use the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;unittest.mock&lt;/span&gt;&lt;/code&gt; to mock environment variables.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;learned how to use the Unittest &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;patch&lt;/span&gt;&lt;/code&gt; method to manipulate the environment variables.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;learned how to add extra arguments to an enumeration.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;I hope you enjoyed this coding dojo and learned something new. Happy coding! ⌨️&lt;/p&gt;
+&lt;p&gt;I hope you enjoyed this coding dojo and learned something new.&lt;/p&gt;
+&lt;p&gt;Happy coding! ⌨️&lt;/p&gt;
 &lt;/section&gt;
 &lt;section id="references"&gt;
 &lt;h2&gt;References&lt;/h2&gt;

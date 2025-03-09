@@ -21,7 +21,7 @@ Detect whether your program runs on Jenkins or locally and determine the CI cont
 :img-top: presentations/yanga/images/assembly_line_colorful-th.png
 :link: yanga/presentation.html
 
-YANGA - designing a build environment for engineering software product lines.
+Designing a build environment for engineering software product lines.
 ````
 
 

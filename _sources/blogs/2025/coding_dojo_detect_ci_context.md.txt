@@ -332,8 +332,7 @@ def detect_ci_context() -> CIContext:
     )
 ```
 
-Hmm, we still have to modify the `detect_ci_context` method every time we add a new CI system detector 🫣.
-On top, we have to also add the new value in the `CISystem` enumeration.
+Hmm, we still have to modify the `detect_ci_context` method every time we add a new CI system detector 😧 and the new value in the `CISystem` enumeration.
 
 One solution could be to `link` the `CISystem` enumeration with the `CIDetector` class.
 
@@ -351,7 +350,8 @@ class CISystem(Enum):
         return self.detector_class() if self.detector_class else None
 ```
 
-I assume that some of you might be surprised to see that one can add extra arguments to an enumeration member.
+Some of you might be surprised to see that one can add extra arguments to an enumeration member.
+
 What we've done is to add a `detector_class` attribute to each enumeration member to link it with the detector class. This way, we can create a detector for each CI system and the `detect_ci_context` method will only iterate over the detectors and return the first result.
 
 ```{code-block} python
@@ -383,10 +383,12 @@ In this blog post, we explored how to implement the [Detect CI Context](https://
 We've learned how to:
 
 - incrementally implement the solution using TDD, refactoring, and design patterns.
-- learned how to use the `unittest.mock` to mock environment variables.
+- learned how to use the Unittest `patch` method to manipulate the environment variables.
 - learned how to add extra arguments to an enumeration.
 
-I hope you enjoyed this coding dojo and learned something new. Happy coding! ⌨️
+I hope you enjoyed this coding dojo and learned something new.
+
+Happy coding! ⌨️
 
 ## References
 
