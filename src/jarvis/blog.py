@@ -34,7 +34,7 @@ class BlogWritter:
         """Return the content of a new blog post with the given title."""
         return textwrap.dedent(f"""\
             ---
-            tags: {', '.join(self.tags)}
+            tags: {", ".join(self.tags)}
             category: {self.category}
             date: {datetime.now().strftime("%Y-%m-%d")}
             title: {self.title}

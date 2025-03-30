@@ -24,27 +24,29 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-py-app-dev = "^2.1.0"
-typer = "^0.12"
+py-app-dev = "^2.5"
+typer = "^0"
+marimo = "^0.11"
+matplotlib = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.0"
-pytest-cov = "^4.0"
-pre-commit = "^3.1.1"
-ruff = "^0.3.0"
+pytest = "^8.0"
+pytest-cov = "^6.0"
+pre-commit = "^4.0"
+ruff = "^0"
 
 [tool.poetry.group.docs.dependencies]
-myst-parser = ">=0.16"
-sphinx = ">=4.0"
-sphinxcontrib-mermaid = "^0.8.1"
-mlx-traceability = "^10.0.0"
-sphinx-copybutton = "^0.5.2"
-sphinx-new-tab-link = "^0.2.2"
-sphinx-design = "^0.5.0"
-sphinx-autobuild = "^2024.2.4"
-ablog = "^0.11.6"
-pydata-sphinx-theme = "^0.15.2"
-sphinxext-rediraffe = "^0.2.7"
+myst-parser = ">=4.0"
+sphinx = ">=8.0"
+sphinxcontrib-mermaid = "^0"
+mlx-traceability = "^11.0"
+sphinx-copybutton = "^0"
+sphinx-new-tab-link = "^0"
+sphinx-design = "^0"
+sphinx-autobuild = "^2024.10.3"
+ablog = "^0"
+pydata-sphinx-theme = "^0"
+sphinxext-rediraffe = "^0"
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:tool.poetry.version"]
@@ -143,6 +145,10 @@ exclude = [
     'docs/.*',
     'setup.py',
 ]
+
+[[tool.mypy.overrides]]
+module = "jarvis.notebooks.*"
+ignore_errors = true
 
 [[tool.mypy.overrides]]
 module = "tests.*"
