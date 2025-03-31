@@ -19,6 +19,10 @@ Presentations 🎤
 :link: blogs.html
 My blog posts 📝
 :::
+:::{grid-item-card}
+:link: teaching.html
+Teaching 📚
+:::
 ::::
 
 ```{toctree}
@@ -27,4 +31,5 @@ My blog posts 📝
 about
 blogs
 presentations
+teaching
 ```

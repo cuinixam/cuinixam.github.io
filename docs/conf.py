@@ -89,6 +89,7 @@ html_sidebars = {
     "index": ["hello.html"],
     "about": ["hello.html"],
     "presentations": ["hello.html"],
+    "teaching": ["hello.html"],
     "projects": ["hello.html"],
     "blogs": ["ablog/categories.html", "ablog/tagcloud.html", "ablog/archives.html"],
     "blogs/**": [
@@ -98,7 +99,7 @@ html_sidebars = {
     ],
 }
 
-html_extra_path = ["presentations"]
+html_extra_path = ["presentations", "notebooks"]
 
 # -- ABlog ---------------------------------------------------
 
