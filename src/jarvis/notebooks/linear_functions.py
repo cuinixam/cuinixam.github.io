@@ -95,17 +95,77 @@ Let's see how simple operations on the input \\( x \\) can combine to form funct
 
 These operations—adding, subtracting, and multiplying by constants or by \\( x \\)—are the building blocks for a very important class of functions.
 
-### Practice: Build Your Own Functions
-
-TODO:
-
-- Add a cell for students to practice building their own functions using the operations above.
-- there shall be a slider to select the order of the polynomial and all coefficients shall be one.
-
-
 """
     )
     return
+
+
+@app.cell(hide_code=True)
+def __(mo, a2_slider, a1_slider, a0_slider):
+    # Determine the function latex equation. Do not show the elements with coefficient 0.
+    def get_function_latex(a2, a1, a0):
+        function_parts = []
+        if a2 != 0:
+            function_parts.append(f"{a2}x^2")
+        if a1 != 0:
+            function_parts.append(f"{a1}x")
+        if a0 != 0:
+            function_parts.append(f"{a0}")
+        if len(function_parts) == 0:
+            return "0"
+        return " + ".join(function_parts)
+
+    mo.vstack(
+        [
+            mo.md(
+                rf"""
+                ### Practice: Build Your Own Functions
+
+                {mo.as_html([a2_slider, a1_slider, a0_slider])}
+
+                \[
+                f(x) = {get_function_latex(a2_slider.value, a1_slider.value, a0_slider.value)}
+                \]
+
+                """
+            ),
+            construct_function_plot(),  # noqa: F821
+        ]
+    )
+    return
+
+
+@app.cell(hide_code=True)
+def __(mo):
+    a2_slider = mo.ui.slider(label="a2 (coefficient of x²)", start=-1, stop=1, step=0.01, value=0)
+    a1_slider = mo.ui.slider(label="a1 (coefficient of x )", start=-10, stop=10, step=0.1, value=0)
+    a0_slider = mo.ui.slider(label="a0 (constant         )", start=-100, stop=100, step=10, value=0)
+
+    return a2_slider, a1_slider, a0_slider
+
+
+@app.cell
+def __(a2_slider, a1_slider, a0_slider):
+    def construct_function_plot():
+        import matplotlib.pyplot as plt
+
+        plt.axes()
+        # Plot the a2*x² + a1*x + a0 function for x in range(-10, 10)
+        x = range(-100, 100)
+        y = [a2_slider.value * (i**2) + a1_slider.value * i + a0_slider.value for i in x]
+        plt.plot(x, y, label=f"f(x) = {a2_slider.value}x² + {a1_slider.value}x + {a0_slider.value}")
+        plt.title("Function Plot")
+        plt.xlabel("x")
+        plt.ylabel("f(x)")
+        plt.grid()
+        # Keep the aspect ratio of the plot square
+        plt.xlim(-100, 100)
+        plt.ylim(-100, 100)
+        plt.axhline(0, color="black", lw=0.5, ls="--")
+        plt.axvline(0, color="black", lw=0.5, ls="--")
+        return plt.gca()
+
+    return (construct_function_plot,)
 
 
 @app.cell
