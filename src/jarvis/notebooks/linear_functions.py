@@ -2,7 +2,8 @@
 # requires-python = ">=3.9"
 # dependencies = [
 #     "marimo",
-#     "matplotlib>=3.10",
+#     "matplotlib==3.10.1",
+#     "numpy==2.2.4",
 # ]
 # ///
 
@@ -361,7 +362,7 @@ def __(mo):
 It is not hard to guess that one needs to know just two points to determine straight lines.
 Ever wondered how to find the equation of a line when you know two points on it?
 
-Let's explore a quick, real-world scenario (with a fun twist!) to see how it works:
+Let's explore a quick, real-world scenario to see how it works:
 
 Imagine you're playing a popular online adventure game.
 
@@ -371,7 +372,7 @@ Imagine you're playing a popular online adventure game.
 You suspect the cost might follow a **linear function**, something like:
 
 \\[
-f(x) = m \cdot x + b
+f(x) = m \\cdot x + b
 \\]
 
 where:
@@ -406,7 +407,7 @@ In plain English, it means **each potion** adds 2 gold coins to the total cost.
 
 #### The Intercept
 
-Once we know \\( m \\), we can plug in either of our original points to solve for \\( b \\).  
+Once we know \\( m \\), we can plug in either of our original points to solve for \\( b \\).
 Using \\( (2,5) \\):
 
 \\[
@@ -423,7 +424,7 @@ Now we have:
 f(x) = 2x + 1.
 \\]
 
-- \\( m = 2 \\) (slope, or 2 coins per potion)  
+- \\( m = 2 \\) (slope, or 2 coins per potion)
 - \\( b = 1 \\) (base cost, 1 coin)
 
 So the next time you need to stock up on potions, you can **predict** your total cost: if you buy \\( x \\) potions, you pay \\( 2x + 1 \\) coins.
@@ -436,10 +437,189 @@ So the next time you need to stock up on potions, you can **predict** your total
 2. **Intercept** \\( b = y_1 - m \\cdot x_1 \\).
 3. **Write** \\( f(x) = m x + b \\).
 
-With just two points, you can always uncover the "rate of change" (slope) and the "starting value" (intercept) for a linear function. This helps you connect the dots (literally!) in all sorts of situations, from in-game purchases to real-world pricing.
+With just two points, you can always uncover the "rate of change" (slope) and the "starting value" (intercept) for a linear function.
+This helps you connect the dots (literally!) in all sorts of situations, from in-game purchases to real-world pricing.
 """
     )
     return
+
+
+@app.cell(hide_code=True)
+def __(mo, end_portal_spot1, end_portal_drop1, end_portal_spot2, end_portal_drop2, end_portal_m1, end_portal_b1, end_portal_m2, end_portal_b2):
+    mo.vstack(
+        [
+            mo.md(
+                f"""
+### Intersection of Two Lines
+
+**Minecraft: Finding the End Portal**
+
+In Minecraft, you can locate the End Portal (deep underground within a Stronghold) by using **Eyes of Ender**.
+Throw an Eye of Ender, and it will fly in the direction of the nearest stronghold.
+
+Usually, players do something like this:
+
+- Walk in any direction, throw an Eye of Ender, watch where it flies, and then pick it up (if it doesn't break).
+- Keep walking that way, throwing the Eye every so often, until you notice its flight path change or the Eye goes underground.
+- Dig around that general area to find the Stronghold.
+
+This method works, but it is very inefficient because you might have to throw a lot of Eyes of Ender to find the Stronghold.
+Eyes of Ender are precious and hard to make (you need Blaze Powder and Ender Pearls), so you want to use them wisely.
+
+
+Let's come up with a better plan using some math! 😎
+
+/// tip | Idea
+
+Throw two Eyes of Ender from two different (far away) locations, write down coordinates and find the intersection of the two lines they create.
+Remember that the Eyes of Ender fly in a straight line towards the Stronghold.
+
+///
+
+
+#### Finding the End Portal
+
+1. **First Spot**
+
+  - Let's say you're hanging around coordinates \\({end_portal_spot1}\\).
+  - You throw an Eye of Ender, and it tends to land around \\({end_portal_drop1}\\).
+  - If you connect these points (where you stand and where the Eye drops), you get a rough line
+  - We can calculate the slope and intercept of this first line: \\( f(x) = {end_portal_m1} x + {end_portal_b1} \\)
+
+2. **Second Spot**
+
+  - Next, you move to a different place, maybe around \\({end_portal_spot2}\\).
+  - Throw the Eye of Ender again, and this time it drops near \\({end_portal_drop2}\\).
+  - Connecting these new points gives you the second line:  \\( f(x) = {end_portal_m2} x + {end_portal_b2} \\)
+
+3. **Where to Dig?**
+
+  - These two lines will cross at a specific location.
+  - That intersection is your best guess for where the Stronghold (and thus the End Portal) is waiting underground!
+  - Next, we'll break down the math behind finding that intersection point.
+
+
+---
+
+#### The Math: Finding the Intersection
+
+Let the two lines be:
+
+\\[
+\\begin{{cases}}
+y = m_1 x + b_1
+\\\\
+y = m_2 x + b_2
+\\end{{cases}}
+\\]
+
+To find the intersection:
+
+1. **Set them equal** (because we expect them to meet at the same value of \\( y \\)):
+
+\\[
+m_1 x + b_1 = m_2 x + b_2.
+\\]
+
+2. **Solve for \\( x \\)**:
+
+\\[
+m_1 x - m_2 x = b_2 - b_1
+\\quad\\Rightarrow\\quad
+x(m_1 - m_2) = b_2 - b_1
+\\quad\\Rightarrow\\quad
+x = \\frac{{b_2 - b_1}}{{m_1 - m_2}}.
+\\]
+
+3. **Plug \\( x \\) back in** to get \\( y \\), for example into the first line:
+
+\\[
+y = m_1 \\left(\\frac{{b_2 - b_1}}{{m_1 - m_2}}\\right) + b_1.
+\\]
+
+The point \\((x,\\, y)\\) is where the two lines meet — or in **Minecraft** terms, where you should head to find the End Portal.
+
+
+The lines you created with the two Eyes of Ender are shown in the graph below.
+
+                """
+            ),
+            construct_minecraft_find_end_portal_function_plot(),  # noqa: F821
+            mo.md(
+                """
+                #### Summary
+
+                Finding where two lines cross isn't just an abstract math problem!
+                As we saw with the Minecraft example, it can be a clever strategy for pinpointing a hidden location.
+
+                Understanding linear functions and how to find their intersections provides a powerful tool for solving real-world (and game-world!) problems.
+                Finding the End Portal is a great example of how math helps us navigate the world around us more effectively.
+                """
+            ),
+        ]
+    )
+    return
+
+
+@app.cell
+def __():
+    end_portal_spot1 = (150, 80)  # first location
+    end_portal_drop1 = (200, 70)  # where the Eye of Ender drops
+    end_portal_spot2 = (350, 75)  # second location
+    end_portal_drop2 = (300, 70)  # where the Eye of Ender drops
+
+    # Calculate slope (m) and intercept (b) for Line 1
+    end_portal_m1 = (end_portal_drop1[1] - end_portal_spot1[1]) / (end_portal_drop1[0] - end_portal_spot1[0])  # (z2 - z1) / (x2 - x1)
+    end_portal_b1 = end_portal_spot1[1] - end_portal_m1 * end_portal_spot1[0]
+
+    # Calculate slope and intercept for Line 2
+    end_portal_m2 = (end_portal_drop2[1] - end_portal_spot2[1]) / (end_portal_drop2[0] - end_portal_spot2[0])
+    end_portal_b2 = end_portal_spot2[1] - end_portal_m2 * end_portal_spot2[0]
+
+    return (end_portal_spot1, end_portal_drop1, end_portal_spot2, end_portal_drop2, end_portal_m1, end_portal_b1, end_portal_m2, end_portal_b2)
+
+
+@app.cell
+def __(end_portal_spot1, end_portal_drop1, end_portal_spot2, end_portal_drop2, end_portal_m1, end_portal_b1, end_portal_m2, end_portal_b2):
+    def construct_minecraft_find_end_portal_function_plot():
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Find intersection (x_int, z_int) by setting m1*x + b1 = m2*x + b2
+        x_int = (end_portal_b2 - end_portal_b1) / (end_portal_m1 - end_portal_m2)
+        z_int = end_portal_m1 * x_int + end_portal_b1
+        intersection_label = f"Intersection ~ ({x_int:.0f}, {z_int:.0f})"
+
+        # Prepare data for plotting
+        x_vals = np.linspace(100, 400, 300)
+        z1_vals = end_portal_m1 * x_vals + end_portal_b1
+        z2_vals = end_portal_m2 * x_vals + end_portal_b2
+
+        plt.axes()
+
+        # Plot the two lines
+        plt.plot(x_vals, z1_vals, color="blue", linestyle="--")
+        plt.plot(x_vals, z2_vals, color="purple", linestyle="--")
+
+        # Mark vantage and drop points
+        plt.scatter([end_portal_spot1[0]], [end_portal_spot1[1]], zorder=5, color="green", marker="x", label="First spot")
+        plt.scatter([end_portal_spot2[0]], [end_portal_spot2[1]], zorder=5, color="green", marker="x", label="Second spot")
+        plt.scatter([end_portal_drop1[0]], [end_portal_drop1[1]], zorder=5, color="orange", marker="o", label="First drop")
+        plt.scatter([end_portal_drop2[0]], [end_portal_drop2[1]], zorder=5, color="orange", marker="o", label="Second drop")
+
+        # Mark the intersection (if it exists)
+        if x_int is not None and z_int is not None:
+            plt.scatter([x_int], [z_int], color="red", zorder=5, label=intersection_label)
+
+        plt.title("Minecraft - Locate the End Portal")
+        plt.xlabel("x (East-West coordinate)")
+        plt.ylabel("z (North-South coordinate)")
+        plt.grid(True)
+        plt.legend()
+
+        return plt.gca()
+
+    return (construct_minecraft_find_end_portal_function_plot,)
 
 
 @app.cell(hide_code=True)
