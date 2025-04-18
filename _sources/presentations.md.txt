@@ -15,7 +15,6 @@ Detect whether your program runs on Jenkins or locally and determine the CI cont
 ````
 
 ---
----
 
 ````{grid-item-card} YANGA
 :text-align: justify
@@ -26,7 +25,6 @@ Designing a build environment for engineering software product lines.
 ````
 
 ---
----
 
 ````{grid-item-card} 💡 SPL Mindmap
 :text-align: justify
@@ -35,7 +33,6 @@ Designing a build environment for engineering software product lines.
 Mindmap as basis for discussing about Software Product Line Engineering.
 ````
 
----
 ---
 
 ````{grid-item-card} 🛠 Working Experience
@@ -46,7 +43,6 @@ Here are some highlights on the projects/applications I have been working over t
 ````
 
 ---
----
 
 ````{grid-item-card} 🔎 Objects Dependencies Graph
 :text-align: justify
@@ -56,6 +52,5 @@ I have generated a dependency graph of the objects in my Matter Smart Temperatur
 It is surprising how many objects are created and how they are connected to each other, for just
 a simple temperature and humidity monitoring application.
 ````
-
 
 `````
