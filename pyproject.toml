@@ -1,135 +1,112 @@
-[tool.poetry]
+[project]
 name = "jarvis"
 version = "0.0.0"
 description = "My personal page."
-authors = ["Alexandru Maxiniuc <me@cuinixam.com>"]
-license = "MIT"
 readme = "README.md"
-repository = "https://github.com/cuinixam/jarvis"
-documentation = "https://jarvis.readthedocs.io"
+license = { text = "MIT" }
+authors = [
+  { name = "Alexandru Maxiniuc", email = "me@cuinixam.me" },
+]
+requires-python = "<4.0,>=3.10"
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "Intended Audience :: Developers",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Topic :: Software Development :: Libraries",
-]
-packages = [
-    { include = "jarvis", from = "src" },
-]
-
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/cuinixam/jarvis/issues"
-"Changelog" = "https://github.com/cuinixam/jarvis/blob/main/CHANGELOG.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-py-app-dev = "^2.5"
-typer = "^0"
-marimo = "^0.11"
-matplotlib = "^3.10"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.0"
-pytest-cov = "^6.0"
-pre-commit = "^4.0"
-ruff = "^0"
-
-[tool.poetry.group.docs.dependencies]
-myst-parser = ">=4.0"
-sphinx = ">=8.0"
-sphinxcontrib-mermaid = "^0"
-mlx-traceability = "^11.0"
-sphinx-copybutton = "^0"
-sphinx-new-tab-link = "^0"
-sphinx-design = "^0"
-sphinx-autobuild = "^2024.10.3"
-ablog = "^0"
-pydata-sphinx-theme = "^0"
-sphinxext-rediraffe = "^0"
-
-[tool.semantic_release]
-version_toml = ["pyproject.toml:tool.poetry.version"]
-version_variables = [
-    "src/jarvis/__init__.py:__version__",
-    "docs/conf.py:release",
-]
-build_command = "poetry build"
-
-[tool.semantic_release.changelog]
-exclude_commit_patterns = [
-    "chore*",
-    "ci*",
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries",
 ]
 
-[tool.semantic_release.changelog.environment]
-keep_trailing_newline = true
+dependencies = [
+  "marimo>=0.11,<1",
+  "matplotlib>=3.10,<4",
+  "py-app-dev>=2.5,<3",
+  "typer>=0,<1",
+]
 
-[tool.semantic_release.branches.main]
-match = "main"
+urls.Changelog = "https://github.com/cuinixam/jarvis/blob/main/CHANGELOG.md"
+urls.repository = "https://github.com/cuinixam/jarvis"
+rls."Bug Tracker" = "https://github.com/cuinixam/jarvis/issues"
+documentation = "https://jarvis.readthedocs.io"
 
-[tool.semantic_release.branches.noop]
-match = "(?!main$)"
-prerelease = true
+[dependency-groups]
+dev = [
+  "ablog>=0,<1",
+  "mlx-traceability>=11,<12",
+  # docs
+  "myst-parser>=4",
+  "pre-commit>=4,<5",
+  "pydata-sphinx-theme>=0,<1",
+  "pytest>=8,<9",
+  "pytest-cov>=6,<7",
+  "ruff>=0,<1",
+  "sphinx>=8",
+  "sphinx-autobuild>=2024.10.3,<2025",
+  "sphinx-copybutton>=0,<1",
+  "sphinx-design>=0,<1",
+  "sphinx-new-tab-link>=0,<1",
+  "sphinxcontrib-mermaid>=0,<1",
+  "sphinxext-rediraffe>=0,<1",
+  "wrapt",
+]
+
+[tool.ruff]
+line-length = 180
+lint.select = [
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "D",   # flake8-docstrings
+  "E",   # pycodestyle
+  "F",   # pyflake
+  "I",   # isort
+  "RUF", # ruff specific
+  "S",   # flake8-bandit
+  "UP",  # pyupgrade
+  "W",   # pycodestyle
+]
+lint.ignore = [
+  "D100", # Missing docstring in public module
+  "D101", # Missing docstring in public class
+  "D102", # Missing docstring in public method
+  "D103", # Missing docstring in public function
+  "D104", # Missing docstring in public package
+  "D107", # Missing docstring in `__init__`
+  "D203", # 1 blank line required before class docstring
+  "D212", # Multi-line docstring summary should start at the first line
+  "D401", # First line of docstring should be in imperative mood
+]
+lint.per-file-ignores."conftest.py" = [ "D100" ]
+lint.per-file-ignores."docs/conf.py" = [ "D100" ]
+lint.per-file-ignores."setup.py" = [ "D100" ]
+lint.per-file-ignores."tests/**/*" = [
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "S101",
+]
+lint.isort.known-first-party = [ "jarvis", "tests" ]
 
 [tool.pytest.ini_options]
 addopts = "-v -Wdefault --cov=jarvis --cov-report=term-missing:skip-covered"
-pythonpath = ["src"]
+pythonpath = [ "src" ]
 
 [tool.coverage.run]
 branch = true
 
 [tool.coverage.report]
 exclude_lines = [
-    "pragma: no cover",
-    "@overload",
-    "if TYPE_CHECKING",
-    "raise NotImplementedError",
-    'if __name__ == "__main__":',
+  "pragma: no cover",
+  "@overload",
+  "if TYPE_CHECKING",
+  "raise NotImplementedError",
+  'if __name__ == "__main__":',
 ]
-
-[tool.ruff]
-target-version = "py38"
-line-length = 180
-lint.ignore = [
-    "D203", # 1 blank line required before class docstring
-    "D212", # Multi-line docstring summary should start at the first line
-    "D100", # Missing docstring in public module
-    "D101", # Missing docstring in public class
-    "D102", # Missing docstring in public method
-    "D103", # Missing docstring in public function
-    "D104", # Missing docstring in public package
-    "D107", # Missing docstring in `__init__`
-    "D401", # First line of docstring should be in imperative mood
-]
-lint.select = [
-    "B",   # flake8-bugbear
-    "D",   # flake8-docstrings
-    "C4",  # flake8-comprehensions
-    "S",   # flake8-bandit
-    "F",   # pyflake
-    "E",   # pycodestyle
-    "W",   # pycodestyle
-    "UP",  # pyupgrade
-    "I",   # isort
-    "RUF", # ruff specific
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/**/*" = [
-    "D100",
-    "D101",
-    "D102",
-    "D103",
-    "D104",
-    "S101",
-]
-"setup.py" = ["D100"]
-"conftest.py" = ["D100"]
-"docs/conf.py" = ["D100"]
-
-[tool.ruff.lint.isort]
-known-first-party = ["jarvis", "tests"]
 
 [tool.mypy]
 check_untyped_defs = true
@@ -142,8 +119,8 @@ show_error_codes = true
 warn_unreachable = true
 warn_unused_ignores = true
 exclude = [
-    'docs/.*',
-    'setup.py',
+  'docs/.*',
+  'setup.py',
 ]
 
 [[tool.mypy.overrides]]
@@ -158,6 +135,37 @@ allow_untyped_defs = true
 module = "docs.*"
 ignore_errors = true
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.semantic_release]
+version_toml = [ "pyproject.toml:project.version" ]
+version_variables = [
+  "src/jarvis/__init__.py:__version__",
+  "docs/conf.py:release",
+]
+build_command = """
+pip install uv
+uv lock
+git add uv.lock
+uv build
+"""
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+  '''chore(?:\([^)]*?\))?: .+''',
+  '''ci(?:\([^)]*?\))?: .+''',
+  '''refactor(?:\([^)]*?\))?: .+''',
+  '''style(?:\([^)]*?\))?: .+''',
+  '''test(?:\([^)]*?\))?: .+''',
+  '''build\((?!deps\): .+)''',
+  '''Merged? .*''',
+  '''Initial [Cc]ommit.*''',         # codespell:ignore
+]
+
+[tool.semantic_release.changelog.environment]
+keep_trailing_newline = true
+
+[tool.semantic_release.branches.main]
+match = "main"
+
+[tool.semantic_release.branches.noop]
+match = "(?!main$)"
+prerelease = true

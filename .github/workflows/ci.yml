@@ -11,18 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - uses: pre-commit/action@v3.0.1
-
   release:
-    needs:
-      - lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,12 +19,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - uses: snok/install-poetry@v1.3.4
-      - name: Install Dependencies
-        run: poetry install
+      - name: Install pypeline runner
+        run: pip install pypeline-runner>=1.15.1
         shell: bash
-      - name: Build the docs
-        run: poetry run sphinx-build -E -a docs build/docs
+      - name: Run pypeline
+        run: pypeline run
         shell: bash
       # If we've pushed to main, push the book's HTML to github-pages
       - name: GitHub Pages action

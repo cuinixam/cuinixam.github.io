@@ -1,11 +1,10 @@
 import textwrap
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional
 
 
 class BlogWritter:
-    def __init__(self, output_dir: Path, title: str, category: Optional[str] = None, tags: Optional[List[str]] = None) -> None:
+    def __init__(self, output_dir: Path, title: str, category: str | None = None, tags: list[str] | None = None) -> None:
         self.output_dir = output_dir
         self.title = title
         self.category = category or "uncategorized"

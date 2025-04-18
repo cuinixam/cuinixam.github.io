@@ -4,7 +4,7 @@ import textwrap
 import traceback
 from dataclasses import dataclass
 from pathlib import Path
-from typing import ClassVar, List
+from typing import ClassVar
 
 from mashumaro.config import TO_DICT_ADD_OMIT_NONE_FLAG, BaseConfig
 from mashumaro.mixins.json import DataClassJSONMixin
@@ -20,12 +20,12 @@ class TimelineEntry(DataClassJSONMixin):
 
 @dataclass
 class Timeline(DataClassJSONMixin):
-    entries: List[TimelineEntry]
+    entries: list[TimelineEntry]
 
     class Config(BaseConfig):
         """Base configuration for JSON serialization with omitted None values."""
 
-        code_generation_options: ClassVar[List[str]] = [TO_DICT_ADD_OMIT_NONE_FLAG]
+        code_generation_options: ClassVar[list[str]] = [TO_DICT_ADD_OMIT_NONE_FLAG]
 
     @classmethod
     def from_json_file(cls, file_path: Path) -> "Timeline":

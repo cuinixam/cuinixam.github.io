@@ -1,11 +1,10 @@
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import Annotated
 
 import typer
 from py_app_dev.core.exceptions import UserNotificationException
 from py_app_dev.core.logging import logger, setup_logger, time_it
-from typing_extensions import Annotated
 
 from jarvis import __version__
 from jarvis.blog import BlogWritter
@@ -41,7 +40,7 @@ def blog(
     title: str = typer.Option(help="Title of the blog post."),
     output_dir: Path = typer.Option(Path(__file__).parent.parent.parent.joinpath("docs/blogs"), help="Input timeline json file."),  # noqa: B008
     category: str = "uncategorized",
-    tags: Annotated[Optional[List[str]], typer.Option()] = None,
+    tags: Annotated[list[str] | None, typer.Option()] = None,
 ) -> None:
     BlogWritter(output_dir, title, category, tags).write()
 
