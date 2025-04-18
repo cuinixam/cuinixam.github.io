@@ -77,7 +77,7 @@ html_theme_options = {
         },
         {
             "name": "Blog RSS feed",
-            "url": "https://cuinixam.github.io/blogs/atom.xml",
+            "url": "https://maxiniuc.com/blogs/atom.xml",
             "icon": "fa-solid fa-rss",
         },
     ],
@@ -103,7 +103,7 @@ html_extra_path = ["presentations", "notebooks"]
 
 # -- ABlog ---------------------------------------------------
 
-blog_baseurl = "https://cuinixam.github.io"
+blog_baseurl = "https://maxiniuc.com"
 blog_title = "Alexandru Maxiniuc"
 blog_path = "blogs"
 blog_post_pattern = "blogs/*/*"
