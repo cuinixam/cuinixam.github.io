@@ -308,6 +308,24 @@ Teaming up with AI to develop a Python application for software product line eng
 ````{grid-item}
 :class: left
 ````
+````{grid-item-card}
+:class-item: entry right
+<!-- ------------------------------------------------------------------------- -->
+
+**2024** [Pypeline](https://github.com/cuinixam/pypeline)
+^^^
+
+Define your pipeline once in YAML and run it consistently across local environments and any CI/CD platform.
+
+````
+
+
+````{grid-item}
+:class: left
+````
+````{grid-item}
+:class: right
+````
 
 
 `````
