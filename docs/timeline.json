@@ -84,6 +84,11 @@
       "year": 2023,
       "title": "Yet Another Ninja Generator [(YANGA)](https://github.com/cuinixam/yanga)",
       "description": "Teaming up with AI to develop a Python application for software product line engineering. See the YANGA presentation [here](#presentations)."
+    },
+    {
+      "year": 2024,
+      "title": "[Pypeline](https://github.com/cuinixam/pypeline)",
+      "description": "Define your pipeline once in YAML and run it consistently across local environments and any CI/CD platform."
     }
   ]
 }
