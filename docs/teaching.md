@@ -14,23 +14,12 @@ I have prepared this Marimo Notebook to help my 14 years old son understand
 the concept of functions in general and linear functions in particular.
 ````
 
+````{grid-item-card} Comparing Objects: From Length to Surface Area and Beyond
+:text-align: justify
+:link: comparing_objects/index.html
+This notebook is intended to clarify concepts like "length", "surface area", and "volume" for 5th
+grade schoolers. It is designed to be used by parents and children together, with the goal of
+helping children understand these concepts in a fun and engaging way.
+````
 
 `````
-
-
-```{raw} html
-<div class="lessons-path">
-  <a href="lesson1.html" class="lesson-stop">
-    <div class="circle">1</div>
-    <div class="label">Intro</div>
-  </a>
-  <a href="lesson2.html" class="lesson-stop">
-    <div class="circle">2</div>
-    <div class="label">Coordinates</div>
-  </a>
-  <a href="lesson3.html" class="lesson-stop">
-    <div class="circle">3</div>
-    <div class="label">Vectors</div>
-  </a>
-</div>
-```
