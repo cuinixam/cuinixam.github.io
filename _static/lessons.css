@@ -1,0 +1,67 @@
+/* Container for the entire path */
+.lessons-path {
+    display: flex;
+    overflow-x: auto;
+    padding: 2rem;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    scroll-snap-type: x mandatory;
+}
+
+/* The path line */
+.lessons-path::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background-color: var(--pst-color-border);
+    z-index: 0;
+    transform: translateY(-50%);
+}
+
+/* Individual lesson stop */
+.lessons-path .lesson-stop {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    z-index: 1;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Circle marker */
+.lessons-path .lesson-stop .circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--pst-color-background);
+    border: 4px solid var(--pst-color-text-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Label below circle */
+.lessons-path .lesson-stop .label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    max-width: 6rem;
+}
+
+/* Hover effect */
+.lessons-path .lesson-stop:hover .circle {
+    transform: scale(1.2);
+    background-color: var(--pst-color-primary);
+    color: var(--pst-color-background);
+    cursor: pointer;
+}
