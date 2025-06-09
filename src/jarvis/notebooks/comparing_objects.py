@@ -669,7 +669,69 @@ def __(mo, plot_triangle_and_rectangle, triangle_peak):
 
 
 @app.cell
-def __(mo, intro_text, compare_by_length, compare_by_length_exercises, compare_multiple_dimensions, calculate_are_of_a_triangle):
+def __(mo):
+    def visualize_temperature_plot_over_time():
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        # Generate time data
+        time = np.arange(0, 24, 1)
+        # Generate temperature data
+        temperature = 20 + 10 * np.sin((time - 6) * np.pi / 12)  # Peak at noon, lowest at midnight
+
+        # Add initial and end points at (0,0) and (23,0)
+        time_with_ends = np.concatenate(([0], time, [23]))
+        temperature_with_ends = np.concatenate(([0], temperature, [0]))
+
+        # Create the plot
+        plt.figure(figsize=(10, 5))
+        plt.step(time_with_ends, temperature_with_ends, where="post", color="red")
+        plt.plot(time, temperature, marker="x", linestyle="-", color="blue")
+        plt.title("Temperature Over Time")
+        plt.xlabel("Time (hours)")
+        plt.ylabel("Temperature (°C)")
+        plt.xticks(np.arange(0, 25, 1))
+        plt.yticks(np.arange(0, 31, 1))
+        plt.grid(True)
+        plt.tight_layout()
+        # Return the plot
+        return plt.gcf()
+
+    return visualize_temperature_plot_over_time
+
+
+@app.cell
+def __(mo, visualize_temperature_plot_over_time):
+    homework = mo.vstack(
+        [
+            mo.md(
+                """
+                ## Challenge Yourself!
+
+                /// tip | First task
+                Try to find the area of a circle using only the knowledge you have learned so far.
+                You do not need to actually calculate it, just think about how you would do it.
+                ///
+
+                /// tip | Second task
+                I have measured the outside temperature every hour for a day and plotted it below.
+                How about calculating the area of the shape below?
+
+                **Hint:** I have added the grid lines and the measured temperature (in red) to help you visualize the area.
+                What happens if we measure the temperature every minute instead of every hour? Will the approximation be better?
+                ///
+
+                """
+            ),
+            visualize_temperature_plot_over_time(),
+        ],
+        gap=1,
+    )
+    return (homework,)
+
+
+@app.cell
+def __(mo, intro_text, compare_by_length, compare_by_length_exercises, compare_multiple_dimensions, calculate_are_of_a_triangle, homework):
     mo.vstack(
         [
             intro_text,
@@ -680,6 +742,7 @@ def __(mo, intro_text, compare_by_length, compare_by_length_exercises, compare_m
             mo.md(""),
             compare_multiple_dimensions,
             calculate_are_of_a_triangle,
+            homework,
         ],
         gap=1,
     )
