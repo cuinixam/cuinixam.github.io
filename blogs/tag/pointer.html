@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Posts tagged setup &#8212; Alexandru Maxiniuc</title>
+    <title>Posts tagged pointer &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -49,7 +49,7 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/setup';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/pointer';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -61,7 +61,7 @@
   rel="alternate"
   type="application/atom+xml"
   href="../../blogs/atom.xml"
-  title="Posts tagged setup"
+  title="Posts tagged pointer"
 />
   
   </head>
@@ -468,7 +468,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Posts tagged setup</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Posts tagged pointer</span></li>
   </ul>
 </nav>
 </div>
@@ -489,20 +489,20 @@
   <h1>
     
     <span
-      >Posts tagged  setup 
+      >Posts tagged  pointer 
     </span>
   </h1>
    
   <div class="section ablog-post">
     <h2 class="ablog-post-title">
-      <a href="../2024/homelab_setup_main_machine.html">Homelab - setup main machine</a>
+      <a href="../2025/c_portable_pointer_size.html">Why unit tests crashed on windows but worked on the microcontroller</a>
     </h2>
     <ul class="ablog-archive">
       <li>
          
         <i class="fa fa-calendar"></i>
         
-        <span>17 November 2024</span>
+        <span>24 September 2025</span>
         
       </li>
       <div class="ablog-sidebar-item ablog__postcard2">
@@ -514,7 +514,7 @@
       
     </span>
      
-    <a href="../category/diy.html">diy</a>
+    <a href="../category/learning.html">learning</a>
       
   </li>
    
@@ -525,28 +525,27 @@
        
     </span>
      
-    <a href="homelab.html">homelab</a>
+    <a href="c.html">c</a>
         
-    <a href="getting-started.html">getting started</a>
+    <a href="gtest.html">gtest</a>
         
-    <a href="#">setup</a>
+    <a href="#">pointer</a>
         
-    <a href="docker.html">docker</a>
-        
-    <a href="ansible.html">ansible</a>
-        
-    <a href="portainer.html">portainer</a>
+    <a href="portability.html">portability</a>
       
   </li>
    
 </div>
     </ul>
-    <p class="ablog-post-excerpt"><p>When starting my homelab journey, I needed a main machine to manage all devices and services in my network. Many homelab enthusiasts typically choose Linux for this purpose. However, my primary computer runs Windows 11, so I decided to use <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL2</a> with an Ubuntu distribution to fulfill this role.</p>
-<p>I followed the instructions provided in the <a class="reference external" href="https://learn.microsoft.com/en-us/windows/wsl/install">official documentation</a> to install WSL2 and had Ubuntu up and running quickly.</p>
+    <p class="ablog-post-excerpt"><p>When writing cross-platform code, it’s easy to forget that <strong>pointers don’t always have the same size</strong>.
+This caused a segmentation fault in one of our unit tests.</p>
+<p>On the Aurix MCU, pointers are 32-bit.
+In the code a pointer (memory address) was stored in a <code class="docutils literal notranslate"><span class="pre">uint32_t</span></code> variable.
+That worked fine on the target.</p>
 </p>
 
     <p class="ablog-post-expand">
-      <a href="../2024/homelab_setup_main_machine.html"><em>Read more ...</em></a>
+      <a href="../2025/c_portable_pointer_size.html"><em>Read more ...</em></a>
     </p>
     <hr />
   </div>

@@ -2,10 +2,84 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-06-09T11:48:45.157444+00:00</updated>
+  <updated>2025-09-24T12:06:16.832589+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2025/c_portable_pointer_size.html</id>
+    <title>Why unit tests crashed on windows but worked on the microcontroller</title>
+    <updated>2025-09-24T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="why-unit-tests-crashed-on-windows-but-worked-on-the-microcontroller"&gt;
+
+&lt;p&gt;When writing cross-platform code, it’s easy to forget that &lt;strong&gt;pointers don’t always have the same size&lt;/strong&gt;.
+This caused a segmentation fault in one of our unit tests.&lt;/p&gt;
+&lt;section id="what-happened"&gt;
+&lt;h2&gt;What happened&lt;/h2&gt;
+&lt;p&gt;On the Aurix MCU, pointers are 32-bit.
+In the code a pointer (memory address) was stored in a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uint32_t&lt;/span&gt;&lt;/code&gt; variable.
+That worked fine on the target.&lt;/p&gt;
+&lt;p&gt;But, when running the unit tests on the PC (Windows with GCC), pointers are &lt;strong&gt;64-bit&lt;/strong&gt;.
+Storing a 64-bit pointer into a 32-bit integer truncated the address.
+The compiler only issued a warning and still compiled.&lt;/p&gt;
+&lt;p&gt;Later, when the truncated value was cast back to a pointer and dereferenced, it pointed to invalid memory and crashed with a &lt;strong&gt;segmentation fault&lt;/strong&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="how-to-fix-it-and-make-the-code-portable"&gt;
+&lt;h2&gt;How to fix it and make the code portable&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;🚫 Never store a pointer in a fixed-width integer type (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uint32_t&lt;/span&gt;&lt;/code&gt;, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uint64_t&lt;/span&gt;&lt;/code&gt;, …).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;✅ Always use &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uintptr_t&lt;/span&gt;&lt;/code&gt; from &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;stdint.h&amp;gt;&lt;/span&gt;&lt;/code&gt; because it is guaranteed to be wide enough for a pointer on the current platform.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="wrong-vs-right"&gt;
+&lt;h2&gt;Wrong vs Right&lt;/h2&gt;
+&lt;div class="highlight-c notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;lt;stdint.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;lt;inttypes.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;42&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;// ❌ Wrong: pointer stored in fixed 32-bit type&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;uint32_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;wrong&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uint32_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="c1"&gt;// Works on 32-bit MCU, truncates on 64-bit host&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;bad&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;wrong&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;// may segfault&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrong addr = 0x%08&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PRIx32&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;wrong&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;// ✅ Right: use uintptr_t (pointer-sized integer type)&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;uintptr_t&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;right&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;uintptr_t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;good&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;right&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;right addr = 0x%&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;PRIxPTR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;, *good = %d&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;right&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;good&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Both &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;PRIx32&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;PRIxPTR&lt;/span&gt;&lt;/code&gt; come from &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;&amp;lt;inttypes.h&amp;gt;&lt;/span&gt;&lt;/code&gt;.
+They expand to the correct &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;printf&lt;/span&gt;&lt;/code&gt; format string for the given integer type:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;PRIx32&lt;/span&gt;&lt;/code&gt; - prints a 32-bit integer in hex.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;PRIxPTR&lt;/span&gt;&lt;/code&gt; - prints a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uintptr_t&lt;/span&gt;&lt;/code&gt; (pointer-sized integer) in hex.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This ensures portable and correct logging across platforms.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="final-thought"&gt;
+&lt;h2&gt;Final thought&lt;/h2&gt;
+&lt;p&gt;Using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uintptr_t&lt;/span&gt;&lt;/code&gt; instead of &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;uint32_t&lt;/span&gt;&lt;/code&gt; to store pointers makes the code portable when running unit tests on a 64-bit host.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2025/c_portable_pointer_size.html"/>
+    <summary>When writing cross-platform code, it’s easy to forget that pointers don’t always have the same size.
+This caused a segmentation fault in one of our unit tests.On the Aurix MCU, pointers are 32-bit.
+In the code a pointer (memory address) was stored in a uint32_t variable.
+That worked fine on the target.</summary>
+    <category term="c" label="c"/>
+    <category term="gtest" label="gtest"/>
+    <category term="pointer" label="pointer"/>
+    <category term="portability" label="portability"/>
+    <published>2025-09-24T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2025/coding_dojo_detect_ci_context.html</id>
     <title>Coding Dojo - Detect CI Context</title>
