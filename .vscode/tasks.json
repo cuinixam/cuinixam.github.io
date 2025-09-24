@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "install dependencies",
-      "command": "pypeline run --step CreateVEnv",
+      "command": "pypeline run --step CreateVEnv --step CreateVEnv",
       "type": "shell",
       "presentation": {
         "reveal": "always"
@@ -15,7 +15,7 @@
     },
     {
       "label": "run tests",
-      "command": "pypeline run --step PyTest",
+      "command": "pypeline run --step CreateVEnv --step PyTest",
       "type": "shell",
       "presentation": {
         "reveal": "always"
@@ -27,7 +27,7 @@
     },
     {
       "label": "generate docs",
-      "command": "pypeline run --step BuildDocs --single",
+      "command": "pypeline run --step CreateVEnv --step BuildDocs --single",
       "type": "shell",
       "presentation": {
         "reveal": "always"
@@ -39,7 +39,7 @@
     },
     {
       "label": "autobuild docs",
-      "command": "sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
+      "command": ".venv/Scripts/sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
       "type": "shell",
       "presentation": {
         "reveal": "always"
