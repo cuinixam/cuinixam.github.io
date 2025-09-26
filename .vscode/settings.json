@@ -1,5 +1,5 @@
 {
-  "python.testing.pytestArgs": ["tests"],
+  "python.testing.pytestArgs": [ "tests" ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "editor.formatOnSave": true,
@@ -28,5 +28,5 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.color": "#ff774d",
-  "cSpell.userWords": ["homelab", "imager", "bootloader"]
+  "cSpell.userWords": [ "homelab", "imager", "bootloader", "clanguru" ]
 }

@@ -143,3 +143,6 @@ cython_debug/
 
 # Bootstrap files
 .bootstrap/
+
+# Marimo cache
+__marimo__/
