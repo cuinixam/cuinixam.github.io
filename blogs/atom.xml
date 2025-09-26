@@ -2,10 +2,85 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-09-24T12:06:16.832589+00:00</updated>
+  <updated>2025-09-26T19:31:22.193601+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2025/what_you_did_not_want_to_know_about_your_code.html</id>
+    <title>What you did not want to know about your code</title>
+    <updated>2025-09-26T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="what-you-did-not-want-to-know-about-your-code"&gt;
+
+&lt;p&gt;As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
+This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.&lt;/p&gt;
+&lt;p&gt;I bought some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;esp32-h2&lt;/span&gt;&lt;/code&gt; development boards (they support WiFi, Thread and BLE), some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;SHT31-D&lt;/span&gt;&lt;/code&gt; sensors and started the old fashioned read the docs to get started to get started.
+I must say the &lt;a class="reference external" href="https://docs.espressif.com/projects/esp-matter/en/latest/esp32/developing.html"&gt;espressif docs&lt;/a&gt; are well written and the community is very active.&lt;/p&gt;
+&lt;p&gt;I am using a WSL Ubuntu on Windows 11 and getting the build environment to work was not as straightforward as I hoped:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;idf.py&lt;/span&gt;&lt;/code&gt; build system comes in a separate repository and needs to be set up to work&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the esp-matter repo is huge and takes a while to clone&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;getting the esp32 device visible as &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;/dev/ttyUSB0&lt;/span&gt;&lt;/code&gt; was tricky&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After a while I got the first example compiled and flashed to the device.&lt;/p&gt;
+&lt;p&gt;What I have noticed though was that the resulting binary was quite large (over 1.5MB) and I wondered what is actually in there.&lt;/p&gt;
+&lt;p&gt;Instead of just looking at the final binary and the object files, I thought it would be more interesting to see it as a dependency graph between the object files.
+For this I added a new command in a Python app I use to parse and analyze C/C++ sources, called &lt;a class="reference external" href="https://github.com/cuinixam/clanguru"&gt;clanguru&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The new &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;analyze&lt;/span&gt;&lt;/code&gt; command does the following:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;parse the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;compile_commands.json&lt;/span&gt;&lt;/code&gt; file to find all the object files&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;run &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;nm&lt;/span&gt;&lt;/code&gt; on each object file to get the global symbols and determine their type:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;extern&lt;/span&gt;&lt;/code&gt; for undefined globals - these are the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;required&lt;/span&gt;&lt;/code&gt; symbols&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;local&lt;/span&gt;&lt;/code&gt; for local globals - these are the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;provided&lt;/span&gt;&lt;/code&gt; symbols&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;create an html report using &lt;a class="reference external" href="https://cytoscape.org/"&gt;cytoscape.js&lt;/a&gt; to visualize the dependencies between the object files.
+I also added an option to group the object files in named containers based on their path.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The result is a nice interactive graph where you can zoom in and out, drag the nodes around and enjoy the complexity of the code base.&lt;/p&gt;
+&lt;p&gt;For my project it looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="dependency graph" src="https://maxiniuc.com/_images/objects_dependencies_graph.png" /&gt;&lt;/p&gt;
+&lt;p&gt;You can find the actual report &lt;a class="reference external" href="https://maxiniuc.com/objects_deps/index.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;aside class="system-message"&gt;
+&lt;p class="system-message-title"&gt;System Message: WARNING/2 (&lt;span class="docutils literal"&gt;/home/runner/work/cuinixam.github.io/cuinixam.github.io/docs/blogs/2025/what_you_did_not_want_to_know_about_your_code.md&lt;/span&gt;, line 46)&lt;/p&gt;
+&lt;p&gt;Non-consecutive header level increase; H1 to H3 [myst.header]&lt;/p&gt;
+&lt;/aside&gt;
+&lt;section id="use-clanguru-to-analyze-your-c-c-code"&gt;
+&lt;h2&gt;Use clanguru to analyze your C/C++ code&lt;/h2&gt;
+&lt;p&gt;Install clanguru using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pipx&lt;/span&gt;&lt;/code&gt; for isolated installation:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pipx&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;clanguru&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Check the help for the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;analyze&lt;/span&gt;&lt;/code&gt; command:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;clanguru&lt;/span&gt; &lt;span class="n"&gt;analyze&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;help&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You need to build your project and provide the compilation database (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;compile_commands.json&lt;/span&gt;&lt;/code&gt;).
+Also, ensure that the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;nm&lt;/span&gt;&lt;/code&gt; command-line tool is available in your user PATH.&lt;/p&gt;
+&lt;p&gt;To generate an html dynamic dependency report, run the following command:&lt;/p&gt;
+&lt;div class="highlight-shell notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;clanguru&lt;span class="w"&gt; &lt;/span&gt;analyze&lt;span class="w"&gt; &lt;/span&gt;--compilation-database&lt;span class="w"&gt; &lt;/span&gt;compile_commands.json&lt;span class="w"&gt; &lt;/span&gt;--output-file&lt;span class="w"&gt; &lt;/span&gt;dependencies.html&lt;span class="w"&gt; &lt;/span&gt;--use-parent-deps
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--use-parent-deps&lt;/span&gt;&lt;/code&gt; option will group the object files based on their parent directory.&lt;/p&gt;
+&lt;p&gt;If the output file extension is &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.xlsx&lt;/span&gt;&lt;/code&gt;, an Excel report will be generated instead of an HTML one.&lt;/p&gt;
+&lt;p&gt;If you have any questions or feedback, feel free to create an issue in the clanguru GitHub repository.&lt;/p&gt;
+&lt;p&gt;Have fun exploring your code dependencies! 😎&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2025/what_you_did_not_want_to_know_about_your_code.html"/>
+    <summary>As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
+This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.I bought some esp32-h2 development boards (they support WiFi, Thread and BLE), some SHT31-D sensors and started the old fashioned read the docs to get started to get started.
+I must say the espressif docs are well written and the community is very active.dependency graph</summary>
+    <category term="c" label="c"/>
+    <category term="clanguru" label="clanguru"/>
+    <category term="cytoscape" label="cytoscape"/>
+    <category term="dependency" label="dependency"/>
+    <category term="nm" label="nm"/>
+    <category term="objects" label="objects"/>
+    <published>2025-09-26T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2025/c_portable_pointer_size.html</id>
     <title>Why unit tests crashed on windows but worked on the microcontroller</title>
