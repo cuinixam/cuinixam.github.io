@@ -10,7 +10,7 @@ title: What you did not want to know about your code
 As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
 This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.
 
-I bought some `esp32-h2` development boards (they support WiFi, Thread and BLE), some `SHT31-D` sensors and started the old fashioned read the docs to get started to get started.
+I bought some `esp32-h2` development boards (they support WiFi, Thread and BLE), some `SHT31-D` sensors and started the old fashioned read the docs to get started.
 I must say the [espressif docs](https://docs.espressif.com/projects/esp-matter/en/latest/esp32/developing.html) are well written and the community is very active.
 
 I am using a WSL Ubuntu on Windows 11 and getting the build environment to work was not as straightforward as I hoped:

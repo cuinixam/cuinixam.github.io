@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-09-26T19:31:22.193601+00:00</updated>
+  <updated>2025-09-26T19:37:16.012945+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
@@ -14,7 +14,7 @@
 
 &lt;p&gt;As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
 This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.&lt;/p&gt;
-&lt;p&gt;I bought some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;esp32-h2&lt;/span&gt;&lt;/code&gt; development boards (they support WiFi, Thread and BLE), some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;SHT31-D&lt;/span&gt;&lt;/code&gt; sensors and started the old fashioned read the docs to get started to get started.
+&lt;p&gt;I bought some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;esp32-h2&lt;/span&gt;&lt;/code&gt; development boards (they support WiFi, Thread and BLE), some &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;SHT31-D&lt;/span&gt;&lt;/code&gt; sensors and started the old fashioned read the docs to get started.
 I must say the &lt;a class="reference external" href="https://docs.espressif.com/projects/esp-matter/en/latest/esp32/developing.html"&gt;espressif docs&lt;/a&gt; are well written and the community is very active.&lt;/p&gt;
 &lt;p&gt;I am using a WSL Ubuntu on Windows 11 and getting the build environment to work was not as straightforward as I hoped:&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -71,7 +71,7 @@ Also, ensure that the &lt;code class="docutils literal notranslate"&gt;&lt;span 
 </content>
     <link href="https://maxiniuc.com/blogs/2025/what_you_did_not_want_to_know_about_your_code.html"/>
     <summary>As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
-This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.I bought some esp32-h2 development boards (they support WiFi, Thread and BLE), some SHT31-D sensors and started the old fashioned read the docs to get started to get started.
+This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.I bought some esp32-h2 development boards (they support WiFi, Thread and BLE), some SHT31-D sensors and started the old fashioned read the docs to get started.
 I must say the espressif docs are well written and the community is very active.dependency graph</summary>
     <category term="c" label="c"/>
     <category term="clanguru" label="clanguru"/>
