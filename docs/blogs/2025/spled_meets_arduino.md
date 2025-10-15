@@ -12,7 +12,7 @@ which is a simple software product line for controlling an LED with different va
 
 - Disco: the LED blinks and one can change the blinking frequency
 - Sleep: the LED has a constant color and one can change the brightness
-- Spa: the LED brigthness pulsates and can either have one color or cycle through different colors
+- Spa: the LED brightness pulsates and cycles through different colors
 
 The current implementation creates an executable which can be run in the terminal and uses ANSI escape codes to change the color of the text.
 
@@ -88,7 +88,7 @@ YANGA supports variant and platform specific components, so we can define that s
 
 ```{code-block} yaml
 - name: Spa
-  description: The LED brigthness pulsates and can cycle through different colors
+  description: The LED brightness pulsates and can cycle through different colors
   components:
   - rte
   - spled
@@ -100,7 +100,7 @@ YANGA supports variant and platform specific components, so we can define that s
   features_selection_file: variants/Spa/config.txt
   platforms:
     win_exe:
-      components: 
+      components:
       # Windows main
       - main
       # Simulates a period task using `usleep`
@@ -118,4 +118,4 @@ The variant platform specific components should be used to defined components wh
 For this, YANGA supports platform specific components at the platform level, which would be a better place to define these components.
 ```
 
-```{code-block} yaml
+To be continued ...
