@@ -22,18 +22,6 @@ Why are we talking about a Line? A Product Line? A Software Product Line?
 
 --
 
-## Line
-
-<!-- .slide: data-transition="none" -->
-
---
-
-## Product Line
-
-<!-- .slide: data-transition="none" -->
-
---
-
 ## Software Product Line
 
 <!-- .slide: data-transition="none" -->
@@ -55,10 +43,6 @@ Terminology <!-- .element: class="monospacesmall" -->
 - Component <!-- .element: class="fragment" -->
 - Platform <!-- .element: class="fragment" -->
 - Assembly line <!-- .element: class="fragment" -->
-
-Note:
-
-May I see how to you do this?
 
 ---
 
@@ -216,16 +200,14 @@ yanga.yaml <!-- .element: class="monospacesmall" -->
 variants:
   - name: EnglishVariant
     description: Say hello in English.
-    bom:
-      components:
-        - main
-        - greeter
+    components:
+      - main
+      - greeter
   - name: GermanVariant
     description: Say hello in German.
-    bom:
-      components:
-        - main
-        - greeter
+    components:
+      - main
+      - greeter
     config_file: "config_de.txt"
 ```
 

@@ -2,10 +2,248 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-09-26T19:37:16.012945+00:00</updated>
+  <updated>2025-10-15T20:42:00.260188+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2025/yanga_spl_components.html</id>
+    <title>SPL components in YANGA</title>
+    <updated>2025-10-15T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="spl-components-in-yanga"&gt;
+
+&lt;p&gt;When building &lt;em&gt;software products&lt;/em&gt;, you often need different &lt;em&gt;variants&lt;/em&gt; for different purposes (like a basic vs. a pro version).
+These variants consist of &lt;em&gt;components&lt;/em&gt; that implement the features required for that particular variant.
+Each variant might be built for different &lt;em&gt;platforms&lt;/em&gt;, different hardware environments with their own constraints and capabilities.&lt;/p&gt;
+&lt;p&gt;When thinking about components, there are two main categories:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Components which implement your product’s features&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Components which provide the functionality for other components to run on a certain hardware platform&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sometimes you might hear these referred to as the application layer and drivers or low-level layer.&lt;/p&gt;
+&lt;p&gt;It seems natural to have two separate places to configure these components:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;One place for components that define what your product does&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Another place for components that every product needs when targeting a specific platform&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Indeed in YANGA, one can configure variant components and platform components.&lt;/p&gt;
+&lt;p&gt;Example for a variant configuration:&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;variants&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Spa&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;The LED brightness pulsates and cycles through different colors&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;light_controller&lt;/span&gt;&lt;span class="w"&gt;           &lt;/span&gt;&lt;span class="c1"&gt;# Light control algorithms&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;power_button&lt;/span&gt;&lt;span class="w"&gt;               &lt;/span&gt;&lt;span class="c1"&gt;# Power button handling&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# ... and other core features&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Example for a platform configuration:&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino_uno&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino_core&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;digital_pins&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;toolchain_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino.cmake&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;I happen to find a third use case that doesn’t fit neatly into either of these two categories: components that only some product variants need, and only on specific platforms.&lt;/p&gt;
+&lt;p&gt;I had a component that it only worked for Arduino, but I used it only for one of the four variants I was building. It didn’t make sense to put it in the platform configuration, because not every product variant needed it. But it also didn’t make sense to put it in the variant configuration, because it was platform specific.&lt;/p&gt;
+&lt;section id="three-places-for-components"&gt;
+&lt;h2&gt;Three Places for Components&lt;/h2&gt;
+&lt;p&gt;YANGA gives you three places to define components:&lt;/p&gt;
+&lt;section id="in-your-product-variant"&gt;
+&lt;h3&gt;1. In Your Product Variant&lt;/h3&gt;
+&lt;p&gt;For components that define what your product does, regardless of platform.&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;variants&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;WeatherStation&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sensor_reader&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;data_logger&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;weather_predictor&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="in-your-platform-configuration"&gt;
+&lt;h3&gt;2. In Your Platform Configuration&lt;/h3&gt;
+&lt;p&gt;For components that every product needs when targeting this platform.&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino_uno&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino_core&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;digital_pins&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;toolchain_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;arduino.cmake&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="in-your-variant-s-platform-specific-section"&gt;
+&lt;h3&gt;3. In Your Variant’s Platform-Specific Section&lt;/h3&gt;
+&lt;p&gt;For components that only some products need, and only on specific platforms.&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;variants&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;WeatherStation&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sensor_reader&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;data_logger&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;arduino_uno&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;hc_sr04_ultrasonic&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Arduino-specific sensor&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;raspberry_pi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;camera_module&lt;/span&gt;&lt;span class="w"&gt;       &lt;/span&gt;&lt;span class="c1"&gt;# RPi-specific camera&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Another use case for this third place is when you want to write integration tests. One can create components that combine together multiple components and only define them in the variant-platform section to be used only in that context.&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="linenos"&gt; 1&lt;/span&gt;&lt;span class="nt"&gt;variants&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="linenos"&gt; 2&lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Disco&lt;/span&gt;
+&lt;span class="linenos"&gt; 3&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;The LED blinks and one can change the blinking frequency&lt;/span&gt;
+&lt;span class="linenos"&gt; 4&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="linenos"&gt; 5&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spled&lt;/span&gt;
+&lt;span class="linenos"&gt; 6&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;power_signal_processing&lt;/span&gt;
+&lt;span class="linenos"&gt; 7&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;light_controller&lt;/span&gt;
+&lt;span class="linenos"&gt; 8&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;features_selection_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;variants/Disco/config.txt&lt;/span&gt;
+&lt;span class="hll"&gt;&lt;span class="linenos"&gt; 9&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="linenos"&gt;10&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;gtest&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="linenos"&gt;11&lt;/span&gt;&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;test_integrations_spled&lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Three places to define components might seem like overkill, but they help keep a clear structure in your project configuration.
+Each place has its purpose, and using them correctly can make your project easier to manage as it grows in complexity.&lt;/p&gt;
+&lt;p&gt;If you want to learn more about YANGA please check the &lt;a class="reference external" href="https://yanga.readthedocs.io/"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;✌️&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2025/yanga_spl_components.html"/>
+    <summary>When building software products, you often need different variants for different purposes (like a basic vs. a pro version).
+These variants consist of components that implement the features required for that particular variant.
+Each variant might be built for different platforms, different hardware environments with their own constraints and capabilities.When thinking about components, there are two main categories:</summary>
+    <category term="component" label="component"/>
+    <category term="spl" label="spl"/>
+    <category term="variant" label="variant"/>
+    <category term="yanga" label="yanga"/>
+    <published>2025-10-15T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2025/spled_meets_arduino.html</id>
+    <title>SPLED meets Arduino Uno</title>
+    <updated>2025-10-03T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="spled-meets-arduino-uno"&gt;
+
+&lt;p&gt;For our Software Product Line Engineering (SPLE) training we use the &lt;a class="reference external" href="https://github.com/avengineers/SPLed"&gt;SPLED&lt;/a&gt; repository,
+which is a simple software product line for controlling an LED with different variants:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Disco: the LED blinks and one can change the blinking frequency&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Sleep: the LED has a constant color and one can change the brightness&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Spa: the LED brightness pulsates and cycles through different colors&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The current implementation creates an executable which can be run in the terminal and uses ANSI escape codes to change the color of the text.&lt;/p&gt;
+&lt;p&gt;What I want to do is to port this example to an Arduino Uno, so that we can control an RGB LED with it.&lt;/p&gt;
+&lt;p&gt;I will not use the CMake build environment based on the &lt;a class="reference external" href="https://github.com/avengineers/spl-core"&gt;spl-core&lt;/a&gt; CMake modules,
+but instead use &lt;a class="reference external" href="https://github.com/cuinixam/yanga"&gt;YANGA&lt;/a&gt; which is a software product line build environment written in Python.
+YANGA uses &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.yaml&lt;/span&gt;&lt;/code&gt; configuration files and generates the CMake files for the actual build.&lt;/p&gt;
+&lt;p&gt;Although YANGA is platform independent, SPLED tools dependencies are only defined as &lt;a class="reference external" href="https://scoop.sh/"&gt;scoop&lt;/a&gt; packages for Windows.
+I am using a Windows 11 machine for this hacking session.&lt;/p&gt;
+&lt;section id="get-the-code"&gt;
+&lt;h2&gt;Get the code&lt;/h2&gt;
+&lt;p&gt;I forked SPLED and created the YANGA configuration files to build the different variants as with the original spl-core environment.&lt;/p&gt;
+&lt;p&gt;Clone the repository and setup the virtual environment to be able to run yanga:&lt;/p&gt;
+&lt;div class="highlight-powershell notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-branch&lt;/span&gt; &lt;span class="n"&gt;arduino_platform&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-single-branch&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;://&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cuinixam&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="n"&gt;SPLed&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;spled&lt;/span&gt;
+&lt;span class="nb"&gt;cd &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;spled&lt;/span&gt;
+&lt;span class="p"&gt;.\&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ps1&lt;/span&gt; &lt;span class="n"&gt;-install&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We can check the SPL configuration with:&lt;/p&gt;
+&lt;div class="highlight-powershell notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.\&lt;/span&gt;&lt;span class="n"&gt;yanga&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ps1&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-print&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This should print the variants, components and supported platforms:&lt;/p&gt;
+&lt;div class="highlight-default notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;PS&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;temp&lt;/span&gt;\&lt;span class="n"&gt;spled&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;\&lt;span class="n"&gt;yanga&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ps1&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;
+&lt;span class="n"&gt;START&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Starting&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="o"&gt;-----------------------------------------&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Project&lt;/span&gt; &lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;temp&lt;/span&gt;\&lt;span class="n"&gt;spled&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Parsed&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Found&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt; &lt;span class="n"&gt;component&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Found&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;variant&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;BlinkLed&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Dev&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Disco&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Sleep&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Spa&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Found&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="n"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;win_exe&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;gtest&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;arduino_nano&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;arduino_uno_r3&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Found&lt;/span&gt; &lt;span class="n"&gt;pipeline&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;     &lt;span class="n"&gt;Group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;CreateVEnv&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;ScoopInstall&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;WestInstall&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;GenerateEnvSetupScript&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;     &lt;span class="n"&gt;Group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;gen&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;KConfigGen&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;     &lt;span class="n"&gt;Group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;GenerateBuildSystemFiles&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;         &lt;span class="n"&gt;ExecuteBuild&lt;/span&gt;
+&lt;span class="n"&gt;INFO&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="o"&gt;-----------------------------------------&lt;/span&gt;
+&lt;span class="n"&gt;STOP&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;Finished&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;
+&lt;span class="n"&gt;PS&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;\&lt;span class="n"&gt;temp&lt;/span&gt;\&lt;span class="n"&gt;spled&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Our focus will be to build the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Spa&lt;/span&gt;&lt;/code&gt; variant for the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;arduino_uno_r3&lt;/span&gt;&lt;/code&gt; platform.&lt;/p&gt;
+&lt;section id="build-the-spa-variant-for-arduino-uno-r3"&gt;
+&lt;h3&gt;Build the Spa variant for Arduino Uno R3&lt;/h3&gt;
+&lt;p&gt;In order to build the Spa variant for the Arduino platform we have to make sure that the Windows executable (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;win_exe&lt;/span&gt;&lt;/code&gt; platform) specific components are not included when building for Arduino.
+YANGA supports variant and platform specific components, so we can define that some components are only included for the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;win_exe&lt;/span&gt;&lt;/code&gt; platform.&lt;/p&gt;
+&lt;div class="highlight-yaml notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Spa&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;The LED brightness pulsates and can cycle through different colors&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;rte&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spled&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;power_signal_processing&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;light_controller&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;power_button&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;main_control_knob&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;brightness_controller&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;features_selection_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;variants/Spa/config.txt&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;platforms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;win_exe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;components&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="c1"&gt;# Windows main&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;main&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="c1"&gt;# Simulates a period task using `usleep`&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;os&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="c1"&gt;# Prints to console using ANSI escape codes&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;console_interface&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="c1"&gt;# Reads key presses to detect `power on/off` and `up/down`&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;keyboard_interface&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;The variant platform specific components should be used to defined components which are relevant for this specific variant when built for the given platform.
+&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;main&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;os&lt;/span&gt;&lt;/code&gt; components are needed actually by all variants when built for &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;win_exe&lt;/span&gt;&lt;/code&gt;, so placing them in the variant platform specific section is not ideal.&lt;/p&gt;
+&lt;p&gt;For this, YANGA supports platform specific components at the platform level, which would be a better place to define these components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;To be continued …&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2025/spled_meets_arduino.html"/>
+    <summary>For our Software Product Line Engineering (SPLE) training we use the SPLED repository,
+which is a simple software product line for controlling an LED with different variants:Disco: the LED blinks and one can change the blinking frequency</summary>
+    <category term="arduino" label="arduino"/>
+    <category term="spl" label="spl"/>
+    <category term="spled" label="spled"/>
+    <category term="windows" label="windows"/>
+    <category term="yanga" label="yanga"/>
+    <published>2025-10-03T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2025/what_you_did_not_want_to_know_about_your_code.html</id>
     <title>What you did not want to know about your code</title>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimizing Tool Installation in SPL Build Environments &#8212; Alexandru Maxiniuc</title>
+    <title>SPLED meets Arduino Uno &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -48,7 +48,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2024/optimizing_tool_installation_in_spl_build_environments';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2025/spled_meets_arduino';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -383,7 +383,7 @@
      
     <i class="fa fa-calendar"></i>
     
-    <span>26 October 2024</span>
+    <span>03 October 2025</span>
     
   </h2>
   <ul>
@@ -411,13 +411,11 @@
         
     <a href="../tag/yanga.html">yanga</a>
         
-    <a href="../tag/build.html">build</a>
+    <a href="../tag/spled.html">spled</a>
         
-    <a href="../tag/optimization.html">optimization</a>
+    <a href="../tag/arduino.html">arduino</a>
         
-    <a href="../tag/tool.html">tool</a>
-        
-    <a href="../tag/dependency.html">dependency</a>
+    <a href="../tag/windows.html">windows</a>
       
   </li>
    
@@ -433,32 +431,32 @@
   <ul>
      
     <li>
-      <a href="../2025/yanga_spl_components.html">
+      <a href="yanga_spl_components.html">
         15 October - SPL components in YANGA
       </a>
     </li>
     
     <li>
-      <a href="../2025/spled_meets_arduino.html">
-        03 October - SPLED meets Arduino Uno
-      </a>
-    </li>
-    
-    <li>
-      <a href="../2025/what_you_did_not_want_to_know_about_your_code.html">
+      <a href="what_you_did_not_want_to_know_about_your_code.html">
         26 September - What you did not want to know about your code
       </a>
     </li>
     
     <li>
-      <a href="../2025/c_portable_pointer_size.html">
+      <a href="c_portable_pointer_size.html">
         24 September - Why unit tests crashed on windows but worked on the microcontroller
       </a>
     </li>
     
     <li>
-      <a href="../2025/coding_dojo_detect_ci_context.html">
+      <a href="coding_dojo_detect_ci_context.html">
         08 March - Coding Dojo - Detect CI Context
+      </a>
+    </li>
+    
+    <li>
+      <a href="vs_code_ctest.html">
+        05 February - Making Unit Tests Visible in Visual Studio Code with CTest and GoogleTest
       </a>
     </li>
     
@@ -520,7 +518,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Optimizing Tool Installation in SPL Build Environments</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">SPLED meets Arduino Uno</span></li>
   </ul>
 </nav>
 </div>
@@ -536,130 +534,106 @@
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="optimizing-tool-installation-in-spl-build-environments">
-<h1>Optimizing Tool Installation in SPL Build Environments<a class="headerlink" href="#optimizing-tool-installation-in-spl-build-environments" title="Link to this heading">#</a></h1>
-<p>I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.</p>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.</p>
-</section>
-<section id="the-problem-inefficient-tool-installation">
-<h2>The Problem: Inefficient Tool Installation<a class="headerlink" href="#the-problem-inefficient-tool-installation" title="Link to this heading">#</a></h2>
-<p>In our SPL build environments, all tools are being installed regardless of the specific needs of a developer or build target. This was not noticeable initially, but as the number of variants and use cases (e.g. different packaging formats, on target debugging, etc.) increased, the inefficiency became apparent.</p>
-<p>Basically, there is an <code class="docutils literal notranslate"><span class="pre">install</span></code> step at the beginning of the build pipeline that installs all the tools required by all variants and all possible build targets.</p>
-<p>Some use cases where this inefficiency is particularly noticeable include:</p>
+                   <section id="spled-meets-arduino-uno">
+<h1>SPLED meets Arduino Uno<a class="headerlink" href="#spled-meets-arduino-uno" title="Link to this heading">#</a></h1>
+<p>For our Software Product Line Engineering (SPLE) training we use the <a class="reference external" href="https://github.com/avengineers/SPLed">SPLED</a> repository,
+which is a simple software product line for controlling an LED with different variants:</p>
 <ul class="simple">
-<li><p>A developer working on a specific variant needs only a subset of tools.</p></li>
-<li><p>A CI pipeline for running static analysis (e.g. Mathworks Polyspace) does not need to build or package the software.</p></li>
+<li><p>Disco: the LED blinks and one can change the blinking frequency</p></li>
+<li><p>Sleep: the LED has a constant color and one can change the brightness</p></li>
+<li><p>Spa: the LED brightness pulsates and cycles through different colors</p></li>
 </ul>
-<p>The problem is more noticeable for developers spinning up a virtual machine (VM) to quickly test a change or for a developer setting up their environment for the first time.</p>
-<p>On the other hand, when releasing a product, it is essential to ensure that all tools are available because we have to make sure that all variants are passing the defined quality gates.</p>
-</section>
-<section id="brainstorming">
-<h2>Brainstorming<a class="headerlink" href="#brainstorming" title="Link to this heading">#</a></h2>
-<section id="categorizing-tools-into-generic-variant-and-build-target-sets">
-<h3>💡 Categorizing Tools into Generic, Variant, and Build Target Sets<a class="headerlink" href="#categorizing-tools-into-generic-variant-and-build-target-sets" title="Link to this heading">#</a></h3>
-<p>Let us categorize tools into three distinct sets:</p>
-<ol class="arabic simple">
-<li><p><strong>Generic Tools</strong>: Tools required by all variants and build targets (e.g., CMake, Python).</p></li>
-<li><p><strong>Variant-Specific Tools</strong>: Tools required only for certain variants (e.g., specific compilers for microcontrollers).</p></li>
-<li><p><strong>Build Target-Specific Tools</strong>: Tools required for specific build targets (e.g., static analysis tools like Polyspace).</p></li>
-</ol>
-<p><strong>Implementation Concept</strong></p>
-<ul class="simple">
-<li><p><strong>Separate Tool Dependency Files</strong>:</p>
-<ul>
-<li><p><strong>Generic Tool Dependencies File</strong>: Contains tools common to all variants.</p></li>
-<li><p><strong>Variant-Specific Tool Dependencies Files</strong>: Contains tools specific to a variant or overrides for generic tools.</p></li>
-</ul>
-</li>
-<li><p><strong>Merging Process</strong>:</p>
-<ul>
-<li><p>When building a variant, merge the generic and variant-specific tool files, with the variant-specific tools overriding any conflicts.</p></li>
-</ul>
-</li>
-<li><p><strong>Handling Build Target-Specific Tools</strong>:</p>
-<ul>
-<li><p>Dynamically add tools based on the selected build target.</p></li>
-</ul>
-</li>
-</ul>
-<p>This means that the <code class="docutils literal notranslate"><span class="pre">install</span></code> step in the pipeline will install only the tools required for the specific variant and build target.</p>
-<p><strong>Considerations</strong></p>
-<p>While this idea provides a structured approach to managing tool dependencies, there are some challenges/limitations to consider:</p>
-<ul class="simple">
-<li><p><strong>Complexity in Linking Tools to Build Targets</strong>: Tightly coupling tools to build targets might limit flexibility for other activities that require specific tools, such as generating reports or on-target debugging.</p></li>
-<li><p><strong>Aggregation of Tools for CI</strong>: Collecting all tools from generic, variant, and build target files for CI builds might introduce complexity in managing tool versions and resolving conflicts.</p></li>
-</ul>
-</section>
-<section id="introducing-scopes-as-an-abstraction-layer">
-<h3>💡 Introducing “Scopes” as an Abstraction Layer<a class="headerlink" href="#introducing-scopes-as-an-abstraction-layer" title="Link to this heading">#</a></h3>
-<p>One issue with the previous idea is the tight coupling of tools to build targets. The problem is that, in contrast to <code class="docutils literal notranslate"><span class="pre">variant</span></code>, a <code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">target</span></code> is not a domain term in SPL engineering. It is a technical term from the build system. This tight coupling might lead to confusion and make the system less flexible.</p>
-<p>To address this limitation, we proposed introducing <code class="docutils literal notranslate"><span class="pre">scopes</span></code> as a higher-level abstraction.</p>
-<div class="admonition-scopes admonition">
-<p class="admonition-title">Scopes</p>
-<p>Scopes encompass a specific activity or domain within the development process, representing a set of tools, configurations and steps required for that activity.</p>
-<p>Examples of scopes may include: <code class="docutils literal notranslate"><span class="pre">Build</span></code>, <code class="docutils literal notranslate"><span class="pre">StaticAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">Debugging</span></code>, <code class="docutils literal notranslate"><span class="pre">Reporting</span></code>, and <code class="docutils literal notranslate"><span class="pre">Deployment</span></code>.</p>
+<p>The current implementation creates an executable which can be run in the terminal and uses ANSI escape codes to change the color of the text.</p>
+<p>What I want to do is to port this example to an Arduino Uno, so that we can control an RGB LED with it.</p>
+<p>I will not use the CMake build environment based on the <a class="reference external" href="https://github.com/avengineers/spl-core">spl-core</a> CMake modules,
+but instead use <a class="reference external" href="https://github.com/cuinixam/yanga">YANGA</a> which is a software product line build environment written in Python.
+YANGA uses <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> configuration files and generates the CMake files for the actual build.</p>
+<p>Although YANGA is platform independent, SPLED tools dependencies are only defined as <a class="reference external" href="https://scoop.sh/">scoop</a> packages for Windows.
+I am using a Windows 11 machine for this hacking session.</p>
+<section id="get-the-code">
+<h2>Get the code<a class="headerlink" href="#get-the-code" title="Link to this heading">#</a></h2>
+<p>I forked SPLED and created the YANGA configuration files to build the different variants as with the original spl-core environment.</p>
+<p>Clone the repository and setup the virtual environment to be able to run yanga:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="p">-</span><span class="n">-branch</span> <span class="n">arduino_platform</span> <span class="p">-</span><span class="n">-single-branch</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">cuinixam</span><span class="p">/</span><span class="n">SPLed</span> <span class="n">C</span><span class="p">:\</span><span class="n">temp</span><span class="p">\</span><span class="n">spled</span>
+<span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">temp</span><span class="p">\</span><span class="n">spled</span>
+<span class="p">.\</span><span class="n">build</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-install</span>
+</pre></div>
 </div>
-<p><strong>Implementation Concept</strong></p>
-<ul class="simple">
-<li><p><strong>Scope-Specific Configuration Files</strong>:</p>
-<ul>
-<li><p>Each scope has its own configuration that lists the tools required for that scope.</p></li>
-<li><p>It might also need to specify also what has to be done, which steps have to be executed.</p></li>
-</ul>
-</li>
-<li><p><strong>Merging Tool Dependencies</strong>:</p>
-<ul>
-<li><p><strong>Hierarchy</strong>: Generic tools &lt; Variant Build Tools &lt; Scope-specific tools.</p></li>
-<li><p>When building, the script merges tools from these files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p>There shall no be no variant specific tools anymore other than the toolchain for building the software.</p></li>
-</ul>
-</li>
-</ul>
-<p><strong>Considerations</strong></p>
-<ul class="simple">
-<li><p><strong>Complexity in Managing Scopes</strong>: Managing a growing number of scopes might become complex.</p></li>
-<li><p><strong>User Awareness</strong>: Developers need to understand which scopes are relevant for their tasks.</p>
-<ul>
-<li><p>How are scopes related to build targets?</p></li>
-</ul>
-</li>
-</ul>
+<p>We can check the SPL configuration with:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">yanga</span><span class="p">.</span><span class="n">ps1</span> <span class="n">run</span> <span class="p">-</span><span class="n">-print</span>
+</pre></div>
+</div>
+<p>This should print the variants, components and supported platforms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PS</span> <span class="n">C</span><span class="p">:</span>\<span class="n">temp</span>\<span class="n">spled</span><span class="o">&gt;</span> <span class="o">.</span>\<span class="n">yanga</span><span class="o">.</span><span class="n">ps1</span> <span class="n">run</span> <span class="o">--</span><span class="nb">print</span>
+<span class="n">START</span>    <span class="o">|</span> <span class="n">Starting</span> <span class="n">run</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="o">-----------------------------------------</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Project</span> <span class="n">directory</span><span class="p">:</span> <span class="n">C</span><span class="p">:</span>\<span class="n">temp</span>\<span class="n">spled</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Parsed</span> <span class="mi">6</span> <span class="n">configuration</span> <span class="n">file</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Found</span> <span class="mi">20</span> <span class="n">component</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Found</span> <span class="mi">5</span> <span class="n">variant</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">BlinkLed</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">Base</span><span class="o">/</span><span class="n">Dev</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">Disco</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">Sleep</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">Spa</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Found</span> <span class="mi">4</span> <span class="n">platforms</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">win_exe</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">gtest</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">arduino_nano</span>
+<span class="n">INFO</span>     <span class="o">|</span>   <span class="o">-</span> <span class="n">arduino_uno_r3</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="n">Found</span> <span class="n">pipeline</span> <span class="n">config</span><span class="p">:</span>
+<span class="n">INFO</span>     <span class="o">|</span>     <span class="n">Group</span><span class="p">:</span> <span class="n">install</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">CreateVEnv</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">ScoopInstall</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">WestInstall</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">GenerateEnvSetupScript</span>
+<span class="n">INFO</span>     <span class="o">|</span>     <span class="n">Group</span><span class="p">:</span> <span class="n">gen</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">KConfigGen</span>
+<span class="n">INFO</span>     <span class="o">|</span>     <span class="n">Group</span><span class="p">:</span> <span class="n">build</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">GenerateBuildSystemFiles</span>
+<span class="n">INFO</span>     <span class="o">|</span>         <span class="n">ExecuteBuild</span>
+<span class="n">INFO</span>     <span class="o">|</span> <span class="o">-----------------------------------------</span>
+<span class="n">STOP</span>     <span class="o">|</span> <span class="n">Finished</span> <span class="n">run</span> <span class="ow">in</span> <span class="mf">0.05</span><span class="n">s</span>
+<span class="n">PS</span> <span class="n">C</span><span class="p">:</span>\<span class="n">temp</span>\<span class="n">spled</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Our focus will be to build the <code class="docutils literal notranslate"><span class="pre">Spa</span></code> variant for the <code class="docutils literal notranslate"><span class="pre">arduino_uno_r3</span></code> platform.</p>
+<section id="build-the-spa-variant-for-arduino-uno-r3">
+<h3>Build the Spa variant for Arduino Uno R3<a class="headerlink" href="#build-the-spa-variant-for-arduino-uno-r3" title="Link to this heading">#</a></h3>
+<p>In order to build the Spa variant for the Arduino platform we have to make sure that the Windows executable (<code class="docutils literal notranslate"><span class="pre">win_exe</span></code> platform) specific components are not included when building for Arduino.
+YANGA supports variant and platform specific components, so we can define that some components are only included for the <code class="docutils literal notranslate"><span class="pre">win_exe</span></code> platform.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Spa</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The LED brightness pulsates and can cycle through different colors</span>
+<span class="w">  </span><span class="nt">components</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rte</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spled</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">power_signal_processing</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">light_controller</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">power_button</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main_control_knob</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brightness_controller</span>
+<span class="w">  </span><span class="nt">features_selection_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">variants/Spa/config.txt</span>
+<span class="w">  </span><span class="nt">platforms</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">win_exe</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">components</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Windows main</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">      </span><span class="c1"># Simulates a period task using `usleep`</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">os</span>
+<span class="w">      </span><span class="c1"># Prints to console using ANSI escape codes</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">console_interface</span>
+<span class="w">      </span><span class="c1"># Reads key presses to detect `power on/off` and `up/down`</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyboard_interface</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The variant platform specific components should be used to defined components which are relevant for this specific variant when built for the given platform.
+<code class="docutils literal notranslate"><span class="pre">main</span></code> and <code class="docutils literal notranslate"><span class="pre">os</span></code> components are needed actually by all variants when built for <code class="docutils literal notranslate"><span class="pre">win_exe</span></code>, so placing them in the variant platform specific section is not ideal.</p>
+<p>For this, YANGA supports platform specific components at the platform level, which would be a better place to define these components.</p>
+</div>
+<p>To be continued …</p>
 </section>
-<section id="keep-current-solution-and-speed-up-installation-of-all-tools">
-<h3>💡 Keep current solution and speed up installation of all tools<a class="headerlink" href="#keep-current-solution-and-speed-up-installation-of-all-tools" title="Link to this heading">#</a></h3>
-<p>Another idea was to keep the current solution but speed up the installation process. This could be achieved by:</p>
-<ul class="simple">
-<li><p>CI jobs to install all tools on all agents</p></li>
-<li><p>Disable automatic installation of tools on developer machines. The developer can then install the required tools manually.</p></li>
-</ul>
-<p>This idea is the least intrusive and requires the least amount of changes. However, it does not address the root cause of the problem. It is more of a workaround. 🙈</p>
-</section>
-</section>
-<section id="final-approach-introducing-scopes">
-<h2>Final Approach: Introducing Scopes<a class="headerlink" href="#final-approach-introducing-scopes" title="Link to this heading">#</a></h2>
-<p>Introducing “scopes” as an abstraction layer offers a more flexible and domain-aligned solution for optimizing tool installation in an SPL build environment.</p>
-<p>Scopes align with the development process, makes it easier for developers and platform engineers to understand and manage not only tool dependencies but also the steps required for a specific activity.</p>
-<p>The final approach involves:</p>
-<ol class="arabic simple">
-<li><p><strong>Defining Scopes</strong>: Identify and define scopes that represent activities or domains within the development process.</p></li>
-<li><p><strong>Scope-Specific Configuration Files</strong>: Create configuration files for each scope that list the tools required for that scope.</p></li>
-<li><p><strong>Merging Tool Dependencies</strong>: Merge tools from generic, variant build, and scope-specific files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p><strong>Implementing Scope-Specific Steps</strong>: Define and implement steps for each scope that specify what has to be done, which tools have to be installed, and which steps have to be executed.</p></li>
-</ol>
-<p>This approach ensures that only the tools required for a specific activity are installed, optimizing the build environment and enhancing developer productivity.</p>
-<p>There is one important aspect to consider: in the end one must be able insure a certain quality level for the software product as a whole. This means one needs to:</p>
-<ul class="simple">
-<li><p>define quality gates for the whole product and breaking them down to the individual variants</p></li>
-<li><p>map scopes to quality gates for each variant. Different variants might have different quality gates based on their maturity (e.g., prototype, beta, street ready).</p></li>
-</ul>
-<p>The topics of quality gates and maturity levels, although related, deserve a separate blog post and I will not go into detail here.</p>
-</section>
-<section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
-<p>I hope this blog post has provided you with insights into the challenges of optimizing tool installation in SPL build environments and the thought process in addressing this challenge.</p>
-<p>There will for sure be more questions to answer when actually implementing the solution but until then, keep fingers crossed and stay tuned for more updates on this topic.</p>
 </section>
 </section>
 
@@ -668,19 +642,19 @@
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
      
-    <a href="efficiently_embedding_git_information_in_c_projects.html">
+    <a href="what_you_did_not_want_to_know_about_your_code.html">
       
       <i class="fa fa-arrow-circle-left"></i>
       
-      <span>Efficiently Embedding Git Information in C Projects</span>
+      <span>What you did not want to know about your code</span>
     </a>
     
   </span>
   <span class="ablog__spacer">&nbsp;</span>
   <span class="ablog__next">
      
-    <a href="homelab_setup_main_machine.html">
-      <span>Homelab - setup main machine</span>
+    <a href="yanga_spl_components.html">
+      <span>SPL components in YANGA</span>
       
       <i class="fa fa-arrow-circle-right"></i>
       
@@ -719,16 +693,10 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-inefficient-tool-installation">The Problem: Inefficient Tool Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brainstorming">Brainstorming</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorizing-tools-into-generic-variant-and-build-target-sets">💡 Categorizing Tools into Generic, Variant, and Build Target Sets</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introducing-scopes-as-an-abstraction-layer">💡 Introducing “Scopes” as an Abstraction Layer</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-current-solution-and-speed-up-installation-of-all-tools">💡 Keep current solution and speed up installation of all tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-the-code">Get the code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-spa-variant-for-arduino-uno-r3">Build the Spa variant for Arduino Uno R3</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-approach-introducing-scopes">Final Approach: Introducing Scopes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
 </ul>
   </nav></div>
 
@@ -736,7 +704,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/blogs/2024/optimizing_tool_installation_in_spl_build_environments.md.txt"
+      <li><a href="../../_sources/blogs/2025/spled_meets_arduino.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
