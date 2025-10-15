@@ -92,6 +92,9 @@ lint.per-file-ignores."tests/**/*" = [
 ]
 lint.isort.known-first-party = [ "jarvis", "tests" ]
 
+[tool.codespell]
+skip = "docs/presentations/objects_deps/index.html"
+
 [tool.pytest.ini_options]
 addopts = "-v -Wdefault --cov=jarvis --cov-report=term-missing:skip-covered"
 pythonpath = [ "src" ]
