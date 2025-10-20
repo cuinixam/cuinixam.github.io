@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset='utf-8'>
+<title>All Reports</title>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:2rem auto;background:#f7f8fa;color:#222;max-width:1200px}
+h1{margin:0 0 1.5rem;color:#2c3e50;text-align:center}
+.reports-table{width:100%;max-width:900px;margin:0 auto;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.reports-table th{background:#34495e;color:#fff;padding:1rem;text-align:left;font-weight:600}
+.reports-table td{padding:0.75rem 1rem;border-bottom:1px solid #ecf0f1}
+.reports-table tr:hover{background:#f8f9fa}
+.variant-name{font-weight:600;color:#2c3e50;min-width:120px}
+.platform-name{font-family:monospace;background:#ecf0f1;padding:0.25rem 0.5rem;border-radius:4px;font-size:0.9em;min-width:140px;display:inline-block}
+.build-type{color:#7f8c8d;font-style:italic;min-width:100px;display:inline-block}
+.report-link{display:inline-block;background:#3498db;color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-size:0.9rem;transition:background 0.2s;min-width:100px;text-align:center}
+.report-link:hover{background:#2980b9;text-decoration:none}
+.no-reports{text-align:center;padding:3rem;color:#7f8c8d;font-style:italic}</style>
+<h1>All Reports</h1>
+<table class='reports-table'>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Platform</th>
+<th>Build Type</th>
+<th>Report</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class='variant-name'>Disco</td><td><span class='platform-name'>gtest</span></td><td></td><td><a href='Disco/gtest/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td></td><td><span class='platform-name'>win_exe</span></td><td><span class='build-type'>Debug</span></td><td><a href='Disco/win_exe/Debug/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td class='variant-name'>Sleep</td><td><span class='platform-name'>gtest</span></td><td></td><td><a href='Sleep/gtest/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td></td><td><span class='platform-name'>win_exe</span></td><td><span class='build-type'>Debug</span></td><td><a href='Sleep/win_exe/Debug/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td class='variant-name'>Spa</td><td><span class='platform-name'>arduino_uno_r3</span></td><td></td><td><a href='Spa/arduino_uno_r3/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td></td><td><span class='platform-name'>gtest</span></td><td></td><td><a href='Spa/gtest/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+<tr><td></td><td><span class='platform-name'>win_exe</span></td><td><span class='build-type'>Debug</span></td><td><a href='Spa/win_exe/Debug/reports/index.html' target='_blank' rel='noopener' class='report-link'>Open Report</a></td></tr>
+</tbody>
+</table>
