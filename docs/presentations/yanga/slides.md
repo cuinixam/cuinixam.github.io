@@ -250,8 +250,6 @@ components:
 
 ## <img src="images/yanga.png" class="inline-image"> <a href="https://github.com/cuinixam/yanga">YANGA</a>
 
-<!-- .slide: data-background-iframe="https://yanga.readthedocs.io/en/latest/project_info.html" -->
-
 ---
 
 ## ❕Thank you❕

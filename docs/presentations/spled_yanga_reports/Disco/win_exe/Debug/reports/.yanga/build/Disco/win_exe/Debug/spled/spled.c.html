@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spled.c &mdash; Disco 2025-10-20</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/sphinx_rtd_size.css?v=3b072d6b" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-needs/common.css?v=bd9ab754" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-needs/layouts.css?v=448c382f" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-needs/modern.css?v=ffa536d2" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-needs/styles.css?v=6c8eb985" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=4009583e"></script>
+        <script src="../../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+        <script src="../../../../../../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+        <script src="../../../../../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+        <script src="../../../../../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+        <script src="../../../../../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=f783d6a5"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="Software Detailed Design" href="../../../../../../components/power_signal_processing/doc/index.html" />
+    <link rel="prev" title="CppCheck Report" href="cppcheck_report.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            Disco
+              <img src="../../../../../../_static/SPLED_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../doc/software_architecture/index.html">Software Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../../doc/components.html">Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#rte">rte</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../../../doc/components.html#spled">spled</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cppcheck_report.html">CppCheck Report</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">spled.c</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#spled">spled</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#task-init">Task_Init</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#task-100ms">Task_100ms</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#task-10ms">Task_10ms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#power-signal-processing">power_signal_processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#light-controller">light_controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#power-button">power_button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#main-control-knob">main_control_knob</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#console-interface">console_interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#keyboard-interface">keyboard_interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#win-main">win_main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../../doc/components.html#win-scheduler">win_scheduler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kconfig/autoconf.html">Variant Feature Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../targets_data.html">Target Dependencies Documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="../../../../../../objects_deps.html">Objects Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">Disco</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../doc/components.html">Components</a></li>
+      <li class="breadcrumb-item active">spled.c</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../../../_sources/.yanga/build/Disco/win_exe/Debug/spled/spled.c.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spled-c">
+<h1>spled.c<a class="headerlink" href="#spled-c" title="Link to this heading"></a></h1>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<section id="spled">
+<h3>spled<a class="headerlink" href="#spled" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">14</span><span class="kt">void</span><span class="w"> </span><span class="nf">spled</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">15</span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">    </span><span class="n">powerButton</span><span class="p">();</span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">powerSignalProcessing</span><span class="p">();</span>
+<span class="linenos">18</span><span class="w">    </span><span class="n">mainControlKnob</span><span class="p">();</span>
+<span class="linenos">19</span><span class="cp">#if defined(CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED) &amp;&amp; CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED == 1</span>
+<span class="linenos">20</span><span class="w">    </span><span class="n">brightnessController</span><span class="p">();</span>
+<span class="linenos">21</span><span class="cp">#endif</span>
+<span class="linenos">22</span><span class="w">    </span><span class="n">lightController</span><span class="p">();</span>
+<span class="linenos">23</span><span class="w">    </span><span class="n">ledInterface</span><span class="p">();</span>
+<span class="linenos">24</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="task-init">
+<h3>Task_Init<a class="headerlink" href="#task-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">26</span><span class="kt">void</span><span class="w"> </span><span class="nf">Task_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">27</span><span class="p">{</span>
+<span class="linenos">28</span><span class="w">    </span><span class="n">ledInterface_init</span><span class="p">();</span>
+<span class="linenos">29</span><span class="w">    </span><span class="n">buttonInterface_init</span><span class="p">();</span>
+<span class="linenos">30</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="task-100ms">
+<h3>Task_100ms<a class="headerlink" href="#task-100ms" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">32</span><span class="kt">void</span><span class="w"> </span><span class="nf">Task_100ms</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">33</span><span class="p">{</span>
+<span class="linenos">34</span><span class="cp">#if (defined(CONFIG_OS_TASK_PERIOD) &amp;&amp; CONFIG_OS_TASK_PERIOD == 100)</span>
+<span class="linenos">35</span><span class="w">    </span><span class="c1">// Call the main application function every 100ms</span>
+<span class="linenos">36</span><span class="w">    </span><span class="n">spled</span><span class="p">();</span>
+<span class="linenos">37</span><span class="cp">#endif</span>
+<span class="linenos">38</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="task-10ms">
+<h3>Task_10ms<a class="headerlink" href="#task-10ms" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">40</span><span class="kt">void</span><span class="w"> </span><span class="nf">Task_10ms</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">41</span><span class="p">{</span>
+<span class="linenos">42</span><span class="cp">#if (defined(CONFIG_OS_TASK_PERIOD) &amp;&amp; CONFIG_OS_TASK_PERIOD == 10)</span>
+<span class="linenos">43</span><span class="w">    </span><span class="c1">// Call the main application function every 10ms</span>
+<span class="linenos">44</span><span class="w">    </span><span class="n">spled</span><span class="p">();</span>
+<span class="linenos">45</span><span class="cp">#endif</span>
+<span class="linenos">46</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cppcheck_report.html" class="btn btn-neutral float-left" title="CppCheck Report" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../../../../../components/power_signal_processing/doc/index.html" class="btn btn-neutral float-right" title="Software Detailed Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RMT and Friends.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

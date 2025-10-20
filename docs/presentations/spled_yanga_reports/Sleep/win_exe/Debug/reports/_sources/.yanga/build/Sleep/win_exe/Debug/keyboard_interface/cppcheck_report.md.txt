@@ -1,0 +1,86 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 5
+
+Issues by severity:
+- information: 3
+- style: 2
+
+## keyboard_interface.c
+
+Location: components\keyboard_interface\src\keyboard_interface.c
+
+### Information: missingIncludeSystem
+
+Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 1
+#include <windows.h>
+#include "button_interface.h"
+
+void buttonInterface_init(void)
+```
+
+### Style: unusedFunction
+
+The function 'buttonInterface_init' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#include <windows.h>
+#include "button_interface.h"
+
+void buttonInterface_init(void)
+{
+    // No initialization needed for Windows console
+}
+```
+
+### Style: unusedFunction
+
+The function 'ButtonInterfaceIsButtonPressed' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 6
+:emphasize-lines: 4
+    // No initialization needed for Windows console
+}
+
+boolean ButtonInterfaceIsButtonPressed(KeyCodes key)
+{
+    return (GetAsyncKeyState(key) & 0x8000) != 0;
+}
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

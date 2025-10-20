@@ -53,4 +53,13 @@ It is surprising how many objects are created and how they are connected to each
 a simple temperature and humidity monitoring application.
 ````
 
+---
+
+````{grid-item-card} SPLED Yanga Reports
+:text-align: justify
+:link: spled_yanga_reports/index.html
+
+Example of generated reports for an embedded software product line with multiple variants using YANGA.
+````
+
 `````

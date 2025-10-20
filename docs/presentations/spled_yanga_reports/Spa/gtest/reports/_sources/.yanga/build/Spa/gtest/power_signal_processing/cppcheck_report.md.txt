@@ -1,0 +1,53 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 3
+
+Issues by severity:
+- information: 2
+- style: 1
+
+## power_signal_processing.c
+
+Location: components\power_signal_processing\src\power_signal_processing.c
+
+### Style: unusedFunction
+
+The function 'powerSignalProcessing' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 13
+:emphasize-lines: 4
+ *    :implements: SWDD_PSP-001, SWDD_PSP-002, SWDD_PSP-003
+ * ```
+ */
+void powerSignalProcessing(void)
+{
+    // Check if "P" key was pressed
+    if (RteGetPowerKeyPressedEvent())
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

@@ -1,0 +1,106 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 6
+
+Issues by severity:
+- information: 4
+- style: 2
+
+## console_interface.c
+
+Location: components\console_interface\src\console_interface.c
+
+### Information: missingIncludeSystem
+
+Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#include "led_interface.h"
+
+#include "rte.h"
+#include <stdio.h>
+#include <windows.h>
+
+static RGBColor previousLightValue = {255, 255, 255};
+```
+
+### Information: missingIncludeSystem
+
+Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 2
+:emphasize-lines: 4
+
+#include "rte.h"
+#include <stdio.h>
+#include <windows.h>
+
+static RGBColor previousLightValue = {255, 255, 255};
+
+```
+
+### Style: unusedFunction
+
+The function 'ledInterface_init' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 6
+:emphasize-lines: 4
+
+static RGBColor previousLightValue = {255, 255, 255};
+
+void ledInterface_init(void)
+{
+    previousLightValue.red = 255;
+    previousLightValue.green = 255;
+```
+
+### Style: unusedFunction
+
+The function 'ledInterface' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 13
+:emphasize-lines: 4
+    previousLightValue.blue = 255;
+}
+
+void ledInterface(void)
+{
+    RGBColor lightValue;
+
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

@@ -1,0 +1,1215 @@
+# main.cpp
+
+## Functions
+
+### pgm_read_char
+
+```{code-block} c
+:linenos:
+:lineno-start: 425
+
+_Avrlibc_Def_Pgm_1 (char, char)
+```
+
+### pgm_read_unsigned_char
+
+```{code-block} c
+:linenos:
+:lineno-start: 426
+
+_Avrlibc_Def_Pgm_1 (unsigned_char, unsigned char)
+```
+
+### pgm_read_signed_char
+
+```{code-block} c
+:linenos:
+:lineno-start: 427
+
+_Avrlibc_Def_Pgm_1 (signed_char, signed char)
+```
+
+### pgm_read_u8
+
+```{code-block} c
+:linenos:
+:lineno-start: 428
+
+_Avrlibc_Def_Pgm_1 (u8, uint8_t)
+```
+
+### pgm_read_i8
+
+```{code-block} c
+:linenos:
+:lineno-start: 429
+
+_Avrlibc_Def_Pgm_1 (i8, int8_t)
+```
+
+### pgm_read_u16
+
+```{code-block} c
+:linenos:
+:lineno-start: 442
+
+_Avrlibc_Def_Pgm_2 (u16, uint16_t)
+```
+
+### pgm_read_i16
+
+```{code-block} c
+:linenos:
+:lineno-start: 443
+
+_Avrlibc_Def_Pgm_2 (i16, int16_t)
+```
+
+### pgm_read_short
+
+```{code-block} c
+:linenos:
+:lineno-start: 452
+
+_Avrlibc_Def_Pgm_2 (short, short)
+```
+
+### pgm_read_unsigned_short
+
+```{code-block} c
+:linenos:
+:lineno-start: 453
+
+_Avrlibc_Def_Pgm_2 (unsigned_short, unsigned short)
+```
+
+### pgm_read_u32
+
+```{code-block} c
+:linenos:
+:lineno-start: 465
+
+_Avrlibc_Def_Pgm_4 (u32, uint32_t)
+```
+
+### pgm_read_i32
+
+```{code-block} c
+:linenos:
+:lineno-start: 466
+
+_Avrlibc_Def_Pgm_4 (i32, int32_t)
+```
+
+### pgm_read_float
+
+```{code-block} c
+:linenos:
+:lineno-start: 467
+
+_Avrlibc_Def_Pgm_4 (float, float)
+```
+
+### pgm_read_long
+
+```{code-block} c
+:linenos:
+:lineno-start: 469
+
+_Avrlibc_Def_Pgm_4 (long, long)
+```
+
+### pgm_read_unsigned_long
+
+```{code-block} c
+:linenos:
+:lineno-start: 470
+
+_Avrlibc_Def_Pgm_4 (unsigned_long, unsigned long)
+```
+
+### pgm_read_u64
+
+```{code-block} c
+:linenos:
+:lineno-start: 484
+
+_Avrlibc_Def_Pgm_8 (u64, uint64_t)
+```
+
+### pgm_read_i64
+
+```{code-block} c
+:linenos:
+:lineno-start: 485
+
+_Avrlibc_Def_Pgm_8 (i64, int64_t)
+```
+
+### pgm_read_long_long
+
+```{code-block} c
+:linenos:
+:lineno-start: 486
+
+_Avrlibc_Def_Pgm_8 (long_long, long long)
+```
+
+### pgm_read_unsigned_long_long
+
+```{code-block} c
+:linenos:
+:lineno-start: 487
+
+_Avrlibc_Def_Pgm_8 (unsigned_long_long, unsigned long long)
+```
+
+### pgm_read_double
+
+```{code-block} c
+:linenos:
+:lineno-start: 490
+
+_Avrlibc_Def_Pgm_8 (double, double)
+```
+
+### pgm_read_long_double
+
+```{code-block} c
+:linenos:
+:lineno-start: 493
+
+_Avrlibc_Def_Pgm_8 (long_double, long double)
+```
+
+### pgm_read_char_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 856
+
+_Avrlibc_Def_Pgm_Far_1 (char, char)
+```
+
+### pgm_read_unsigned_char_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 857
+
+_Avrlibc_Def_Pgm_Far_1 (unsigned_char, unsigned char)
+```
+
+### pgm_read_signed_char_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 858
+
+_Avrlibc_Def_Pgm_Far_1 (signed_char, signed char)
+```
+
+### pgm_read_u8_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 859
+
+_Avrlibc_Def_Pgm_Far_1 (u8, uint8_t)
+```
+
+### pgm_read_i8_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 860
+
+_Avrlibc_Def_Pgm_Far_1 (i8, int8_t)
+```
+
+### pgm_read_u16_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 873
+
+_Avrlibc_Def_Pgm_Far_2 (u16, uint16_t)
+```
+
+### pgm_read_i16_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 874
+
+_Avrlibc_Def_Pgm_Far_2 (i16, int16_t)
+```
+
+### pgm_read_short_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 883
+
+_Avrlibc_Def_Pgm_Far_2 (short, short)
+```
+
+### pgm_read_unsigned_short_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 884
+
+_Avrlibc_Def_Pgm_Far_2 (unsigned_short, unsigned short)
+```
+
+### pgm_read_u32_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 896
+
+_Avrlibc_Def_Pgm_Far_4 (u32, uint32_t)
+```
+
+### pgm_read_i32_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 897
+
+_Avrlibc_Def_Pgm_Far_4 (i32, int32_t)
+```
+
+### pgm_read_float_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 898
+
+_Avrlibc_Def_Pgm_Far_4 (float, float)
+```
+
+### pgm_read_long_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 900
+
+_Avrlibc_Def_Pgm_Far_4 (long, long)
+```
+
+### pgm_read_unsigned_long_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 901
+
+_Avrlibc_Def_Pgm_Far_4 (unsigned_long, unsigned long)
+```
+
+### pgm_read_u64_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 915
+
+_Avrlibc_Def_Pgm_Far_8 (u64, uint64_t)
+```
+
+### pgm_read_i64_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 916
+
+_Avrlibc_Def_Pgm_Far_8 (i64, int64_t)
+```
+
+### pgm_read_long_long_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 917
+
+_Avrlibc_Def_Pgm_Far_8 (long_long, long long)
+```
+
+### pgm_read_unsigned_long_long_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 918
+
+_Avrlibc_Def_Pgm_Far_8 (unsigned_long_long, unsigned long long)
+```
+
+### pgm_read_double_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 921
+
+_Avrlibc_Def_Pgm_Far_8 (double, double)
+```
+
+### pgm_read_long_double_far
+
+```{code-block} c
+:linenos:
+:lineno-start: 924
+
+_Avrlibc_Def_Pgm_Far_8 (long_double, long double)
+```
+
+### isAlphaNumeric
+
+```{code-block} c
+:linenos:
+:lineno-start: 46
+
+inline boolean isAlphaNumeric(int c) 
+{
+  return ( isalnum(c) == 0 ? false : true);
+}
+```
+
+### isAlpha
+
+```{code-block} c
+:linenos:
+:lineno-start: 54
+
+inline boolean isAlpha(int c)
+{
+  return ( isalpha(c) == 0 ? false : true);
+}
+```
+
+### isAscii
+
+```{code-block} c
+:linenos:
+:lineno-start: 62
+
+inline boolean isAscii(int c)
+{
+  return ( isascii (c) == 0 ? false : true);
+}
+```
+
+### isWhitespace
+
+```{code-block} c
+:linenos:
+:lineno-start: 69
+
+inline boolean isWhitespace(int c)
+{
+  return ( isblank (c) == 0 ? false : true);
+}
+```
+
+### isControl
+
+```{code-block} c
+:linenos:
+:lineno-start: 76
+
+inline boolean isControl(int c)
+{
+  return ( iscntrl (c) == 0 ? false : true);
+}
+```
+
+### isDigit
+
+```{code-block} c
+:linenos:
+:lineno-start: 83
+
+inline boolean isDigit(int c)
+{
+  return ( isdigit (c) == 0 ? false : true);
+}
+```
+
+### isGraph
+
+```{code-block} c
+:linenos:
+:lineno-start: 90
+
+inline boolean isGraph(int c)
+{
+  return ( isgraph (c) == 0 ? false : true);
+}
+```
+
+### isLowerCase
+
+```{code-block} c
+:linenos:
+:lineno-start: 97
+
+inline boolean isLowerCase(int c)
+{
+  return (islower (c) == 0 ? false : true);
+}
+```
+
+### isPrintable
+
+```{code-block} c
+:linenos:
+:lineno-start: 104
+
+inline boolean isPrintable(int c)
+{
+  return ( isprint (c) == 0 ? false : true);
+}
+```
+
+### isPunct
+
+```{code-block} c
+:linenos:
+:lineno-start: 112
+
+inline boolean isPunct(int c)
+{
+  return ( ispunct (c) == 0 ? false : true);
+}
+```
+
+### isSpace
+
+```{code-block} c
+:linenos:
+:lineno-start: 121
+
+inline boolean isSpace(int c)
+{
+  return ( isspace (c) == 0 ? false : true);
+}
+```
+
+### isUpperCase
+
+```{code-block} c
+:linenos:
+:lineno-start: 128
+
+inline boolean isUpperCase(int c)
+{
+  return ( isupper (c) == 0 ? false : true);
+}
+```
+
+### isHexadecimalDigit
+
+```{code-block} c
+:linenos:
+:lineno-start: 136
+
+inline boolean isHexadecimalDigit(int c)
+{
+  return ( isxdigit (c) == 0 ? false : true);
+}
+```
+
+### toAscii
+
+```{code-block} c
+:linenos:
+:lineno-start: 144
+
+inline int toAscii(int c)
+{
+  return toascii (c);
+}
+```
+
+### toLowerCase
+
+```{code-block} c
+:linenos:
+:lineno-start: 156
+
+inline int toLowerCase(int c)
+{
+  return tolower (c);
+}
+```
+
+### toUpperCase
+
+```{code-block} c
+:linenos:
+:lineno-start: 163
+
+inline int toUpperCase(int c)
+{
+  return toupper (c);
+}
+```
+
+### _delay_loop_1
+
+```{code-block} c
+:linenos:
+:lineno-start: 80
+
+void
+_delay_loop_1(uint8_t __count)
+{
+	__asm__ volatile (
+		"1: dec %0" "\n\t"
+		"brne 1b"
+		: "=r" (__count)
+		: "0" (__count)
+	);
+}
+```
+
+### _delay_loop_2
+
+```{code-block} c
+:linenos:
+:lineno-start: 102
+
+void
+_delay_loop_2(uint16_t __count)
+{
+#if defined (__AVR_TINY__)
+	__asm__ volatile (
+		"1: subi %A0,1" "\n\t"
+		"   sbci %B0,0" "\n\t"
+		"brne 1b"
+		: "+d" (__count)
+	);
+#else
+	__asm__ volatile (
+		"1: sbiw %0,1" "\n\t"
+		"brne 1b"
+		: "+w" (__count)
+	);
+#endif /* AVR_TINY */
+}
+```
+
+### _delay_ms
+
+```{code-block} c
+:linenos:
+:lineno-start: 153
+
+void
+_delay_ms(double __ms)
+{
+	double __tmp ;
+#if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) \
+  && !defined(__DELAY_BACKWARD_COMPATIBLE__)
+	uint32_t __ticks_dc;
+	extern void __builtin_avr_delay_cycles(uint32_t);
+	__tmp = ((F_CPU) / 1e3) * __ms;
+
+	#if defined(__DELAY_ROUND_DOWN__)
+		__ticks_dc = (uint32_t)__builtin_fabs(__tmp);
+
+	#elif defined(__DELAY_ROUND_CLOSEST__)
+		__ticks_dc = (uint32_t)(__builtin_fabs(__tmp)+0.5);
+
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(__builtin_ceil(__builtin_fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+
+#else
+	uint16_t __ticks;
+	__tmp = ((F_CPU) / 4e3) * __ms;
+	if (__tmp < 1.0)
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+		}
+		return;
+	}
+	else
+		__ticks = (uint16_t)__tmp;
+	_delay_loop_2(__ticks);
+#endif
+}
+```
+
+### _delay_us
+
+```{code-block} c
+:linenos:
+:lineno-start: 236
+
+void
+_delay_us(double __us)
+{
+	double __tmp ;
+#if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) \
+  && !defined(__DELAY_BACKWARD_COMPATIBLE__)
+	uint32_t __ticks_dc;
+	extern void __builtin_avr_delay_cycles(uint32_t);
+	__tmp = ((F_CPU) / 1e6) * __us;
+
+	#if defined(__DELAY_ROUND_DOWN__)
+		__ticks_dc = (uint32_t)__builtin_fabs(__tmp);
+
+	#elif defined(__DELAY_ROUND_CLOSEST__)
+		__ticks_dc = (uint32_t)(__builtin_fabs(__tmp)+0.5);
+
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(__builtin_ceil(__builtin_fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+
+#else
+	uint8_t __ticks;
+	double __tmp2 ;
+	__tmp = ((F_CPU) / 3e6) * __us;
+	__tmp2 = ((F_CPU) / 4e6) * __us;
+	if (__tmp < 1.0)
+		__ticks = 1;
+	else if (__tmp2 > 65535)
+	{
+		_delay_ms(__us / 1000.0);
+		return;
+	}
+	else if (__tmp > 255)
+	{
+		uint16_t __ticks=(uint16_t)__tmp2;
+		_delay_loop_2(__ticks);
+		return;
+	}
+	else
+		__ticks = (uint8_t)__tmp;
+	_delay_loop_1(__ticks);
+#endif
+}
+```
+
+### setup
+
+```{code-block} c
+:linenos:
+:lineno-start: 9
+
+void setup()
+{
+   scheduler.Attach(Task_Init, Scheduler::INIT);
+   scheduler.Attach(Task_100ms, Scheduler::TASK_100MS);
+   scheduler.Attach(Task_10ms, Scheduler::TASK_10MS);
+   scheduler.Start();
+}
+```
+
+### loop
+
+```{code-block} c
+:linenos:
+:lineno-start: 17
+
+void loop()
+{
+}
+```
+
+## Classes
+
+### __FlashStringHelper
+
+```{code-block} c
+:linenos:
+:lineno-start: 37
+
+class __FlashStringHelper
+```
+
+### StringSumHelper
+
+```{code-block} c
+:linenos:
+:lineno-start: 42
+
+class StringSumHelper
+```
+
+### String
+
+```{code-block} c
+:linenos:
+:lineno-start: 45
+
+class String
+{
+	// use a function pointer to allow for "if (s)" without the
+	// complications of an operator bool(). for more information, see:
+	// http://www.artima.com/cppsource/safebool.html
+	typedef void (String::*StringIfHelperType)() const;
+	void StringIfHelper() const {}
+
+public:
+	// constructors
+	// creates a copy of the initial value.
+	// if the initial value is null or invalid, or if memory allocation
+	// fails, the string will be marked as invalid (i.e. "if (s)" will
+	// be false).
+	String(const char *cstr = "");
+	String(const String &str);
+	String(const __FlashStringHelper *str);
+       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	String(String &&rval);
+	String(StringSumHelper &&rval);
+	#endif
+	explicit String(char c);
+	explicit String(unsigned char, unsigned char base=10);
+	explicit String(int, unsigned char base=10);
+	explicit String(unsigned int, unsigned char base=10);
+	explicit String(long, unsigned char base=10);
+	explicit String(unsigned long, unsigned char base=10);
+	explicit String(float, unsigned char decimalPlaces=2);
+	explicit String(double, unsigned char decimalPlaces=2);
+	~String(void);
+
+	// memory management
+	// return true on success, false on failure (in which case, the string
+	// is left unchanged).  reserve(0), if successful, will validate an
+	// invalid string (i.e., "if (s)" will be true afterwards)
+	unsigned char reserve(unsigned int size);
+	inline unsigned int length(void) const {return len;}
+
+	// creates a copy of the assigned value.  if the value is null or
+	// invalid, or if the memory allocation fails, the string will be
+	// marked as invalid ("if (s)" will be false).
+	String & operator = (const String &rhs);
+	String & operator = (const char *cstr);
+	String & operator = (const __FlashStringHelper *str);
+       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	String & operator = (String &&rval);
+	String & operator = (StringSumHelper &&rval);
+	#endif
+
+	// concatenate (works w/ built-in types)
+
+	// returns true on success, false on failure (in which case, the string
+	// is left unchanged).  if the argument is null or invalid, the
+	// concatenation is considered unsuccessful.
+	unsigned char concat(const String &str);
+	unsigned char concat(const char *cstr);
+	unsigned char concat(char c);
+	unsigned char concat(unsigned char c);
+	unsigned char concat(int num);
+	unsigned char concat(unsigned int num);
+	unsigned char concat(long num);
+	unsigned char concat(unsigned long num);
+	unsigned char concat(float num);
+	unsigned char concat(double num);
+	unsigned char concat(const __FlashStringHelper * str);
+
+	// if there's not enough memory for the concatenated value, the string
+	// will be left unchanged (but this isn't signalled in any way)
+	String & operator += (const String &rhs)	{concat(rhs); return (*this);}
+	String & operator += (const char *cstr)		{concat(cstr); return (*this);}
+	String & operator += (char c)			{concat(c); return (*this);}
+	String & operator += (unsigned char num)		{concat(num); return (*this);}
+	String & operator += (int num)			{concat(num); return (*this);}
+	String & operator += (unsigned int num)		{concat(num); return (*this);}
+	String & operator += (long num)			{concat(num); return (*this);}
+	String & operator += (unsigned long num)	{concat(num); return (*this);}
+	String & operator += (float num)		{concat(num); return (*this);}
+	String & operator += (double num)		{concat(num); return (*this);}
+	String & operator += (const __FlashStringHelper *str){concat(str); return (*this);}
+
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, char c);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned char num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, int num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned int num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, long num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, float num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, double num);
+	friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
+
+	// comparison (only works w/ Strings and "strings")
+	operator StringIfHelperType() const { return buffer ? &String::StringIfHelper : 0; }
+	int compareTo(const String &s) const;
+	unsigned char equals(const String &s) const;
+	unsigned char equals(const char *cstr) const;
+	unsigned char operator == (const String &rhs) const {return equals(rhs);}
+	unsigned char operator == (const char *cstr) const {return equals(cstr);}
+	unsigned char operator != (const String &rhs) const {return !equals(rhs);}
+	unsigned char operator != (const char *cstr) const {return !equals(cstr);}
+	unsigned char operator <  (const String &rhs) const;
+	unsigned char operator >  (const String &rhs) const;
+	unsigned char operator <= (const String &rhs) const;
+	unsigned char operator >= (const String &rhs) const;
+	unsigned char equalsIgnoreCase(const String &s) const;
+	unsigned char startsWith( const String &prefix) const;
+	unsigned char startsWith(const String &prefix, unsigned int offset) const;
+	unsigned char endsWith(const String &suffix) const;
+
+	// character access
+	char charAt(unsigned int index) const;
+	void setCharAt(unsigned int index, char c);
+	char operator [] (unsigned int index) const;
+	char& operator [] (unsigned int index);
+	void getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index=0) const;
+	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
+		{ getBytes((unsigned char *)buf, bufsize, index); }
+	const char* c_str() const { return buffer; }
+	char* begin() { return buffer; }
+	char* end() { return buffer + length(); }
+	const char* begin() const { return c_str(); }
+	const char* end() const { return c_str() + length(); }
+
+	// search
+	int indexOf( char ch ) const;
+	int indexOf( char ch, unsigned int fromIndex ) const;
+	int indexOf( const String &str ) const;
+	int indexOf( const String &str, unsigned int fromIndex ) const;
+	int lastIndexOf( char ch ) const;
+	int lastIndexOf( char ch, unsigned int fromIndex ) const;
+	int lastIndexOf( const String &str ) const;
+	int lastIndexOf( const String &str, unsigned int fromIndex ) const;
+	String substring( unsigned int beginIndex ) const { return substring(beginIndex, len); };
+	String substring( unsigned int beginIndex, unsigned int endIndex ) const;
+
+	// modification
+	void replace(char find, char replace);
+	void replace(const String& find, const String& replace);
+	void remove(unsigned int index);
+	void remove(unsigned int index, unsigned int count);
+	void toLowerCase(void);
+	void toUpperCase(void);
+	void trim(void);
+
+	// parsing/conversion
+	long toInt(void) const;
+	float toFloat(void) const;
+	double toDouble(void) const;
+
+protected:
+	char *buffer;	        // the actual char array
+	unsigned int capacity;  // the array length minus one (for the '\0')
+	unsigned int len;       // the String length (not counting the '\0')
+protected:
+	void init(void);
+	void invalidate(void);
+	unsigned char changeBuffer(unsigned int maxStrLen);
+	unsigned char concat(const char *cstr, unsigned int length);
+
+	// copy and move
+	String & copy(const char *cstr, unsigned int length);
+	String & copy(const __FlashStringHelper *pstr, unsigned int length);
+       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	void move(String &rhs);
+	#endif
+}
+```
+
+### StringSumHelper
+
+```{code-block} c
+:linenos:
+:lineno-start: 213
+
+class StringSumHelper : public String
+{
+public:
+	StringSumHelper(const String &s) : String(s) {}
+	StringSumHelper(const char *p) : String(p) {}
+	StringSumHelper(char c) : String(c) {}
+	StringSumHelper(unsigned char num) : String(num) {}
+	StringSumHelper(int num) : String(num) {}
+	StringSumHelper(unsigned int num) : String(num) {}
+	StringSumHelper(long num) : String(num) {}
+	StringSumHelper(unsigned long num) : String(num) {}
+	StringSumHelper(float num) : String(num) {}
+	StringSumHelper(double num) : String(num) {}
+}
+```
+
+### Print
+
+```{code-block} c
+:linenos:
+:lineno-start: 25
+
+class Print
+```
+
+### Printable
+
+```{code-block} c
+:linenos:
+:lineno-start: 33
+
+class Printable
+{
+  public:
+    virtual size_t printTo(Print& p) const = 0;
+}
+```
+
+### Print
+
+```{code-block} c
+:linenos:
+:lineno-start: 37
+
+class Print
+{
+  private:
+    int write_error;
+    size_t printNumber(unsigned long, uint8_t);
+    size_t printFloat(double, uint8_t);
+  protected:
+    void setWriteError(int err = 1) { write_error = err; }
+  public:
+    Print() : write_error(0) {}
+  
+    int getWriteError() { return write_error; }
+    void clearWriteError() { setWriteError(0); }
+  
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+      return write((const uint8_t *)str, strlen(str));
+    }
+    virtual size_t write(const uint8_t *buffer, size_t size);
+    size_t write(const char *buffer, size_t size) {
+      return write((const uint8_t *)buffer, size);
+    }
+
+    // default to zero, meaning "a single write may block"
+    // should be overridden by subclasses with buffering
+    virtual int availableForWrite() { return 0; }
+
+    size_t print(const __FlashStringHelper *);
+    size_t print(const String &);
+    size_t print(const char[]);
+    size_t print(char);
+    size_t print(unsigned char, int = DEC);
+    size_t print(int, int = DEC);
+    size_t print(unsigned int, int = DEC);
+    size_t print(long, int = DEC);
+    size_t print(unsigned long, int = DEC);
+    size_t print(double, int = 2);
+    size_t print(const Printable&);
+
+    size_t println(const __FlashStringHelper *);
+    size_t println(const String &s);
+    size_t println(const char[]);
+    size_t println(char);
+    size_t println(unsigned char, int = DEC);
+    size_t println(int, int = DEC);
+    size_t println(unsigned int, int = DEC);
+    size_t println(long, int = DEC);
+    size_t println(unsigned long, int = DEC);
+    size_t println(double, int = 2);
+    size_t println(const Printable&);
+    size_t println(void);
+
+    virtual void flush() { /* Empty implementation for backward compatibility */ }
+}
+```
+
+### Stream
+
+```{code-block} c
+:linenos:
+:lineno-start: 49
+
+class Stream : public Print
+{
+  protected:
+    unsigned long _timeout;      // number of milliseconds to wait for the next char before aborting timed read
+    unsigned long _startMillis;  // used for timeout measurement
+    int timedRead();    // read stream with timeout
+    int timedPeek();    // peek stream with timeout
+    int peekNextDigit(LookaheadMode lookahead, bool detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
+
+  public:
+    virtual int available() = 0;
+    virtual int read() = 0;
+    virtual int peek() = 0;
+
+    Stream() {_timeout=1000;}
+
+// parsing methods
+
+  void setTimeout(unsigned long timeout);  // sets maximum milliseconds to wait for stream data, default is 1 second
+  unsigned long getTimeout(void) { return _timeout; }
+  
+  bool find(char *target);   // reads data from the stream until the target string is found
+  bool find(uint8_t *target) { return find ((char *)target); }
+  // returns true if target string is found, false if timed out (see setTimeout)
+
+  bool find(char *target, size_t length);   // reads data from the stream until the target string of given length is found
+  bool find(uint8_t *target, size_t length) { return find ((char *)target, length); }
+  // returns true if target string is found, false if timed out
+
+  bool find(char target) { return find (&target, 1); }
+
+  bool findUntil(char *target, char *terminator);   // as find but search ends if the terminator string is found
+  bool findUntil(uint8_t *target, char *terminator) { return findUntil((char *)target, terminator); }
+
+  bool findUntil(char *target, size_t targetLen, char *terminate, size_t termLen);   // as above but search ends if the terminate string is found
+  bool findUntil(uint8_t *target, size_t targetLen, char *terminate, size_t termLen) {return findUntil((char *)target, targetLen, terminate, termLen); }
+
+  long parseInt(LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
+  // returns the first valid (long) integer value from the current position.
+  // lookahead determines how parseInt looks ahead in the stream.
+  // See LookaheadMode enumeration at the top of the file.
+  // Lookahead is terminated by the first character that is not a valid part of an integer.
+  // Once parsing commences, 'ignore' will be skipped in the stream.
+
+  float parseFloat(LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
+  // float version of parseInt
+
+  size_t readBytes( char *buffer, size_t length); // read chars from stream into buffer
+  size_t readBytes( uint8_t *buffer, size_t length) { return readBytes((char *)buffer, length); }
+  // terminates if length characters have been read or timeout (see setTimeout)
+  // returns the number of characters placed in the buffer (0 means no valid data found)
+
+  size_t readBytesUntil( char terminator, char *buffer, size_t length); // as readBytes with terminator character
+  size_t readBytesUntil( char terminator, uint8_t *buffer, size_t length) { return readBytesUntil(terminator, (char *)buffer, length); }
+  // terminates if length characters have been read, timeout, or if the terminator character  detected
+  // returns the number of characters placed in the buffer (0 means no valid data found)
+
+  // Arduino String functions to be added here
+  String readString();
+  String readStringUntil(char terminator);
+
+  protected:
+  long parseInt(char ignore) { return parseInt(SKIP_ALL, ignore); }
+  float parseFloat(char ignore) { return parseFloat(SKIP_ALL, ignore); }
+  // These overload exists for compatibility with any class that has derived
+  // Stream and used parseFloat/Int with a custom ignore character. To keep
+  // the public API simple, these overload remains protected.
+
+  struct MultiTarget {
+    const char *str;  // string you're searching for
+    size_t len;       // length of string you're searching for
+    size_t index;     // index used by the search routine.
+  };
+
+  // This allows you to search for an arbitrary number of strings.
+  // Returns index of the target that is found first or -1 if timeout occurs.
+  int findMulti(struct MultiTarget *targets, int tCount);
+}
+```
+
+### HardwareSerial
+
+```{code-block} c
+:linenos:
+:lineno-start: 93
+
+class HardwareSerial : public Stream
+{
+  protected:
+    volatile uint8_t * const _ubrrh;
+    volatile uint8_t * const _ubrrl;
+    volatile uint8_t * const _ucsra;
+    volatile uint8_t * const _ucsrb;
+    volatile uint8_t * const _ucsrc;
+    volatile uint8_t * const _udr;
+    // Has any byte been written to the UART since begin()
+    bool _written;
+
+    volatile rx_buffer_index_t _rx_buffer_head;
+    volatile rx_buffer_index_t _rx_buffer_tail;
+    volatile tx_buffer_index_t _tx_buffer_head;
+    volatile tx_buffer_index_t _tx_buffer_tail;
+
+    // Don't put any members after these buffers, since only the first
+    // 32 bytes of this struct can be accessed quickly using the ldd
+    // instruction.
+    unsigned char _rx_buffer[SERIAL_RX_BUFFER_SIZE];
+    unsigned char _tx_buffer[SERIAL_TX_BUFFER_SIZE];
+
+  public:
+    inline HardwareSerial(
+      volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
+      volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
+      volatile uint8_t *ucsrc, volatile uint8_t *udr);
+    void begin(unsigned long baud) { begin(baud, SERIAL_8N1); }
+    void begin(unsigned long, uint8_t);
+    void end();
+    virtual int available(void);
+    virtual int peek(void);
+    virtual int read(void);
+    virtual int availableForWrite(void);
+    virtual void flush(void);
+    virtual size_t write(uint8_t);
+    inline size_t write(unsigned long n) { return write((uint8_t)n); }
+    inline size_t write(long n) { return write((uint8_t)n); }
+    inline size_t write(unsigned int n) { return write((uint8_t)n); }
+    inline size_t write(int n) { return write((uint8_t)n); }
+    using Print::write; // pull in write(str) and write(buf, size) from Print
+    operator bool() { return true; }
+
+    // Interrupt handlers - Not intended to be called externally
+    inline void _rx_complete_irq(void);
+    void _tx_udr_empty_irq(void);
+}
+```
+
+### Scheduler
+
+```{code-block} c
+:linenos:
+:lineno-start: 8
+
+class Scheduler
+{
+public:
+   enum Period
+   {
+      INIT = 0,
+      TASK_10MS = 10,
+      TASK_100MS = 100
+   };
+
+private:
+   typedef void (*callable)();
+   Scheduler::callable init;
+   Scheduler::callable runnable_10ms;
+   Scheduler::callable runnable_100ms;
+   unsigned char counter_1ms = 0;
+   unsigned char counter_10ms = 0;
+
+public:
+   Scheduler();
+   void Attach(Scheduler::callable runnable, Period period);
+   void Start(void);
+   void Task_10ms(void);
+   void Task_1ms(void);
+
+private:
+   void ConfigureTimer(void);
+   void ConfigureTimer1(void);
+   void ConfigureTimer2(void);
+   void StartTimer(void);
+}
+```

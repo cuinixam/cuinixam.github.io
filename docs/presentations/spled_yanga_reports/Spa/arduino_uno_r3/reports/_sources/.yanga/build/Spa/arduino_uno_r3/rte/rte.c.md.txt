@@ -1,0 +1,219 @@
+# rte.c
+
+## Functions
+
+### RteSetPowerState
+
+```{code-block} c
+:linenos:
+:lineno-start: 25
+
+void RteSetPowerState(PowerState state)
+{
+    currentPowerState = state;
+}
+```
+
+### RteGetPowerState
+
+```{code-block} c
+:linenos:
+:lineno-start: 30
+
+PowerState RteGetPowerState(void)
+{
+    return currentPowerState;
+}
+```
+
+### RteSetPowerKeyPressedEvent
+
+```{code-block} c
+:linenos:
+:lineno-start: 35
+
+void RteSetPowerKeyPressedEvent(boolean value)
+{
+    powerKeyPressedEvent = value;
+}
+```
+
+### RteGetPowerKeyPressedEvent
+
+```{code-block} c
+:linenos:
+:lineno-start: 40
+
+boolean RteGetPowerKeyPressedEvent()
+{
+    return powerKeyPressedEvent;
+}
+```
+
+### RteSetLightValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 45
+
+void RteSetLightValue(RGBColor value)
+{
+    lightValue = value;
+}
+```
+
+### RteGetLightValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 50
+
+void RteGetLightValue(RGBColor *value)
+{
+    *value = lightValue;
+}
+```
+
+### RteIsKeyPressed
+
+```{code-block} c
+:linenos:
+:lineno-start: 55
+
+boolean RteIsKeyPressed(KeyCodes key)
+{
+    return ButtonInterfaceIsButtonPressed(key);
+}
+```
+
+### RteSetMainKnobValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 60
+
+void RteSetMainKnobValue(percentage_t value)
+{
+    if (value > 100)
+    {
+        mainKnobValue = 100;
+    }
+    else
+    {
+        mainKnobValue = value;
+    }
+}
+```
+
+### RteGetMainKnobValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 72
+
+percentage_t RteGetMainKnobValue(void)
+{
+    return mainKnobValue;
+}
+```
+
+### RteSetBrightnessValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 77
+
+void RteSetBrightnessValue(brightness_t value)
+{
+    brightnessValue = value;
+}
+```
+
+### RteGetBrightnessValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 82
+
+brightness_t RteGetBrightnessValue(void)
+{
+    return brightnessValue;
+}
+```
+
+### RteSetBrightnessAdjustmentCounter
+
+```{code-block} c
+:linenos:
+:lineno-start: 88
+
+void RteSetBrightnessAdjustmentCounter(unsigned int counter)
+{
+    brightnessAdjustmentCounter = counter;
+}
+```
+
+### RteGetBrightnessAdjustmentCounter
+
+```{code-block} c
+:linenos:
+:lineno-start: 93
+
+void RteGetBrightnessAdjustmentCounter(unsigned int *counter)
+{
+    *counter = brightnessAdjustmentCounter;
+}
+```
+
+### RteGetOffCourse
+
+CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD
+
+```{code-block} c
+:linenos:
+:lineno-start: 99
+
+void RteGetOffCourse(boolean *value)
+{
+    if (value != NULL)
+    {
+        *value = offCourse;
+    }
+}
+```
+
+### RteGetAbortCommanded
+
+```{code-block} c
+:linenos:
+:lineno-start: 107
+
+boolean RteGetAbortCommanded(void)
+{
+    return abortCommanded;
+}
+```
+
+### RteGetValidAbortCommand
+
+```{code-block} c
+:linenos:
+:lineno-start: 112
+
+boolean RteGetValidAbortCommand(void)
+{
+    return validAbortCommand;
+}
+```
+
+### RteSetSelfDestructState
+
+```{code-block} c
+:linenos:
+:lineno-start: 117
+
+void RteSetSelfDestructState(boolean state)
+{
+    selfDestructState = state;
+}
+```

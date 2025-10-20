@@ -1,0 +1,274 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 14
+
+Issues by severity:
+- information: 2
+- style: 12
+
+## brightness_controller.c
+
+Location: components\brightness_controller\src\brightness_controller.c
+
+### Style: unusedFunction
+
+The function 'manualBrightnessAdjustment' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 45
+:emphasize-lines: 4
+ *    :implements: SWDD_BC-100, SWDD_BC-101, SWDD_BC-201
+ * ```
+ */
+static brightness_t manualBrightnessAdjustment(void)
+{
+    percentage_t mainKnobValue = RteGetMainKnobValue();
+    brightness_t brightnessValue = 0;
+```
+
+### Style: unusedFunction
+
+The function 'brightnessController' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 69
+:emphasize-lines: 4
+ *    :implements: SWDD_BC-200, SWDD_BC-202, SWDD_BC-203
+ * ```
+ */
+void brightnessController(void)
+{
+    brightness_t brightnessValue = 0;
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_AUTOMATIC
+```
+
+## power_button.c
+
+Location: components\power_button\src\power_button.c
+
+### Style: unusedFunction
+
+The function 'powerButtonInit' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 21
+:emphasize-lines: 4
+static unsigned int pressCounter = 0;   /**< Counter for key presses. */
+static unsigned int releaseCounter = 0; /**< Counter for key releases. */
+
+void powerButtonInit(void)
+{
+    currentState = INIT;
+    pressCounter = 0;
+```
+
+## rte.c
+
+Location: components\rte\src\rte.c
+
+### Style: unusedFunction
+
+The function 'RteGetLightValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 47
+:emphasize-lines: 4
+    lightValue = value;
+}
+
+void RteGetLightValue(RGBColor *value)
+{
+    *value = lightValue;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetBrightnessValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 79
+:emphasize-lines: 4
+    brightnessValue = value;
+}
+
+brightness_t RteGetBrightnessValue(void)
+{
+    return brightnessValue;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetOffCourse' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 96
+:emphasize-lines: 4
+}
+#endif // CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD
+
+void RteGetOffCourse(boolean *value)
+{
+    if (value != NULL)
+    {
+```
+
+### Style: unusedFunction
+
+The function 'RteGetAbortCommanded' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 104
+:emphasize-lines: 4
+    }
+}
+
+boolean RteGetAbortCommanded(void)
+{
+    return abortCommanded;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetValidAbortCommand' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 109
+:emphasize-lines: 4
+    return abortCommanded;
+}
+
+boolean RteGetValidAbortCommand(void)
+{
+    return validAbortCommand;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetSelfDestructState' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 114
+:emphasize-lines: 4
+    return validAbortCommand;
+}
+
+void RteSetSelfDestructState(boolean state)
+{
+    selfDestructState = state;
+}
+```
+
+## spled.c
+
+Location: components\spled\src\spled.c
+
+### Style: unusedFunction
+
+The function 'Task_Init' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 23
+:emphasize-lines: 4
+    ledInterface();
+}
+
+void Task_Init(void)
+{
+    ledInterface_init();
+    buttonInterface_init();
+```
+
+### Style: unusedFunction
+
+The function 'Task_100ms' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 29
+:emphasize-lines: 4
+    buttonInterface_init();
+}
+
+void Task_100ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 100)
+    // Call the main application function every 100ms
+```
+
+### Style: unusedFunction
+
+The function 'Task_10ms' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 37
+:emphasize-lines: 4
+#endif
+}
+
+void Task_10ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 10)
+    // Call the main application function every 10ms
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

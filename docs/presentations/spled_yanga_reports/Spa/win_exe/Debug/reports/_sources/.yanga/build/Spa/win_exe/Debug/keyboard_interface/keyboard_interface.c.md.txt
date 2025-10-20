@@ -1,0 +1,27 @@
+# keyboard_interface.c
+
+## Functions
+
+### buttonInterface_init
+
+```{code-block} c
+:linenos:
+:lineno-start: 4
+
+void buttonInterface_init(void)
+{
+    // No initialization needed for Windows console
+}
+```
+
+### ButtonInterfaceIsButtonPressed
+
+```{code-block} c
+:linenos:
+:lineno-start: 9
+
+boolean ButtonInterfaceIsButtonPressed(KeyCodes key)
+{
+    return (GetAsyncKeyState(key) & 0x8000) != 0;
+}
+```

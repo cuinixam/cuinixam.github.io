@@ -1,0 +1,65 @@
+# spled.c
+
+## Functions
+
+### spled
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+void spled(void)
+{
+    powerButton();
+    powerSignalProcessing();
+    mainControlKnob();
+#if defined(CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED) && CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED == 1
+    brightnessController();
+#endif
+    lightController();
+    ledInterface();
+}
+```
+
+### Task_Init
+
+```{code-block} c
+:linenos:
+:lineno-start: 26
+
+void Task_Init(void)
+{
+    ledInterface_init();
+    buttonInterface_init();
+}
+```
+
+### Task_100ms
+
+```{code-block} c
+:linenos:
+:lineno-start: 32
+
+void Task_100ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 100)
+    // Call the main application function every 100ms
+    spled();
+#endif
+}
+```
+
+### Task_10ms
+
+```{code-block} c
+:linenos:
+:lineno-start: 40
+
+void Task_10ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 10)
+    // Call the main application function every 10ms
+    spled();
+#endif
+}
+```

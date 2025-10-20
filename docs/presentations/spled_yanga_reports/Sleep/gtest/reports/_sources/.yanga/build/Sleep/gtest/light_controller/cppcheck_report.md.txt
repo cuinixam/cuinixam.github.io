@@ -1,0 +1,53 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 3
+
+Issues by severity:
+- information: 2
+- style: 1
+
+## light_controller.c
+
+Location: components\light_controller\src\light_controller.c
+
+### Style: unusedFunction
+
+The function 'lightController' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 198
+:emphasize-lines: 4
+ * Uses a state machine to determine the light state based on several inputs,
+ * e.g., the system's power state.
+ */
+void lightController(void)
+{
+
+    PowerState powerState = RteGetPowerState();
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

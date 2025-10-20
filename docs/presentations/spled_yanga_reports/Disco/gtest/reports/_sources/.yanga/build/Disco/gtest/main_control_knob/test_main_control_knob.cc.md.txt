@@ -1,0 +1,124 @@
+# test_main_control_knob.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+### operator<<
+
+Override the cout operator for TestParam so that it can be printed in the test output
+
+```{code-block} c
+:linenos:
+:lineno-start: 26
+
+std::ostream &operator<<(std::ostream &os, const MainControlKnobParameters &param)
+{
+    os << param.description;
+    return os;
+}
+```
+
+### gtest_MainControlKnobTestsMainControlKnobTest_EvalGenerator_
+
+Instantiate the test suite with a set of parameters
+
+```{code-block} c
+:linenos:
+:lineno-start: 67
+
+INSTANTIATE_TEST_SUITE_P(
+    MainControlKnobTests,
+    MainControlKnobTest,
+    Values(
+        MainControlKnobParameters{"Arrow Up increases value", true, false, 50, 52},
+        MainControlKnobParameters{"Arrow Down decreases value", false, true, 50, 48},
+        MainControlKnobParameters{"Does not decrease below zero", false, true, 1, 0},
+        MainControlKnobParameters{"Does not decrease below zero if already zero", false, true, 0, 0},
+        MainControlKnobParameters{"Does not increase over 100", true, false, 99, 100},
+        MainControlKnobParameters{"Does not increase over 100 if already 100", true, false, 100, 100},
+        MainControlKnobParameters{"No key pressed, value remains the same", false, false, 50, 50}))
+```
+
+### gtest_MainControlKnobTestsMainControlKnobTest_EvalGenerateName_
+
+Instantiate the test suite with a set of parameters
+
+```{code-block} c
+:linenos:
+:lineno-start: 67
+
+INSTANTIATE_TEST_SUITE_P(
+    MainControlKnobTests,
+    MainControlKnobTest,
+    Values(
+        MainControlKnobParameters{"Arrow Up increases value", true, false, 50, 52},
+        MainControlKnobParameters{"Arrow Down decreases value", false, true, 50, 48},
+        MainControlKnobParameters{"Does not decrease below zero", false, true, 1, 0},
+        MainControlKnobParameters{"Does not decrease below zero if already zero", false, true, 0, 0},
+        MainControlKnobParameters{"Does not increase over 100", true, false, 99, 100},
+        MainControlKnobParameters{"Does not increase over 100 if already 100", true, false, 100, 100},
+        MainControlKnobParameters{"No key pressed, value remains the same", false, false, 50, 50}))
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((percentage_t), RteGetMainKnobValue, ());
+   MOCK_METHOD((boolean), RteIsKeyPressed, (KeyCodes key));
+   MOCK_METHOD((void), RteSetMainKnobValue, (percentage_t value));
+}
+```
+
+### MainControlKnobTest
+
+Define a test fixture class
+
+```{code-block} c
+:linenos:
+:lineno-start: 33
+
+class MainControlKnobTest : public TestWithParam<struct MainControlKnobParameters>
+{
+}
+```
+
+### MainControlKnobTest_HandleKnobInput_Test
+
+```{test} MainControlKnobTests/MainControlKnobTest.HandleKnobInput/*
+   :id: TS_MCK-001
+   :tests: SWDD_MCK-100, SWDD_MCK-101, SWDD_MCK-200, SWDD_MCK-201, SWDD_MCK-202, SWDD_MCK-203
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 43
+
+TEST_P(MainControlKnobTest, HandleKnobInput)
+```

@@ -1,0 +1,208 @@
+# test_light_controller.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+### areRGBColorsEqual
+
+Assuming you have mock sources for the light controller.
+
+```{code-block} c
+:linenos:
+:lineno-start: 17
+
+bool areRGBColorsEqual(const RGBColor *color1, const RGBColor *color2)
+{
+    return color1->red == color2->red &&
+           color1->green == color2->green &&
+           color1->blue == color2->blue;
+}
+```
+
+### operator<<
+
+Override the cout operator for RGBColor so that it can be printed in the test output
+
+```{code-block} c
+:linenos:
+:lineno-start: 58
+
+std::ostream &operator<<(std::ostream &os, const RGBColor &color)
+{
+    os << "RGBColor(" << color.red << ", " << color.green << ", " << color.blue << ")";
+    return os;
+}
+```
+
+### operator<<
+
+Override the cout operator for TestParam so that it can be printed in the test output
+
+```{code-block} c
+:linenos:
+:lineno-start: 224
+
+std::ostream &operator<<(std::ostream &os, const TestParam &param)
+{
+    os << param.description;
+    return os;
+}
+```
+
+### gtest_BlinkPeriodTestsBlinkPeriodTest_EvalGenerator_
+
+Instantiate the test suite with a set of parameters
+
+```{code-block} c
+:linenos:
+:lineno-start: 273
+
+INSTANTIATE_TEST_SUITE_P(
+    BlinkPeriodTests,
+    BlinkPeriodTest,
+    Values(
+        TestParam{"Slowest", 0, 100},
+        TestParam{"Inbetween", 50, 50},
+        TestParam{"Fastest", 100, 10}))
+```
+
+### gtest_BlinkPeriodTestsBlinkPeriodTest_EvalGenerateName_
+
+Instantiate the test suite with a set of parameters
+
+```{code-block} c
+:linenos:
+:lineno-start: 273
+
+INSTANTIATE_TEST_SUITE_P(
+    BlinkPeriodTests,
+    BlinkPeriodTest,
+    Values(
+        TestParam{"Slowest", 0, 100},
+        TestParam{"Inbetween", 50, 50},
+        TestParam{"Fastest", 100, 10}))
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((percentage_t), RteGetMainKnobValue, ());
+   MOCK_METHOD((PowerState), RteGetPowerState, ());
+   MOCK_METHOD((void), RteSetLightValue, (RGBColor value));
+}
+```
+
+### light_controller_test_light_stays_off_Test
+
+```{test} light_controller.test_light_stays_off
+   :id: TS_LC-006
+   :tests: SWDD_LC-100, SWDD_LC-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 72
+
+TEST(light_controller, test_light_stays_off)
+```
+
+### light_controller_test_light_on_and_off_Test
+
+```{test} light_controller.test_light_on_and_off
+   :id: TS_LC-001
+   :tests: SWDD_LC-100, SWDD_LC-102, SWDD_LC-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 125
+
+TEST(light_controller, test_light_on_and_off)
+```
+
+### light_controller_test_light_blinking_Test
+
+```{test} light_controller.test_light_blinking
+   :id: TS_LC-002
+   :tests: SWDD_LC-101
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 170
+
+TEST(light_controller, test_light_blinking)
+```
+
+### BlinkPeriodTest
+
+Define a test fixture class
+
+```{code-block} c
+:linenos:
+:lineno-start: 211
+
+class BlinkPeriodTest : public TestWithParam<struct TestParam>
+{
+}
+```
+
+### light_controller_test_correct_blink_period_Test
+
+```{test} light_controller.test_correct_blink_period
+   :id: TS_LC-004
+   :tests: SWDD_LC-101
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 238
+
+TEST(light_controller, test_correct_blink_period)
+```
+
+### BlinkPeriodTest_CalculatesCorrectBlinkPeriod_Test
+
+```{test} BlinkPeriodTests/BlinkPeriodTest.CalculatesCorrectBlinkPeriod/*
+   :id: TS_LC-003
+   :tests: SWDD_LC-101
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 263
+
+TEST_P(BlinkPeriodTest, CalculatesCorrectBlinkPeriod)
+```

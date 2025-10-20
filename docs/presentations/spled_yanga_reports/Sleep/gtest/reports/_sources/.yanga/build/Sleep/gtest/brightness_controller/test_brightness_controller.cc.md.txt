@@ -1,0 +1,53 @@
+# test_brightness_controller.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((percentage_t), RteGetMainKnobValue, ());
+   MOCK_METHOD((void), RteSetBrightnessValue, (brightness_t value));
+}
+```
+
+### brightness_controller_test_brightness_knob_Test
+
+```{test} brightness_controller.test_brightness_knob
+   :id: TS_BC-001
+   :tests: SWDD_BC-100, SWDD_BC-101, SWDD_BC-200, SWDD_BC-201, SWDD_BC-202
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 105
+
+TEST(brightness_controller, test_brightness_knob)
+```

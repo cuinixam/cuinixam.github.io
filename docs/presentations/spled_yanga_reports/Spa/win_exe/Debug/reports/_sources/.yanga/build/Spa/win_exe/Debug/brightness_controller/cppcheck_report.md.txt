@@ -1,0 +1,53 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 3
+
+Issues by severity:
+- information: 2
+- style: 1
+
+## brightness_controller.c
+
+Location: components\brightness_controller\src\brightness_controller.c
+
+### Style: unusedFunction
+
+The function 'brightnessController' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 69
+:emphasize-lines: 4
+ *    :implements: SWDD_BC-200, SWDD_BC-202, SWDD_BC-203
+ * ```
+ */
+void brightnessController(void)
+{
+    brightness_t brightnessValue = 0;
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_AUTOMATIC
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

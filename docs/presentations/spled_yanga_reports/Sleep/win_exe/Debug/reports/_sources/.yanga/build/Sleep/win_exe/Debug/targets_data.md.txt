@@ -1,0 +1,372 @@
+# Target Dependencies Documentation
+
+## Summary
+
+- **Total targets**: 99
+- **Root targets (CMakeCustomTargets only)**: 36
+
+This document provides an overview of CMake custom target dependencies. Only CMakeCustomTargets are shown as root targets.
+
+## Root Targets (CMakeCustomTargets)
+
+These are the main CMakeCustomTargets that are not dependencies of other targets.
+
+### build
+
+**Description**: Build variant Sleep
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>build</strong> - Build variant Sleep</summary><ul><li><details><summary><strong>${PROJECT_NAME}</strong> - Executable target: ${PROJECT_NAME} -> [${PROJECT_NAME}]</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li><li><strong>console_interface_lib</strong> - Object library: console_interface -> [console_interface_lib]</li><li><strong>keyboard_interface_lib</strong> - Object library: keyboard_interface -> [keyboard_interface_lib]</li><li><strong>win_main_lib</strong> - Object library: win_main -> [win_main_lib]</li><li><strong>win_scheduler_lib</strong> - Object library: win_scheduler -> [win_scheduler_lib]</li></ul></details></li></ul></details></li>
+</ul>
+
+### rte_compile
+
+**Description**: Compile component rte
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>rte_compile</strong> - Compile component rte</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li></ul></details></li>
+</ul>
+
+### rte_build
+
+**Description**: Compile component rte
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>rte_build</strong> - Compile component rte</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li></ul></details></li>
+</ul>
+
+### spled_compile
+
+**Description**: Compile component spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_compile</strong> - Compile component spled</summary><ul><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li></ul></details></li>
+</ul>
+
+### spled_build
+
+**Description**: Compile component spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_build</strong> - Compile component spled</summary><ul><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li></ul></details></li>
+</ul>
+
+### power_signal_processing_compile
+
+**Description**: Compile component power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_compile</strong> - Compile component power_signal_processing</summary><ul><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li></ul></details></li>
+</ul>
+
+### power_signal_processing_build
+
+**Description**: Compile component power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_build</strong> - Compile component power_signal_processing</summary><ul><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li></ul></details></li>
+</ul>
+
+### light_controller_compile
+
+**Description**: Compile component light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_compile</strong> - Compile component light_controller</summary><ul><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li></ul></details></li>
+</ul>
+
+### light_controller_build
+
+**Description**: Compile component light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_build</strong> - Compile component light_controller</summary><ul><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li></ul></details></li>
+</ul>
+
+### power_button_compile
+
+**Description**: Compile component power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_compile</strong> - Compile component power_button</summary><ul><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li></ul></details></li>
+</ul>
+
+### power_button_build
+
+**Description**: Compile component power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_build</strong> - Compile component power_button</summary><ul><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li></ul></details></li>
+</ul>
+
+### main_control_knob_compile
+
+**Description**: Compile component main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_compile</strong> - Compile component main_control_knob</summary><ul><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li></ul></details></li>
+</ul>
+
+### main_control_knob_build
+
+**Description**: Compile component main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_build</strong> - Compile component main_control_knob</summary><ul><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li></ul></details></li>
+</ul>
+
+### brightness_controller_compile
+
+**Description**: Compile component brightness_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>brightness_controller_compile</strong> - Compile component brightness_controller</summary><ul><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li></ul></details></li>
+</ul>
+
+### brightness_controller_build
+
+**Description**: Compile component brightness_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>brightness_controller_build</strong> - Compile component brightness_controller</summary><ul><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li></ul></details></li>
+</ul>
+
+### console_interface_compile
+
+**Description**: Compile component console_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>console_interface_compile</strong> - Compile component console_interface</summary><ul><li><strong>console_interface_lib</strong> - Object library: console_interface -> [console_interface_lib]</li></ul></details></li>
+</ul>
+
+### console_interface_build
+
+**Description**: Compile component console_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>console_interface_build</strong> - Compile component console_interface</summary><ul><li><strong>console_interface_lib</strong> - Object library: console_interface -> [console_interface_lib]</li></ul></details></li>
+</ul>
+
+### keyboard_interface_compile
+
+**Description**: Compile component keyboard_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>keyboard_interface_compile</strong> - Compile component keyboard_interface</summary><ul><li><strong>keyboard_interface_lib</strong> - Object library: keyboard_interface -> [keyboard_interface_lib]</li></ul></details></li>
+</ul>
+
+### keyboard_interface_build
+
+**Description**: Compile component keyboard_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>keyboard_interface_build</strong> - Compile component keyboard_interface</summary><ul><li><strong>keyboard_interface_lib</strong> - Object library: keyboard_interface -> [keyboard_interface_lib]</li></ul></details></li>
+</ul>
+
+### win_main_compile
+
+**Description**: Compile component win_main
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_main_compile</strong> - Compile component win_main</summary><ul><li><strong>win_main_lib</strong> - Object library: win_main -> [win_main_lib]</li></ul></details></li>
+</ul>
+
+### win_main_build
+
+**Description**: Compile component win_main
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_main_build</strong> - Compile component win_main</summary><ul><li><strong>win_main_lib</strong> - Object library: win_main -> [win_main_lib]</li></ul></details></li>
+</ul>
+
+### win_scheduler_compile
+
+**Description**: Compile component win_scheduler
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_scheduler_compile</strong> - Compile component win_scheduler</summary><ul><li><strong>win_scheduler_lib</strong> - Object library: win_scheduler -> [win_scheduler_lib]</li></ul></details></li>
+</ul>
+
+### win_scheduler_build
+
+**Description**: Compile component win_scheduler
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_scheduler_build</strong> - Compile component win_scheduler</summary><ul><li><strong>win_scheduler_lib</strong> - Object library: win_scheduler -> [win_scheduler_lib]</li></ul></details></li>
+</ul>
+
+### lint
+
+**Description**: Lint the entire variant
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>lint</strong> - Lint the entire variant</summary><ul><li><strong>custom command</strong> - Run cppcheck for all sources (uses: ${CMAKE_BUILD_DIR}/cppcheck_report.md, ${CMAKE_BUILD_DIR}/cppcheck_report.xml)</li></ul></details></li>
+</ul>
+
+### rte_report
+
+**Description**: Generate report for component rte
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>rte_report</strong> - Generate report for component rte</summary><ul><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_lint</strong> - Lint the rte component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component rte (uses: ${CMAKE_BUILD_DIR}/rte/compile_commands.json, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.md, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### spled_report
+
+**Description**: Generate report for component spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_report</strong> - Generate report for component spled</summary><ul><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_lint</strong> - Lint the spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component spled (uses: ${CMAKE_BUILD_DIR}/spled/compile_commands.json, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_signal_processing_report
+
+**Description**: Generate report for component power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_report</strong> - Generate report for component power_signal_processing</summary><ul><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_lint</strong> - Lint the power_signal_processing component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/compile_commands.json, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### light_controller_report
+
+**Description**: Generate report for component light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_report</strong> - Generate report for component light_controller</summary><ul><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_lint</strong> - Lint the light_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_button_report
+
+**Description**: Generate report for component power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_report</strong> - Generate report for component power_button</summary><ul><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_lint</strong> - Lint the power_button component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/compile_commands.json, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### main_control_knob_report
+
+**Description**: Generate report for component main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_report</strong> - Generate report for component main_control_knob</summary><ul><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_lint</strong> - Lint the main_control_knob component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/compile_commands.json, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.md, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### brightness_controller_report
+
+**Description**: Generate report for component brightness_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>brightness_controller_report</strong> - Generate report for component brightness_controller</summary><ul><li><details><summary><strong>brightness_controller_results</strong> - Execute targets to get all results for component brightness_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>brightness_controller_lint</strong> - Lint the brightness_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component brightness_controller (uses: ${CMAKE_BUILD_DIR}/brightness_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/brightness_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/brightness_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>brightness_controller_docs</strong> - Generate sources docs for component brightness_controller -> [${CMAKE_BUILD_DIR}/brightness_controller/brightness_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### console_interface_report
+
+**Description**: Generate report for component console_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>console_interface_report</strong> - Generate report for component console_interface</summary><ul><li><details><summary><strong>console_interface_results</strong> - Execute targets to get all results for component console_interface</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>console_interface_lint</strong> - Lint the console_interface component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component console_interface (uses: ${CMAKE_BUILD_DIR}/console_interface/compile_commands.json, ${CMAKE_BUILD_DIR}/console_interface/cppcheck_report.md, ${CMAKE_BUILD_DIR}/console_interface/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>console_interface_docs</strong> - Generate sources docs for component console_interface -> [${CMAKE_BUILD_DIR}/console_interface/console_interface.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### keyboard_interface_report
+
+**Description**: Generate report for component keyboard_interface
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>keyboard_interface_report</strong> - Generate report for component keyboard_interface</summary><ul><li><details><summary><strong>keyboard_interface_results</strong> - Execute targets to get all results for component keyboard_interface</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>keyboard_interface_lint</strong> - Lint the keyboard_interface component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component keyboard_interface (uses: ${CMAKE_BUILD_DIR}/keyboard_interface/compile_commands.json, ${CMAKE_BUILD_DIR}/keyboard_interface/cppcheck_report.md, ${CMAKE_BUILD_DIR}/keyboard_interface/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>keyboard_interface_docs</strong> - Generate sources docs for component keyboard_interface -> [${CMAKE_BUILD_DIR}/keyboard_interface/keyboard_interface.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### win_main_report
+
+**Description**: Generate report for component win_main
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_main_report</strong> - Generate report for component win_main</summary><ul><li><details><summary><strong>win_main_results</strong> - Execute targets to get all results for component win_main</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>win_main_lint</strong> - Lint the win_main component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component win_main (uses: ${CMAKE_BUILD_DIR}/win_main/compile_commands.json, ${CMAKE_BUILD_DIR}/win_main/cppcheck_report.md, ${CMAKE_BUILD_DIR}/win_main/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>win_main_docs</strong> - Generate sources docs for component win_main -> [${CMAKE_BUILD_DIR}/win_main/main.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### win_scheduler_report
+
+**Description**: Generate report for component win_scheduler
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>win_scheduler_report</strong> - Generate report for component win_scheduler</summary><ul><li><details><summary><strong>win_scheduler_results</strong> - Execute targets to get all results for component win_scheduler</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>win_scheduler_lint</strong> - Lint the win_scheduler component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component win_scheduler (uses: ${CMAKE_BUILD_DIR}/win_scheduler/compile_commands.json, ${CMAKE_BUILD_DIR}/win_scheduler/cppcheck_report.md, ${CMAKE_BUILD_DIR}/win_scheduler/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>win_scheduler_docs</strong> - Generate sources docs for component win_scheduler -> [${CMAKE_BUILD_DIR}/win_scheduler/os.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### report
+
+**Description**: Run sphinx build for variant Sleep
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>report</strong> - Run sphinx build for variant Sleep</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>results</strong> - Run all targets for all component results for Sleep</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_lint</strong> - Lint the rte component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component rte (uses: ${CMAKE_BUILD_DIR}/rte/compile_commands.json, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.md, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_lint</strong> - Lint the spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component spled (uses: ${CMAKE_BUILD_DIR}/spled/compile_commands.json, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_lint</strong> - Lint the power_signal_processing component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/compile_commands.json, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_lint</strong> - Lint the light_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_lint</strong> - Lint the power_button component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/compile_commands.json, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_lint</strong> - Lint the main_control_knob component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/compile_commands.json, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.md, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>brightness_controller_results</strong> - Execute targets to get all results for component brightness_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>brightness_controller_lint</strong> - Lint the brightness_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component brightness_controller (uses: ${CMAKE_BUILD_DIR}/brightness_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/brightness_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/brightness_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>brightness_controller_docs</strong> - Generate sources docs for component brightness_controller -> [${CMAKE_BUILD_DIR}/brightness_controller/brightness_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>console_interface_results</strong> - Execute targets to get all results for component console_interface</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>console_interface_lint</strong> - Lint the console_interface component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component console_interface (uses: ${CMAKE_BUILD_DIR}/console_interface/compile_commands.json, ${CMAKE_BUILD_DIR}/console_interface/cppcheck_report.md, ${CMAKE_BUILD_DIR}/console_interface/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>console_interface_docs</strong> - Generate sources docs for component console_interface -> [${CMAKE_BUILD_DIR}/console_interface/console_interface.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>keyboard_interface_results</strong> - Execute targets to get all results for component keyboard_interface</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>keyboard_interface_lint</strong> - Lint the keyboard_interface component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component keyboard_interface (uses: ${CMAKE_BUILD_DIR}/keyboard_interface/compile_commands.json, ${CMAKE_BUILD_DIR}/keyboard_interface/cppcheck_report.md, ${CMAKE_BUILD_DIR}/keyboard_interface/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>keyboard_interface_docs</strong> - Generate sources docs for component keyboard_interface -> [${CMAKE_BUILD_DIR}/keyboard_interface/keyboard_interface.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>win_main_results</strong> - Execute targets to get all results for component win_main</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>win_main_lint</strong> - Lint the win_main component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component win_main (uses: ${CMAKE_BUILD_DIR}/win_main/compile_commands.json, ${CMAKE_BUILD_DIR}/win_main/cppcheck_report.md, ${CMAKE_BUILD_DIR}/win_main/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>win_main_docs</strong> - Generate sources docs for component win_main -> [${CMAKE_BUILD_DIR}/win_main/main.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>win_scheduler_results</strong> - Execute targets to get all results for component win_scheduler</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>win_scheduler_lint</strong> - Lint the win_scheduler component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component win_scheduler (uses: ${CMAKE_BUILD_DIR}/win_scheduler/compile_commands.json, ${CMAKE_BUILD_DIR}/win_scheduler/cppcheck_report.md, ${CMAKE_BUILD_DIR}/win_scheduler/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>win_scheduler_docs</strong> - Generate sources docs for component win_scheduler -> [${CMAKE_BUILD_DIR}/win_scheduler/os.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>objects_deps</strong> - Generate objects dependencies report</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate the objects dependencies report (uses: ${CMAKE_BUILD_DIR}/reports/objects_deps.html)</summary><ul><li><details><summary><strong>compile</strong> - Compile variant Sleep</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li><li><strong>console_interface_lib</strong> - Object library: console_interface -> [console_interface_lib]</li><li><strong>keyboard_interface_lib</strong> - Object library: keyboard_interface -> [keyboard_interface_lib]</li><li><strong>win_main_lib</strong> - Object library: win_main -> [win_main_lib]</li><li><strong>win_scheduler_lib</strong> - Object library: win_scheduler -> [win_scheduler_lib]</li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>targets_data</strong> - Generate targets data report</summary><ul><li><details><summary><strong>custom command</strong> - Generate variant targets data documentation (uses: ${CMAKE_BUILD_DIR}/targets_data.md)</summary><ul><li>${CMAKE_BUILD_DIR}/targets_data.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li>
+</ul>

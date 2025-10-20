@@ -1,0 +1,115 @@
+# test_power_button.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((boolean), RteIsKeyPressed, (KeyCodes key));
+   MOCK_METHOD((void), RteSetPowerKeyPressedEvent, (boolean value));
+}
+```
+
+### PowerButtonTest
+
+```{code-block} c
+:linenos:
+:lineno-start: 16
+
+class PowerButtonTest : public Test
+{
+protected:
+    void SetUp() override
+    {
+        powerButtonInit();
+    }
+}
+```
+
+### PowerButtonTest_InitialStateIsReleased_Test
+
+```{test} PowerButtonTest.InitialStateIsReleased
+   :id: TS_PB-001
+   :tests: SWDD_PB-100, SWDD_PB-201, SWDD_PB-203
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 33
+
+TEST_F(PowerButtonTest, InitialStateIsReleased)
+```
+
+### PowerButtonTest_PressEventSentOnlyAfterDebounce_Test
+
+```{test} PowerButtonTest.PressEventSentOnlyAfterDebounce
+   :id: TS_PB-002
+   :tests: SWDD_PB-101, SWDD_PB-203
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 51
+
+TEST_F(PowerButtonTest, PressEventSentOnlyAfterDebounce)
+```
+
+### PowerButtonTest_FullPressAndReleaseCycle_Test
+
+```{test} PowerButtonTest.FullPressAndReleaseCycle
+   :id: TS_PB-003
+   :tests: SWDD_PB-100, SWDD_PB-101, SWDD_PB-200, SWDD_PB-202, SWDD_PB-203, SWDD_PB-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 77
+
+TEST_F(PowerButtonTest, FullPressAndReleaseCycle)
+```
+
+### PowerButtonTest_InitToReleasedTransition_Test
+
+```{test} PowerButtonTest.InitToReleasedTransition
+   :id: TS_PB-004
+   :tests: SWDD_PB-100, SWDD_PB-101, SWDD_PB-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 150
+
+TEST_F(PowerButtonTest, InitToReleasedTransition)
+```

@@ -1,0 +1,62 @@
+# brightness_controller.c
+
+## Functions
+
+### manualBrightnessAdjustment
+
+```{impl} Manual Brightness Adjustment
+   :id: SWIMPL_BC-002
+   :implements: SWDD_BC-100, SWDD_BC-101, SWDD_BC-201
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 48
+
+static brightness_t manualBrightnessAdjustment(void)
+{
+    percentage_t mainKnobValue = RteGetMainKnobValue();
+    brightness_t brightnessValue = 0;
+
+    if (mainKnobValue == 0)
+    {
+        brightnessValue = 0;
+    }
+    else
+    {
+        brightnessValue = (mainKnobValue * 255) / 100;
+    }
+    return brightnessValue;
+}
+```
+
+### brightnessController
+
+```{impl} Brightness Controller runnable
+   :id: SWIMPL_BC-003
+   :implements: SWDD_BC-200, SWDD_BC-202, SWDD_BC-203
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 72
+
+void brightnessController(void)
+{
+    brightness_t brightnessValue = 0;
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_AUTOMATIC
+    static BrightnessAdjustmentData data = {
+        .ticksCounter = 0,
+        .period = BRIGHTNESS_PERIOD_TICKS,
+        .halfPeriod = BRIGHTNESS_PERIOD_TICKS / 2,
+        .maxBrightness = 200,
+        .minBrightness = 50};
+
+    brightnessValue = periodicBrightnessAdjustment(&data);
+    RteSetBrightnessAdjustmentCounter(data.ticksCounter);
+#elif defined(CONFIG_BRIGHTNESS_ADJUSTMENT_MANUAL)
+    brightnessValue = manualBrightnessAdjustment();
+#endif
+    RteSetBrightnessValue(brightnessValue);
+}
+```

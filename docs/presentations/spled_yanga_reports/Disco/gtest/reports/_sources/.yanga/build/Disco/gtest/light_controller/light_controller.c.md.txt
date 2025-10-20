@@ -1,0 +1,219 @@
+# light_controller.c
+
+## Functions
+
+### getBrightnessValue
+
+```{code-block} c
+:linenos:
+:lineno-start: 76
+
+static brightness_t getBrightnessValue()
+{
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED
+    /**
+     * ```{impl} Variable brightness
+     *    :id: SWIMPL_LC-005
+     *    :implements: SWDD_LC-204
+     * ```
+     */
+    return RteGetBrightnessValue();
+#else
+    return 128;
+#endif
+}
+```
+
+### getRGBColorWithBrightness
+
+@brief Converts a LightColor enum and brightness to an RGBColor struct.
+@param colorEnum The LightColor enum value.
+@param brightness The brightness value (0-255).
+@return The corresponding RGBColor struct.
+
+```{code-block} c
+:linenos:
+:lineno-start: 97
+
+static RGBColor getRGBColorWithBrightness(LightColor colorEnum, brightness_t brightness)
+{
+    RGBColor color = OFF_COLOR;
+    switch (colorEnum)
+    {
+    case COLOR_VAL_GREEN:
+        color.green = brightness;
+        break;
+    case COLOR_VAL_BLUE:
+        color.blue = brightness;
+        break;
+    case COLOR_VAL_RED:
+        color.red = brightness;
+        break;
+    case COLOR_VAL_PURPLE:
+        color.red = brightness / 2; // Assuming purple is half red, full blue
+        color.blue = brightness;
+        break;
+    case COLOR_VAL_OFF:
+    default:
+        color = OFF_COLOR;
+        break;
+    }
+    return color;
+}
+```
+
+### turnLightOff
+
+```{impl} Turn light off
+:id: SWIMPL_LC-002
+:implements: SWDD_LC-102
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 129
+
+static void turnLightOff(void)
+{
+#if CONFIG_BLINKING
+    blinkState = FALSE;
+#endif
+    RteSetLightValue(OFF_COLOR);
+}
+```
+
+### turnLightOn
+
+```{impl} Turn light on
+   :id: SWIMPL_LC-003
+   :implements: SWDD_LC-102
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 143
+
+static void turnLightOn(void)
+{
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD
+    // Check if the brightness adjustment counter is zero to switch colors
+    unsigned int counter = 0;
+    RteGetBrightnessAdjustmentCounter(&counter);
+    if (counter == 0)
+    {
+        light_colors_index = (light_colors_index + 1) % light_colors_count;
+    }
+#else
+    light_colors_index = 0;
+#endif
+
+    // Get the current color enum and brightness
+    LightColor currentColorEnum = light_colors[light_colors_index];
+    brightness_t currentBrightness = getBrightnessValue();
+
+    // Convert to RGBColor and set the light value
+    RGBColor color = getRGBColorWithBrightness(currentColorEnum, currentBrightness);
+
+#if CONFIG_BLINKING
+    blinkState = TRUE;
+#endif
+    RteSetLightValue(color);
+}
+```
+
+### calculateBlinkPeriod
+
+```{impl} Calculate blink period
+   :id: SWIMPL_LC-004
+   :implements: SWDD_LC-101
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 178
+
+unsigned int calculateBlinkPeriod(percentage_t mainKnobValue)
+{
+    // Calculate blink period based on main knob value
+    unsigned int blinkPeriod = 100 - (mainKnobValue); // Adjust this formula as needed
+
+    // Ensure there's a minimum blink period
+    blinkPeriod = (blinkPeriod > 10) ? blinkPeriod : 10; // Adjust the minimum period as needed
+
+    return blinkPeriod;
+}
+```
+
+### lightController
+
+```{impl} Light Controller's main function
+   :id: SWIMPL_LC-006
+   :implements: SWDD_LC-100
+```
+
+@brief Controls the light state.
+
+Uses a state machine to determine the light state based on several inputs,
+e.g., the system's power state.
+
+```{code-block} c
+:linenos:
+:lineno-start: 201
+
+void lightController(void)
+{
+
+    PowerState powerState = RteGetPowerState();
+#if CONFIG_BLINKING
+    percentage_t mainKnobValue = RteGetMainKnobValue();
+    unsigned int blinkPeriod = calculateBlinkPeriod(mainKnobValue);
+#endif
+
+    switch (currentLightState)
+    {
+    case LIGHT_OFF:
+#if CONFIG_BLINKING
+        blinkCounter = 0;
+#endif
+        if (powerState != POWER_STATE_OFF)
+        {
+            turnLightOn();
+            currentLightState = LIGHT_ON;
+        }
+        break;
+
+    default: // LIGHT_ON
+        if (powerState == POWER_STATE_OFF)
+        {
+            turnLightOff();
+            currentLightState = LIGHT_OFF;
+        }
+#if CONFIG_BLINKING
+        else
+        {
+            blinkCounter++;
+            if (blinkCounter >= blinkPeriod)
+            {
+                // Toggle the LED state
+                if (blinkState == TRUE)
+                {
+                    turnLightOff();
+                }
+                else
+                {
+                    turnLightOn();
+                }
+                blinkCounter = 0;
+            }
+        }
+#endif
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_ENABLED
+        else
+        {
+            turnLightOn();
+        }
+#endif
+        break;
+    }
+}
+```

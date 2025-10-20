@@ -1,0 +1,357 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 19
+
+Issues by severity:
+- information: 2
+- style: 17
+
+## rte.c
+
+Location: components\rte\src\rte.c
+
+### Style: unusedFunction
+
+The function 'RteSetPowerState' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 22
+:emphasize-lines: 4
+static boolean validAbortCommand = FALSE;
+static boolean selfDestructState = FALSE;
+
+void RteSetPowerState(PowerState state)
+{
+    currentPowerState = state;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetPowerState' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 27
+:emphasize-lines: 4
+    currentPowerState = state;
+}
+
+PowerState RteGetPowerState(void)
+{
+    return currentPowerState;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetPowerKeyPressedEvent' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 32
+:emphasize-lines: 4
+    return currentPowerState;
+}
+
+void RteSetPowerKeyPressedEvent(boolean value)
+{
+    powerKeyPressedEvent = value;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetPowerKeyPressedEvent' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 37
+:emphasize-lines: 4
+    powerKeyPressedEvent = value;
+}
+
+boolean RteGetPowerKeyPressedEvent()
+{
+    return powerKeyPressedEvent;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetLightValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 42
+:emphasize-lines: 4
+    return powerKeyPressedEvent;
+}
+
+void RteSetLightValue(RGBColor value)
+{
+    lightValue = value;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetLightValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 47
+:emphasize-lines: 4
+    lightValue = value;
+}
+
+void RteGetLightValue(RGBColor *value)
+{
+    *value = lightValue;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteIsKeyPressed' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 52
+:emphasize-lines: 4
+    *value = lightValue;
+}
+
+boolean RteIsKeyPressed(KeyCodes key)
+{
+    return ButtonInterfaceIsButtonPressed(key);
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetMainKnobValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 57
+:emphasize-lines: 4
+    return ButtonInterfaceIsButtonPressed(key);
+}
+
+void RteSetMainKnobValue(percentage_t value)
+{
+    if (value > 100)
+    {
+```
+
+### Style: unusedFunction
+
+The function 'RteGetMainKnobValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 69
+:emphasize-lines: 4
+    }
+}
+
+percentage_t RteGetMainKnobValue(void)
+{
+    return mainKnobValue;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetBrightnessValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 74
+:emphasize-lines: 4
+    return mainKnobValue;
+}
+
+void RteSetBrightnessValue(brightness_t value)
+{
+    brightnessValue = value;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetBrightnessValue' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 79
+:emphasize-lines: 4
+    brightnessValue = value;
+}
+
+brightness_t RteGetBrightnessValue(void)
+{
+    return brightnessValue;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetBrightnessAdjustmentCounter' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 85
+:emphasize-lines: 4
+}
+
+#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD
+void RteSetBrightnessAdjustmentCounter(unsigned int counter)
+{
+    brightnessAdjustmentCounter = counter;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetBrightnessAdjustmentCounter' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 90
+:emphasize-lines: 4
+    brightnessAdjustmentCounter = counter;
+}
+
+void RteGetBrightnessAdjustmentCounter(unsigned int *counter)
+{
+    *counter = brightnessAdjustmentCounter;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetOffCourse' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 96
+:emphasize-lines: 4
+}
+#endif // CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD
+
+void RteGetOffCourse(boolean *value)
+{
+    if (value != NULL)
+    {
+```
+
+### Style: unusedFunction
+
+The function 'RteGetAbortCommanded' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 104
+:emphasize-lines: 4
+    }
+}
+
+boolean RteGetAbortCommanded(void)
+{
+    return abortCommanded;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteGetValidAbortCommand' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 109
+:emphasize-lines: 4
+    return abortCommanded;
+}
+
+boolean RteGetValidAbortCommand(void)
+{
+    return validAbortCommand;
+}
+```
+
+### Style: unusedFunction
+
+The function 'RteSetSelfDestructState' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 114
+:emphasize-lines: 4
+    return validAbortCommand;
+}
+
+void RteSetSelfDestructState(boolean state)
+{
+    selfDestructState = state;
+}
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

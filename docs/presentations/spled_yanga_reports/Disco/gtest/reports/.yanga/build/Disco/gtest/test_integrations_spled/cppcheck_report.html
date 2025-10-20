@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CppCheck Report &mdash; Disco 2025-10-20</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/sphinx_rtd_size.css?v=3b072d6b" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-needs/common.css?v=bd9ab754" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-needs/layouts.css?v=448c382f" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-needs/modern.css?v=ffa536d2" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-needs/styles.css?v=6c8eb985" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=4009583e"></script>
+        <script src="../../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../../../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+        <script src="../../../../../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+        <script src="../../../../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+        <script src="../../../../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+        <script src="../../../../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=f783d6a5"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="test_spled.cc" href="test_spled.cc.html" />
+    <link rel="prev" title="Code Coverage" href="coverage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            Disco
+              <img src="../../../../../_static/SPLED_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../doc/software_architecture/index.html">Software Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../doc/components.html">Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#spled">spled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#power-signal-processing">power_signal_processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#light-controller">light_controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#power-button">power_button</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#main-control-knob">main_control_knob</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../../doc/components.html#test-integrations-spled">test_integrations_spled</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="coverage.html">Code Coverage</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CppCheck Report</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#statistics">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#brightness-controller-c">brightness_controller.c</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#style-unusedfunction">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Style: unusedFunction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#power-button-c">power_button.c</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Style: unusedFunction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#rte-c">rte.c</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Style: unusedFunction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#spled-c">spled.c</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id9">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id10">Style: unusedFunction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id11">Style: unusedFunction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#platform-types-h">platform_types.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#information-missingincludesystem">Information: missingIncludeSystem</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test_spled.cc.html">test_spled.cc</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../doc/components.html#rte">rte</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../coverage.html">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kconfig/autoconf.html">Variant Feature Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../targets_data.html">Target Dependencies Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Disco</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../doc/components.html">Components</a></li>
+      <li class="breadcrumb-item active">CppCheck Report</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../../_sources/.yanga/build/Disco/gtest/test_integrations_spled/cppcheck_report.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cppcheck-report">
+<h1>CppCheck Report<a class="headerlink" href="#cppcheck-report" title="Link to this heading"></a></h1>
+<section id="statistics">
+<h2>Statistics<a class="headerlink" href="#statistics" title="Link to this heading"></a></h2>
+<p>Total issues found: 14</p>
+<p>Issues by severity:</p>
+<ul class="simple">
+<li><p>information: 2</p></li>
+<li><p>style: 12</p></li>
+</ul>
+</section>
+<section id="brightness-controller-c">
+<h2>brightness_controller.c<a class="headerlink" href="#brightness-controller-c" title="Link to this heading"></a></h2>
+<p>Location: components\brightness_controller\src\brightness_controller.c</p>
+<section id="style-unusedfunction">
+<h3>Style: unusedFunction<a class="headerlink" href="#style-unusedfunction" title="Link to this heading"></a></h3>
+<p>The function ‘manualBrightnessAdjustment’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">45</span> *    :implements: SWDD_BC-100, SWDD_BC-101, SWDD_BC-201
+<span class="linenos">46</span> * ```
+<span class="linenos">47</span> */
+<span class="hll"><span class="linenos">48</span>static brightness_t manualBrightnessAdjustment(void)
+</span><span class="linenos">49</span>{
+<span class="linenos">50</span>    percentage_t mainKnobValue = RteGetMainKnobValue();
+<span class="linenos">51</span>    brightness_t brightnessValue = 0;
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>Style: unusedFunction<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>The function ‘brightnessController’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">69</span> *    :implements: SWDD_BC-200, SWDD_BC-202, SWDD_BC-203
+<span class="linenos">70</span> * ```
+<span class="linenos">71</span> */
+<span class="hll"><span class="linenos">72</span>void brightnessController(void)
+</span><span class="linenos">73</span>{
+<span class="linenos">74</span>    brightness_t brightnessValue = 0;
+<span class="linenos">75</span>#ifdef CONFIG_BRIGHTNESS_ADJUSTMENT_AUTOMATIC
+</pre></div>
+</div>
+</section>
+</section>
+<section id="power-button-c">
+<h2>power_button.c<a class="headerlink" href="#power-button-c" title="Link to this heading"></a></h2>
+<p>Location: components\power_button\src\power_button.c</p>
+<section id="id2">
+<h3>Style: unusedFunction<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>The function ‘powerButtonInit’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">21</span><span class="n">static</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">pressCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="o">/**&lt;</span> <span class="n">Counter</span> <span class="k">for</span> <span class="n">key</span> <span class="n">presses</span><span class="o">.</span> <span class="o">*/</span>
+<span class="linenos">22</span><span class="n">static</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">releaseCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">/**&lt;</span> <span class="n">Counter</span> <span class="k">for</span> <span class="n">key</span> <span class="n">releases</span><span class="o">.</span> <span class="o">*/</span>
+<span class="linenos">23</span>
+<span class="hll"><span class="linenos">24</span><span class="n">void</span> <span class="n">powerButtonInit</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">25</span><span class="p">{</span>
+<span class="linenos">26</span>    <span class="n">currentState</span> <span class="o">=</span> <span class="n">INIT</span><span class="p">;</span>
+<span class="linenos">27</span>    <span class="n">pressCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="rte-c">
+<h2>rte.c<a class="headerlink" href="#rte-c" title="Link to this heading"></a></h2>
+<p>Location: components\rte\src\rte.c</p>
+<section id="id3">
+<h3>Style: unusedFunction<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>The function ‘RteGetLightValue’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">47</span>    <span class="n">lightValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="linenos">48</span><span class="p">}</span>
+<span class="linenos">49</span>
+<span class="hll"><span class="linenos">50</span><span class="n">void</span> <span class="n">RteGetLightValue</span><span class="p">(</span><span class="n">RGBColor</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span>
+</span><span class="linenos">51</span><span class="p">{</span>
+<span class="linenos">52</span>    <span class="o">*</span><span class="n">value</span> <span class="o">=</span> <span class="n">lightValue</span><span class="p">;</span>
+<span class="linenos">53</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Style: unusedFunction<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>The function ‘RteGetBrightnessValue’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">79</span>    <span class="n">brightnessValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="linenos">80</span><span class="p">}</span>
+<span class="linenos">81</span>
+<span class="hll"><span class="linenos">82</span><span class="n">brightness_t</span> <span class="n">RteGetBrightnessValue</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">83</span><span class="p">{</span>
+<span class="linenos">84</span>    <span class="k">return</span> <span class="n">brightnessValue</span><span class="p">;</span>
+<span class="linenos">85</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>Style: unusedFunction<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>The function ‘RteGetOffCourse’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 96</span><span class="p">}</span>
+<span class="linenos"> 97</span><span class="c1">#endif // CONFIG_BRIGHTNESS_ADJUSTMENT_PERIOD</span>
+<span class="linenos"> 98</span>
+<span class="hll"><span class="linenos"> 99</span><span class="n">void</span> <span class="n">RteGetOffCourse</span><span class="p">(</span><span class="n">boolean</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span>
+</span><span class="linenos">100</span><span class="p">{</span>
+<span class="linenos">101</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">)</span>
+<span class="linenos">102</span>    <span class="p">{</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>Style: unusedFunction<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>The function ‘RteGetAbortCommanded’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">104</span>    <span class="p">}</span>
+<span class="linenos">105</span><span class="p">}</span>
+<span class="linenos">106</span>
+<span class="hll"><span class="linenos">107</span><span class="n">boolean</span> <span class="n">RteGetAbortCommanded</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">108</span><span class="p">{</span>
+<span class="linenos">109</span>    <span class="k">return</span> <span class="n">abortCommanded</span><span class="p">;</span>
+<span class="linenos">110</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3>Style: unusedFunction<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>The function ‘RteGetValidAbortCommand’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">109</span>    <span class="k">return</span> <span class="n">abortCommanded</span><span class="p">;</span>
+<span class="linenos">110</span><span class="p">}</span>
+<span class="linenos">111</span>
+<span class="hll"><span class="linenos">112</span><span class="n">boolean</span> <span class="n">RteGetValidAbortCommand</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">113</span><span class="p">{</span>
+<span class="linenos">114</span>    <span class="k">return</span> <span class="n">validAbortCommand</span><span class="p">;</span>
+<span class="linenos">115</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>Style: unusedFunction<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>The function ‘RteSetSelfDestructState’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">114</span>    <span class="k">return</span> <span class="n">validAbortCommand</span><span class="p">;</span>
+<span class="linenos">115</span><span class="p">}</span>
+<span class="linenos">116</span>
+<span class="hll"><span class="linenos">117</span><span class="n">void</span> <span class="n">RteSetSelfDestructState</span><span class="p">(</span><span class="n">boolean</span> <span class="n">state</span><span class="p">)</span>
+</span><span class="linenos">118</span><span class="p">{</span>
+<span class="linenos">119</span>    <span class="n">selfDestructState</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+<span class="linenos">120</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="spled-c">
+<h2>spled.c<a class="headerlink" href="#spled-c" title="Link to this heading"></a></h2>
+<p>Location: components\spled\src\spled.c</p>
+<section id="id9">
+<h3>Style: unusedFunction<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>The function ‘Task_Init’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">23</span>    <span class="n">ledInterface</span><span class="p">();</span>
+<span class="linenos">24</span><span class="p">}</span>
+<span class="linenos">25</span>
+<span class="hll"><span class="linenos">26</span><span class="n">void</span> <span class="n">Task_Init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">27</span><span class="p">{</span>
+<span class="linenos">28</span>    <span class="n">ledInterface_init</span><span class="p">();</span>
+<span class="linenos">29</span>    <span class="n">buttonInterface_init</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>Style: unusedFunction<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>The function ‘Task_100ms’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">29</span>    <span class="n">buttonInterface_init</span><span class="p">();</span>
+<span class="linenos">30</span><span class="p">}</span>
+<span class="linenos">31</span>
+<span class="hll"><span class="linenos">32</span><span class="n">void</span> <span class="n">Task_100ms</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">33</span><span class="p">{</span>
+<span class="linenos">34</span><span class="c1">#if (defined(CONFIG_OS_TASK_PERIOD) &amp;&amp; CONFIG_OS_TASK_PERIOD == 100)</span>
+<span class="linenos">35</span>    <span class="o">//</span> <span class="n">Call</span> <span class="n">the</span> <span class="n">main</span> <span class="n">application</span> <span class="n">function</span> <span class="n">every</span> <span class="mi">100</span><span class="n">ms</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>Style: unusedFunction<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>The function ‘Task_10ms’ is never used.</p>
+<p>CWE: 561</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">37</span><span class="c1">#endif</span>
+<span class="linenos">38</span><span class="p">}</span>
+<span class="linenos">39</span>
+<span class="hll"><span class="linenos">40</span><span class="n">void</span> <span class="n">Task_10ms</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+</span><span class="linenos">41</span><span class="p">{</span>
+<span class="linenos">42</span><span class="c1">#if (defined(CONFIG_OS_TASK_PERIOD) &amp;&amp; CONFIG_OS_TASK_PERIOD == 10)</span>
+<span class="linenos">43</span>    <span class="o">//</span> <span class="n">Call</span> <span class="n">the</span> <span class="n">main</span> <span class="n">application</span> <span class="n">function</span> <span class="n">every</span> <span class="mi">10</span><span class="n">ms</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="platform-types-h">
+<h2>platform_types.h<a class="headerlink" href="#platform-types-h" title="Link to this heading"></a></h2>
+<p>Location: platforms\platform_types.h</p>
+<section id="information-missingincludesystem">
+<h3>Information: missingIncludeSystem<a class="headerlink" href="#information-missingincludesystem" title="Link to this heading"></a></h3>
+<p>Include file: &lt;stdint.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">#ifndef platform_types_h_</span>
+<span class="linenos">2</span><span class="c1">#define platform_types_h_</span>
+<span class="linenos">3</span>
+<span class="hll"><span class="linenos">4</span><span class="c1">#include &lt;stdint.h&gt;</span>
+</span><span class="linenos">5</span>
+<span class="linenos">6</span><span class="c1">#ifndef NULL</span>
+<span class="linenos">7</span><span class="c1">#ifndef __cplusplus</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="coverage.html" class="btn btn-neutral float-left" title="Code Coverage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test_spled.cc.html" class="btn btn-neutral float-right" title="test_spled.cc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RMT and Friends.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
