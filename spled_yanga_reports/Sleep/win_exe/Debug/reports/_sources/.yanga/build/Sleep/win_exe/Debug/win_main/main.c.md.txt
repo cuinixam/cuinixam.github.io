@@ -1,0 +1,17 @@
+# main.c
+
+## Functions
+
+### main
+
+```{code-block} c
+:linenos:
+:lineno-start: 4
+
+int main(void) {
+
+    OsRun();
+
+    return 0;
+}
+```

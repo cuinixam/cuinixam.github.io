@@ -1,0 +1,54 @@
+# test_spled.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 16
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 20
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((void), brightnessController, ());
+   MOCK_METHOD((void), buttonInterface_init, ());
+   MOCK_METHOD((void), ledInterface, ());
+   MOCK_METHOD((void), ledInterface_init, ());
+   MOCK_METHOD((void), lightController, ());
+   MOCK_METHOD((void), mainControlKnob, ());
+   MOCK_METHOD((void), powerButton, ());
+   MOCK_METHOD((void), powerSignalProcessing, ());
+}
+```
+
+### spled_test_interface_call_order_Test
+
+```{code-block} c
+:linenos:
+:lineno-start: 12
+
+TEST(spled, test_interface_call_order)
+```

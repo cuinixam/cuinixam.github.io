@@ -1,0 +1,282 @@
+# Target Dependencies Documentation
+
+## Summary
+
+- **Total targets**: 110
+- **Root targets (CMakeCustomTargets only)**: 27
+
+This document provides an overview of CMake custom target dependencies. Only CMakeCustomTargets are shown as root targets.
+
+## Root Targets (CMakeCustomTargets)
+
+These are the main CMakeCustomTargets that are not dependencies of other targets.
+
+### spled_mockup
+
+**Description**: Generate mockup sources for spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_mockup</strong> - Generate mockup sources for spled</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/spled/mockup_spled.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/spled/mockup_spled.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/spled/mockup_spled.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/spled/spled_PC.o]</summary><ul><li><strong>spled_PC_lib</strong> - Object library: spled_PC -> [spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### spled_test
+
+**Description**: Execute tests for spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_test</strong> - Execute tests for spled</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/spled/spled_junit.xml)</summary><ul><li><details><summary><strong>spled</strong> - Executable target: spled -> [spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>spled_PC_lib</strong> - Object library: spled_PC -> [spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### spled_build
+
+**Description**: Execute tests for spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_build</strong> - Execute tests for spled</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/spled/spled_junit.xml)</summary><ul><li><details><summary><strong>spled</strong> - Executable target: spled -> [spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>spled_PC_lib</strong> - Object library: spled_PC -> [spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_signal_processing_mockup
+
+**Description**: Generate mockup sources for power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_mockup</strong> - Generate mockup sources for power_signal_processing</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/power_signal_processing/mockup_power_signal_processing.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/power_signal_processing/mockup_power_signal_processing.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/power_signal_processing/mockup_power_signal_processing.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing_PC.o]</summary><ul><li><strong>power_signal_processing_PC_lib</strong> - Object library: power_signal_processing_PC -> [power_signal_processing_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_signal_processing_test
+
+**Description**: Execute tests for power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_test</strong> - Execute tests for power_signal_processing</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing_junit.xml)</summary><ul><li><details><summary><strong>power_signal_processing</strong> - Executable target: power_signal_processing -> [power_signal_processing]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_signal_processing_PC_lib</strong> - Object library: power_signal_processing_PC -> [power_signal_processing_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_signal_processing_build
+
+**Description**: Execute tests for power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_build</strong> - Execute tests for power_signal_processing</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing_junit.xml)</summary><ul><li><details><summary><strong>power_signal_processing</strong> - Executable target: power_signal_processing -> [power_signal_processing]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_signal_processing_PC_lib</strong> - Object library: power_signal_processing_PC -> [power_signal_processing_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### light_controller_mockup
+
+**Description**: Generate mockup sources for light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_mockup</strong> - Generate mockup sources for light_controller</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/light_controller/mockup_light_controller.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/light_controller/mockup_light_controller.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/light_controller/mockup_light_controller.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/light_controller/light_controller_PC.o]</summary><ul><li><strong>light_controller_PC_lib</strong> - Object library: light_controller_PC -> [light_controller_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### light_controller_test
+
+**Description**: Execute tests for light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_test</strong> - Execute tests for light_controller</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/light_controller/light_controller_junit.xml)</summary><ul><li><details><summary><strong>light_controller</strong> - Executable target: light_controller -> [light_controller]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>light_controller_PC_lib</strong> - Object library: light_controller_PC -> [light_controller_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### light_controller_build
+
+**Description**: Execute tests for light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_build</strong> - Execute tests for light_controller</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/light_controller/light_controller_junit.xml)</summary><ul><li><details><summary><strong>light_controller</strong> - Executable target: light_controller -> [light_controller]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>light_controller_PC_lib</strong> - Object library: light_controller_PC -> [light_controller_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_button_mockup
+
+**Description**: Generate mockup sources for power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_mockup</strong> - Generate mockup sources for power_button</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/power_button/mockup_power_button.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/power_button/mockup_power_button.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/power_button/mockup_power_button.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/power_button/power_button_PC.o]</summary><ul><li><strong>power_button_PC_lib</strong> - Object library: power_button_PC -> [power_button_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_button_test
+
+**Description**: Execute tests for power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_test</strong> - Execute tests for power_button</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/power_button/power_button_junit.xml)</summary><ul><li><details><summary><strong>power_button</strong> - Executable target: power_button -> [power_button]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_button_PC_lib</strong> - Object library: power_button_PC -> [power_button_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_button_build
+
+**Description**: Execute tests for power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_build</strong> - Execute tests for power_button</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/power_button/power_button_junit.xml)</summary><ul><li><details><summary><strong>power_button</strong> - Executable target: power_button -> [power_button]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_button_PC_lib</strong> - Object library: power_button_PC -> [power_button_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### main_control_knob_mockup
+
+**Description**: Generate mockup sources for main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_mockup</strong> - Generate mockup sources for main_control_knob</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/main_control_knob/mockup_main_control_knob.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/main_control_knob/mockup_main_control_knob.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/main_control_knob/mockup_main_control_knob.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob_PC.o]</summary><ul><li><strong>main_control_knob_PC_lib</strong> - Object library: main_control_knob_PC -> [main_control_knob_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### main_control_knob_test
+
+**Description**: Execute tests for main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_test</strong> - Execute tests for main_control_knob</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob_junit.xml)</summary><ul><li><details><summary><strong>main_control_knob</strong> - Executable target: main_control_knob -> [main_control_knob]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>main_control_knob_PC_lib</strong> - Object library: main_control_knob_PC -> [main_control_knob_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### main_control_knob_build
+
+**Description**: Execute tests for main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_build</strong> - Execute tests for main_control_knob</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob_junit.xml)</summary><ul><li><details><summary><strong>main_control_knob</strong> - Executable target: main_control_knob -> [main_control_knob]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>main_control_knob_PC_lib</strong> - Object library: main_control_knob_PC -> [main_control_knob_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### test_integrations_spled_mockup
+
+**Description**: Generate mockup sources for test_integrations_spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>test_integrations_spled_mockup</strong> - Generate mockup sources for test_integrations_spled</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate mockup sources (uses: d:/ateliere/spledy/.yanga/build/Disco/gtest/test_integrations_spled/mockup_test_integrations_spled.cc, d:/ateliere/spledy/.yanga/build/Disco/gtest/test_integrations_spled/mockup_test_integrations_spled.h, d:/ateliere/spledy/.yanga/build/Disco/gtest/test_integrations_spled/mockup_test_integrations_spled.log)</summary><ul><li><details><summary><strong>custom command</strong> - Create partial link library containing only the productive sources -> [${CMAKE_BUILD_DIR}/test_integrations_spled/test_integrations_spled_PC.o]</summary><ul><li><strong>test_integrations_spled_PC_lib</strong> - Object library: test_integrations_spled_PC -> [test_integrations_spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### test_integrations_spled_test
+
+**Description**: Execute tests for test_integrations_spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>test_integrations_spled_test</strong> - Execute tests for test_integrations_spled</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/test_integrations_spled_junit.xml)</summary><ul><li><details><summary><strong>test_integrations_spled</strong> - Executable target: test_integrations_spled -> [test_integrations_spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>test_integrations_spled_PC_lib</strong> - Object library: test_integrations_spled_PC -> [test_integrations_spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### test_integrations_spled_build
+
+**Description**: Execute tests for test_integrations_spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>test_integrations_spled_build</strong> - Execute tests for test_integrations_spled</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/test_integrations_spled_junit.xml)</summary><ul><li><details><summary><strong>test_integrations_spled</strong> - Executable target: test_integrations_spled -> [test_integrations_spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>test_integrations_spled_PC_lib</strong> - Object library: test_integrations_spled_PC -> [test_integrations_spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### lint
+
+**Description**: Lint the entire variant
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>lint</strong> - Lint the entire variant</summary><ul><li><strong>custom command</strong> - Run cppcheck for all sources (uses: ${CMAKE_BUILD_DIR}/cppcheck_report.md, ${CMAKE_BUILD_DIR}/cppcheck_report.xml)</li></ul></details></li>
+</ul>
+
+### rte_report
+
+**Description**: Generate report for component rte
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>rte_report</strong> - Generate report for component rte</summary><ul><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_lint</strong> - Lint the rte component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component rte (uses: ${CMAKE_BUILD_DIR}/rte/compile_commands.json, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.md, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### spled_report
+
+**Description**: Generate report for component spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>spled_report</strong> - Generate report for component spled</summary><ul><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_coverage</strong> - Generate coverage report for spled</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component spled (uses: ${CMAKE_BUILD_DIR}/spled/coverage.json, ${CMAKE_BUILD_DIR}/spled/coverage.md, ${CMAKE_BUILD_DIR}/spled/gcovr.cfg, ${CMAKE_BUILD_DIR}/spled/reports/.yanga/build/Disco/gtest/spled/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/spled/spled_junit.xml]</summary><ul><li><details><summary><strong>spled</strong> - Executable target: spled -> [spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>spled_PC_lib</strong> - Object library: spled_PC -> [spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>spled_lint</strong> - Lint the spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component spled (uses: ${CMAKE_BUILD_DIR}/spled/compile_commands.json, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md, ${CMAKE_BUILD_DIR}/spled/test_spled.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_signal_processing_report
+
+**Description**: Generate report for component power_signal_processing
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_signal_processing_report</strong> - Generate report for component power_signal_processing</summary><ul><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_coverage</strong> - Generate coverage report for power_signal_processing</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/coverage.json, ${CMAKE_BUILD_DIR}/power_signal_processing/coverage.md, ${CMAKE_BUILD_DIR}/power_signal_processing/gcovr.cfg, ${CMAKE_BUILD_DIR}/power_signal_processing/reports/.yanga/build/Disco/gtest/power_signal_processing/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing_junit.xml]</summary><ul><li><details><summary><strong>power_signal_processing</strong> - Executable target: power_signal_processing -> [power_signal_processing]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_signal_processing_PC_lib</strong> - Object library: power_signal_processing_PC -> [power_signal_processing_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>power_signal_processing_lint</strong> - Lint the power_signal_processing component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/compile_commands.json, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md, ${CMAKE_BUILD_DIR}/power_signal_processing/test_power_signal_processing.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### light_controller_report
+
+**Description**: Generate report for component light_controller
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>light_controller_report</strong> - Generate report for component light_controller</summary><ul><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_coverage</strong> - Generate coverage report for light_controller</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/coverage.json, ${CMAKE_BUILD_DIR}/light_controller/coverage.md, ${CMAKE_BUILD_DIR}/light_controller/gcovr.cfg, ${CMAKE_BUILD_DIR}/light_controller/reports/.yanga/build/Disco/gtest/light_controller/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/light_controller/light_controller_junit.xml]</summary><ul><li><details><summary><strong>light_controller</strong> - Executable target: light_controller -> [light_controller]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>light_controller_PC_lib</strong> - Object library: light_controller_PC -> [light_controller_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>light_controller_lint</strong> - Lint the light_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md, ${CMAKE_BUILD_DIR}/light_controller/test_light_controller.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### power_button_report
+
+**Description**: Generate report for component power_button
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>power_button_report</strong> - Generate report for component power_button</summary><ul><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_coverage</strong> - Generate coverage report for power_button</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/coverage.json, ${CMAKE_BUILD_DIR}/power_button/coverage.md, ${CMAKE_BUILD_DIR}/power_button/gcovr.cfg, ${CMAKE_BUILD_DIR}/power_button/reports/.yanga/build/Disco/gtest/power_button/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/power_button/power_button_junit.xml]</summary><ul><li><details><summary><strong>power_button</strong> - Executable target: power_button -> [power_button]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>power_button_PC_lib</strong> - Object library: power_button_PC -> [power_button_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>power_button_lint</strong> - Lint the power_button component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/compile_commands.json, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md, ${CMAKE_BUILD_DIR}/power_button/test_power_button.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### main_control_knob_report
+
+**Description**: Generate report for component main_control_knob
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>main_control_knob_report</strong> - Generate report for component main_control_knob</summary><ul><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_coverage</strong> - Generate coverage report for main_control_knob</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/coverage.json, ${CMAKE_BUILD_DIR}/main_control_knob/coverage.md, ${CMAKE_BUILD_DIR}/main_control_knob/gcovr.cfg, ${CMAKE_BUILD_DIR}/main_control_knob/reports/.yanga/build/Disco/gtest/main_control_knob/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob_junit.xml]</summary><ul><li><details><summary><strong>main_control_knob</strong> - Executable target: main_control_knob -> [main_control_knob]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>main_control_knob_PC_lib</strong> - Object library: main_control_knob_PC -> [main_control_knob_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>main_control_knob_lint</strong> - Lint the main_control_knob component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/compile_commands.json, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.md, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md, ${CMAKE_BUILD_DIR}/main_control_knob/test_main_control_knob.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### test_integrations_spled_report
+
+**Description**: Generate report for component test_integrations_spled
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>test_integrations_spled_report</strong> - Generate report for component test_integrations_spled</summary><ul><li><details><summary><strong>test_integrations_spled_results</strong> - Execute targets to get all results for component test_integrations_spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>test_integrations_spled_coverage</strong> - Generate coverage report for test_integrations_spled</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component test_integrations_spled (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/coverage.json, ${CMAKE_BUILD_DIR}/test_integrations_spled/coverage.md, ${CMAKE_BUILD_DIR}/test_integrations_spled/gcovr.cfg, ${CMAKE_BUILD_DIR}/test_integrations_spled/reports/.yanga/build/Disco/gtest/test_integrations_spled/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/test_integrations_spled/test_integrations_spled_junit.xml]</summary><ul><li><details><summary><strong>test_integrations_spled</strong> - Executable target: test_integrations_spled -> [test_integrations_spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>test_integrations_spled_PC_lib</strong> - Object library: test_integrations_spled_PC -> [test_integrations_spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>test_integrations_spled_lint</strong> - Lint the test_integrations_spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component test_integrations_spled (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/compile_commands.json, ${CMAKE_BUILD_DIR}/test_integrations_spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/test_integrations_spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>test_integrations_spled_docs</strong> - Generate sources docs for component test_integrations_spled -> [${CMAKE_BUILD_DIR}/test_integrations_spled/test_spled.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
+</ul>
+
+### report
+
+**Description**: Run sphinx build for variant Disco
+
+**Dependency Tree**:
+
+<ul>
+<li><details><summary><strong>report</strong> - Run sphinx build for variant Disco</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>results</strong> - Run all targets for all component results for Disco</summary><ul><li><strong>custom command</strong> - Copy coverage html report for component spled to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/spled/coverage)</li><li><strong>custom command</strong> - Copy coverage html report for component power_signal_processing to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/power_signal_processing/coverage)</li><li><strong>custom command</strong> - Copy coverage html report for component light_controller to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/light_controller/coverage)</li><li><strong>custom command</strong> - Copy coverage html report for component power_button to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/power_button/coverage)</li><li><strong>custom command</strong> - Copy coverage html report for component main_control_knob to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/main_control_knob/coverage)</li><li><strong>custom command</strong> - Copy coverage html report for component test_integrations_spled to variant report directory (uses: ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/test_integrations_spled/coverage)</li><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_lint</strong> - Lint the rte component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component rte (uses: ${CMAKE_BUILD_DIR}/rte/compile_commands.json, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.md, ${CMAKE_BUILD_DIR}/rte/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_coverage</strong> - Generate coverage report for spled</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component spled (uses: ${CMAKE_BUILD_DIR}/spled/coverage.json, ${CMAKE_BUILD_DIR}/spled/coverage.md, ${CMAKE_BUILD_DIR}/spled/gcovr.cfg, ${CMAKE_BUILD_DIR}/spled/reports/.yanga/build/Disco/gtest/spled/coverage/index.html)</summary><ul><li><details><summary><strong>custom command</strong> - Run the test executable, generate JUnit report and return success independent of the test result -> [${CMAKE_BUILD_DIR}/spled/spled_junit.xml]</summary><ul><li><details><summary><strong>spled</strong> - Executable target: spled -> [spled]</summary><ul><li>GTest::gtest_main (external dependency)</li><li>GTest::gmock_main (external dependency)</li><li>pthread (external dependency)</li><li><strong>spled_PC_lib</strong> - Object library: spled_PC -> [spled_PC_lib]</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>spled_lint</strong> - Lint the spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component spled (uses: ${CMAKE_BUILD_DIR}/spled/compile_commands.json, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md, ${CMAKE_BUILD_DIR}/spled/test_spled.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_coverage</strong> - Generate coverage report for power_signal_processing</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/coverage.json, ${CMAKE_BUILD_DIR}/power_signal_processing/coverage.md, ${CMAKE_BUILD_DIR}/power_signal_processing/gcovr.cfg, ${CMAKE_BUILD_DIR}/power_signal_processing/reports/.yanga/build/Disco/gtest/power_signal_processing/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_signal_processing_lint</strong> - Lint the power_signal_processing component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_signal_processing (uses: ${CMAKE_BUILD_DIR}/power_signal_processing/compile_commands.json, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_signal_processing/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md, ${CMAKE_BUILD_DIR}/power_signal_processing/test_power_signal_processing.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_coverage</strong> - Generate coverage report for light_controller</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/coverage.json, ${CMAKE_BUILD_DIR}/light_controller/coverage.md, ${CMAKE_BUILD_DIR}/light_controller/gcovr.cfg, ${CMAKE_BUILD_DIR}/light_controller/reports/.yanga/build/Disco/gtest/light_controller/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>light_controller_lint</strong> - Lint the light_controller component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component light_controller (uses: ${CMAKE_BUILD_DIR}/light_controller/compile_commands.json, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.md, ${CMAKE_BUILD_DIR}/light_controller/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md, ${CMAKE_BUILD_DIR}/light_controller/test_light_controller.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_coverage</strong> - Generate coverage report for power_button</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/coverage.json, ${CMAKE_BUILD_DIR}/power_button/coverage.md, ${CMAKE_BUILD_DIR}/power_button/gcovr.cfg, ${CMAKE_BUILD_DIR}/power_button/reports/.yanga/build/Disco/gtest/power_button/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_button_lint</strong> - Lint the power_button component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component power_button (uses: ${CMAKE_BUILD_DIR}/power_button/compile_commands.json, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.md, ${CMAKE_BUILD_DIR}/power_button/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md, ${CMAKE_BUILD_DIR}/power_button/test_power_button.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_coverage</strong> - Generate coverage report for main_control_knob</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/coverage.json, ${CMAKE_BUILD_DIR}/main_control_knob/coverage.md, ${CMAKE_BUILD_DIR}/main_control_knob/gcovr.cfg, ${CMAKE_BUILD_DIR}/main_control_knob/reports/.yanga/build/Disco/gtest/main_control_knob/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>main_control_knob_lint</strong> - Lint the main_control_knob component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component main_control_knob (uses: ${CMAKE_BUILD_DIR}/main_control_knob/compile_commands.json, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.md, ${CMAKE_BUILD_DIR}/main_control_knob/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md, ${CMAKE_BUILD_DIR}/main_control_knob/test_main_control_knob.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>test_integrations_spled_results</strong> - Execute targets to get all results for component test_integrations_spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>test_integrations_spled_coverage</strong> - Generate coverage report for test_integrations_spled</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for component test_integrations_spled (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/coverage.json, ${CMAKE_BUILD_DIR}/test_integrations_spled/coverage.md, ${CMAKE_BUILD_DIR}/test_integrations_spled/gcovr.cfg, ${CMAKE_BUILD_DIR}/test_integrations_spled/reports/.yanga/build/Disco/gtest/test_integrations_spled/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>test_integrations_spled_lint</strong> - Lint the test_integrations_spled component</summary><ul><li><strong>custom command</strong> - Run cppcheck for component test_integrations_spled (uses: ${CMAKE_BUILD_DIR}/test_integrations_spled/compile_commands.json, ${CMAKE_BUILD_DIR}/test_integrations_spled/cppcheck_report.md, ${CMAKE_BUILD_DIR}/test_integrations_spled/cppcheck_report.xml)</li></ul></details></li><li><details><summary><strong>test_integrations_spled_docs</strong> - Generate sources docs for component test_integrations_spled -> [${CMAKE_BUILD_DIR}/test_integrations_spled/test_spled.cc.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>coverage</strong> - Generate variant coverage report</summary><ul><li><details><summary><strong>custom command</strong> - Generate coverage report for the variant (uses: ${CMAKE_BUILD_DIR}/coverage.md, ${CMAKE_BUILD_DIR}/gcovr.cfg, ${CMAKE_BUILD_DIR}/reports/.yanga/build/Disco/gtest/coverage/index.html)</summary><ul><li><strong>custom command</strong> (see above)</li><li><strong>custom command</strong> (see above)</li><li><strong>custom command</strong> (see above)</li><li><strong>custom command</strong> (see above)</li><li><strong>custom command</strong> (see above)</li><li><strong>custom command</strong> (see above)</li></ul></details></li></ul></details></li><li><details><summary><strong>targets_data</strong> - Generate targets data report</summary><ul><li><details><summary><strong>custom command</strong> - Generate variant targets data documentation (uses: ${CMAKE_BUILD_DIR}/targets_data.md)</summary><ul><li>${CMAKE_BUILD_DIR}/targets_data.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li>
+</ul>

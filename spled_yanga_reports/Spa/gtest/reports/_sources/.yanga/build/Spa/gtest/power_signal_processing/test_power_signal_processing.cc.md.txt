@@ -1,0 +1,70 @@
+# test_power_signal_processing.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((boolean), RteGetPowerKeyPressedEvent, ());
+   MOCK_METHOD((PowerState), RteGetPowerState, ());
+   MOCK_METHOD((void), RteSetPowerState, (PowerState state));
+}
+```
+
+### power_signal_processing_test_power_stays_off_Test
+
+```{test} power_signal_processing.test_power_stays_off
+   :id: TS_PSP-001
+   :tests: SWDD_PSP-001
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 23
+
+TEST(power_signal_processing, test_power_stays_off)
+```
+
+### power_signal_processing_test_power_toggles_Test
+
+```{test} power_signal_processing.test_power_toggles
+   :id: TS_PSP-002
+   :tests: SWDD_PSP-002, SWDD_PSP-003
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 42
+
+TEST(power_signal_processing, test_power_toggles)
+```

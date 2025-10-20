@@ -1,0 +1,91 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 5
+
+Issues by severity:
+- information: 2
+- style: 3
+
+## spled.c
+
+Location: components\spled\src\spled.c
+
+### Style: unusedFunction
+
+The function 'Task_Init' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 23
+:emphasize-lines: 4
+    ledInterface();
+}
+
+void Task_Init(void)
+{
+    ledInterface_init();
+    buttonInterface_init();
+```
+
+### Style: unusedFunction
+
+The function 'Task_100ms' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 29
+:emphasize-lines: 4
+    buttonInterface_init();
+}
+
+void Task_100ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 100)
+    // Call the main application function every 100ms
+```
+
+### Style: unusedFunction
+
+The function 'Task_10ms' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 37
+:emphasize-lines: 4
+#endif
+}
+
+void Task_10ms(void)
+{
+#if (defined(CONFIG_OS_TASK_PERIOD) && CONFIG_OS_TASK_PERIOD == 10)
+    // Call the main application function every 10ms
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

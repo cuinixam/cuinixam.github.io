@@ -1,0 +1,101 @@
+# test_light_controller.cc
+
+## Functions
+
+### RUN_ALL_TESTS
+
+```{code-block} c
+:linenos:
+:lineno-start: 2334
+
+inline int RUN_ALL_TESTS() { return ::testing::UnitTest::GetInstance()->Run(); }
+```
+
+### areRGBColorsEqual
+
+Assuming you have mock sources for the light controller.
+
+```{code-block} c
+:linenos:
+:lineno-start: 17
+
+bool areRGBColorsEqual(const RGBColor *color1, const RGBColor *color2)
+{
+    return color1->red == color2->red &&
+           color1->green == color2->green &&
+           color1->blue == color2->blue;
+}
+```
+
+### operator<<
+
+Override the cout operator for RGBColor so that it can be printed in the test output
+
+```{code-block} c
+:linenos:
+:lineno-start: 58
+
+std::ostream &operator<<(std::ostream &os, const RGBColor &color)
+{
+    os << "RGBColor(" << color.red << ", " << color.green << ", " << color.blue << ")";
+    return os;
+}
+```
+
+## Classes
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 10
+
+class class_mockup
+```
+
+### class_mockup
+
+```{code-block} c
+:linenos:
+:lineno-start: 14
+
+class class_mockup {
+
+public:
+   class_mockup()  { mockup_global_ptr = this; }
+   ~class_mockup() { mockup_global_ptr = nullptr; }
+   MOCK_METHOD((brightness_t), RteGetBrightnessValue, ());
+   MOCK_METHOD((PowerState), RteGetPowerState, ());
+   MOCK_METHOD((void), RteSetLightValue, (RGBColor value));
+}
+```
+
+### light_controller_test_light_stays_off_Test
+
+```{test} light_controller.test_light_stays_off
+   :id: TS_LC-006
+   :tests: SWDD_LC-100, SWDD_LC-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 72
+
+TEST(light_controller, test_light_stays_off)
+```
+
+### light_controller_test_light_on_and_off_Test
+
+```{test} light_controller.test_light_on_and_off
+   :id: TS_LC-001
+   :tests: SWDD_LC-100, SWDD_LC-102, SWDD_LC-300
+
+```
+
+```{code-block} c
+:linenos:
+:lineno-start: 125
+
+TEST(light_controller, test_light_on_and_off)
+```

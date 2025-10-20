@@ -1,0 +1,53 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 3
+
+Issues by severity:
+- information: 2
+- style: 1
+
+## main_control_knob.c
+
+Location: components\main_control_knob\src\main_control_knob.c
+
+### Style: unusedFunction
+
+The function 'mainControlKnob' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 16
+:emphasize-lines: 4
+ *    :implements: SWDD_MCK-100, SWDD_MCK-101, SWDD_MCK-200, SWDD_MCK-201, SWDD_MCK-202, SWDD_MCK-203
+ * ```
+ */
+void mainControlKnob(void)
+{
+    percentage_t currentValue = RteGetMainKnobValue();
+    if (RteIsKeyPressed(CONTROL_KEY_UP))
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```

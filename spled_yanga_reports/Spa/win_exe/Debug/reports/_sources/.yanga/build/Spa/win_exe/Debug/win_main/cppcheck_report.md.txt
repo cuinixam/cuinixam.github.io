@@ -1,0 +1,8 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 1
+
+Issues by severity:
+- information: 1

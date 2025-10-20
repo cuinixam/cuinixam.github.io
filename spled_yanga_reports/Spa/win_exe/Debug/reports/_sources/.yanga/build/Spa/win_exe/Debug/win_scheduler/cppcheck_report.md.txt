@@ -1,0 +1,48 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 3
+
+Issues by severity:
+- information: 2
+- style: 1
+
+## os.c
+
+Location: platforms\win_exe\src\os.c
+
+### Information: missingIncludeSystem
+
+Include file: <unistd.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 3
+#include "autoconf.h"
+#include "spled.h"
+#include <unistd.h>
+
+static void OsTask(void)
+{
+```
+
+### Style: unusedFunction
+
+The function 'OsRun' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 9
+:emphasize-lines: 4
+    usleep(CONFIG_OS_TASK_PERIOD * 1000); // CONFIG_OS_TASK_PERIOD is in milliseconds
+}
+
+void OsRun(void)
+{
+    while (1)
+    {
+```

@@ -1,0 +1,72 @@
+# CppCheck Report
+
+## Statistics
+
+Total issues found: 4
+
+Issues by severity:
+- information: 2
+- style: 2
+
+## power_button.c
+
+Location: components\power_button\src\power_button.c
+
+### Style: unusedFunction
+
+The function 'powerButtonInit' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 21
+:emphasize-lines: 4
+static unsigned int pressCounter = 0;   /**< Counter for key presses. */
+static unsigned int releaseCounter = 0; /**< Counter for key releases. */
+
+void powerButtonInit(void)
+{
+    currentState = INIT;
+    pressCounter = 0;
+```
+
+### Style: unusedFunction
+
+The function 'powerButton' is never used.
+
+CWE: 561
+
+```{code-block}
+:linenos:
+:lineno-start: 37
+:emphasize-lines: 4
+ * how many consecutive calls with the key pressed/released are required to acknowledge the
+ * state transition.
+ */
+void powerButton(void)
+{
+    boolean powerKeyPressed = FALSE;
+    boolean keyStatus = RteIsKeyPressed(POWER_BUTTON_KEY);
+```
+
+## platform_types.h
+
+Location: platforms\platform_types.h
+
+### Information: missingIncludeSystem
+
+Include file: <stdint.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.
+
+```{code-block}
+:linenos:
+:lineno-start: 1
+:emphasize-lines: 4
+#ifndef platform_types_h_
+#define platform_types_h_
+
+#include <stdint.h>
+
+#ifndef NULL
+#ifndef __cplusplus
+```
