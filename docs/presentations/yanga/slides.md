@@ -39,6 +39,7 @@ Why are we talking about a Line? A Product Line? A Software Product Line?
 Terminology <!-- .element: class="monospacesmall" -->
 
 - Product <!-- .element: class="fragment" -->
+- Feature <!-- .element: class="fragment" -->
 - Variant <!-- .element: class="fragment" -->
 - Component <!-- .element: class="fragment" -->
 - Platform <!-- .element: class="fragment" -->
@@ -184,6 +185,28 @@ platforms:
     toolchain_file: gcc.cmake
 ```
 
+--
+
+## Platform
+
+yanga.yaml <!-- .element: class="monospacesmall" -->
+
+```yaml
+  # Arduino Uno platform configuration
+  - name: arduino_uno_r3
+    toolchain_file: arduino_uno_r3.cmake
+    west_manifest:
+      remotes:
+        - name: arduino
+          url-base: https://github.com/arduino
+      projects:
+        - name: ArduinoCore-avr
+          remote: arduino
+          revision: 1.8.6
+          path: ArduinoCoreAvr
+    components: [arduino_main, arduino_core]
+```
+
 ---
 
 ## <span class="highlighted-red-transparent-background">Product Variants</span>
@@ -196,7 +219,7 @@ platforms:
 
 yanga.yaml <!-- .element: class="monospacesmall" -->
 
-```yaml [1-3,8-9|4-7,10-13|14]
+```yaml [1-3,7-8|4-6,9-11|12]
 variants:
   - name: EnglishVariant
     description: Say hello in English.
@@ -213,23 +236,67 @@ variants:
 
 --
 
+## Feature Model
+
+KConfig <!-- .element: class="monospacesmall" -->
+
+```
+config LANG_DE
+    bool "German language"
+    default n
+```
+
+--
+
+## Feature Configuration
+
+<div class="small-container">
+  <img src="images/kspl_view.png" height="400">
+</div>
+
+yanga view --project-dir ./my_project <!-- .element: class="monospacesmall" -->
+
+--
+
 ## Components
 
 yanga.yaml <!-- .element: class="monospacesmall" -->
 
-```yaml [1-3,6-7|4-5,8-11]
+```yaml
 components:
   - name: main
-    type: component
     sources:
       - main.c
   - name: greeter
-    type: component
     sources:
       - greeter.c
     test_sources:
       - greeter_test.cc
 ```
+
+--
+
+## Components
+
+yanga.yaml <!-- .element: class="monospacesmall" -->
+
+```yaml
+components:
+  - name: my_component
+    sources: ["src/my_component.c"]
+    testing:
+      sources:
+        - "test/test_my_component.cpp"
+      mocking:
+        enabled: true
+        strict: true
+```
+
+---
+
+## **SPL Demo**
+
+<!-- .slide: data-background-color="#4b8e4eff" -->
 
 ---
 
@@ -241,14 +308,14 @@ components:
 
 |       | Build | Run | Release |
 | ----- | ----- | --- | ------- |
-| exe   | ✅    | ✅  |         |
-| gtest | ✅    | ✅  |         |
-| hil   | ✅    | ✅  |         |
-| ecu   | ✅    |     | ✅💰    |
+| exe   | ✅    | ✅  |        |
+| gtest | ✅    | ✅  |        |
+| hil   | ✅    | ✅  |        |
+| ecu   | ✅    |     | ✅💰  |
 
 ---
 
-## <img src="images/yanga.png" class="inline-image"> <a href="https://github.com/cuinixam/yanga">YANGA</a>
+## <img src="images/yanga.png" class="inline-image"> <a href="https://yanga.readthedocs.io">YANGA</a>
 
 ---
 
