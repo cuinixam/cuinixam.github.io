@@ -1,9 +1,66 @@
 # Target Dependencies Documentation
 
+## Styles
+
+<style>
+.dependency-tree {
+    font-family: monospace;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.dependency-tree details {
+    margin-left: 10px;
+}
+.dependency-tree summary {
+    cursor: pointer;
+    padding: 2px 0;
+}
+.dependency-tree summary:hover {
+    background-color: #e9ecef;
+}
+.dependency-tree ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+.dependency-tree li {
+    margin: 2px 0;
+    list-style-type: none;
+}
+.dependency-tree strong {
+    color: #0066cc;
+}
+.dependency-tree em {
+    color: #666;
+}
+.dependency-tree code {
+    background-color: #f1f3f4;
+    color: #333;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+.target-info {
+    background: #f8f9fa;
+    border-left: 4px solid #0066cc;
+    padding: 10px;
+    margin: 10px 0;
+}
+.target-info ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+.target-info li {
+    margin: 2px 0;
+}
+</style>
+
 ## Summary
 
 - **Total targets**: 86
-- **Root targets (CMakeCustomTargets only)**: 41
+- **Root targets (CMakeCustomTargets only)**: 3
 
 This document provides an overview of CMake custom target dependencies. Only CMakeCustomTargets are shown as root targets.
 
@@ -13,410 +70,42 @@ These are the main CMakeCustomTargets that are not dependencies of other targets
 
 ### build
 
-**Description**: Build variant Spa
+**Description:** Build variant Spa
 
-**Dependency Tree**:
+**Type:** CUSTOM_TARGET
 
+**Dependencies:**
+
+<div class="dependency-tree">
 <ul>
-<li><details><summary><strong>build</strong> - Build variant Spa</summary><ul><li><details><summary><strong>${PROJECT_NAME}</strong> - Executable target: ${PROJECT_NAME} -> [${PROJECT_NAME}]</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li><li><strong>arduino_button_lib</strong> - Object library: arduino_button -> [arduino_button_lib]</li><li><strong>arduino_led_lib</strong> - Object library: arduino_led -> [arduino_led_lib]</li><li><strong>arduino_main_lib</strong> - Object library: arduino_main -> [arduino_main_lib]</li><li><strong>arduino_scheduler_lib</strong> - Object library: arduino_scheduler -> [arduino_scheduler_lib]</li><li><strong>arduino_core_lib</strong> - Object library: arduino_core -> [arduino_core_lib]</li><li><strong>atmega328p_xmini_pins_lib</strong> - Object library: atmega328p_xmini_pins -> [atmega328p_xmini_pins_lib]</li></ul></details></li></ul></details></li>
+<li><details><summary><strong>build</strong></summary><ul><li><strong>Description:</strong> Build variant Spa</li><li><strong>Dependencies:</strong><ul><li><details><summary><strong>${PROJECT_NAME}</strong></summary><ul><li><strong>Description:</strong> Executable target: ${PROJECT_NAME}</li><li><strong>Outputs:</strong><ul><li><code>${PROJECT_NAME}</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><details><summary><strong>rte_lib</strong></summary><ul><li><strong>Description:</strong> Object library: rte</li><li><strong>Outputs:</strong><ul><li><code>rte_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\rte\src\rte.c</code></li></ul></li></ul></details></li><li><details><summary><strong>spled_lib</strong></summary><ul><li><strong>Description:</strong> Object library: spled</li><li><strong>Outputs:</strong><ul><li><code>spled_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\spled\src\spled.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_signal_processing_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_signal_processing</li><li><strong>Outputs:</strong><ul><li><code>power_signal_processing_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_signal_processing\src\power_signal_processing.c</code></li></ul></li></ul></details></li><li><details><summary><strong>light_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: light_controller</li><li><strong>Outputs:</strong><ul><li><code>light_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\light_controller\src\light_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_button</li><li><strong>Outputs:</strong><ul><li><code>power_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_button\src\power_button.c</code></li></ul></li></ul></details></li><li><details><summary><strong>main_control_knob_lib</strong></summary><ul><li><strong>Description:</strong> Object library: main_control_knob</li><li><strong>Outputs:</strong><ul><li><code>main_control_knob_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\main_control_knob\src\main_control_knob.c</code></li></ul></li></ul></details></li><li><details><summary><strong>brightness_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: brightness_controller</li><li><strong>Outputs:</strong><ul><li><code>brightness_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\brightness_controller\src\brightness_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_button</li><li><strong>Outputs:</strong><ul><li><code>arduino_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\button.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_led_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_led</li><li><strong>Outputs:</strong><ul><li><code>arduino_led_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\led.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_main_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_main</li><li><strong>Outputs:</strong><ul><li><code>arduino_main_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\main.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_scheduler_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_scheduler</li><li><strong>Outputs:</strong><ul><li><code>arduino_scheduler_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\scheduler.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_core_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_core</li><li><strong>Outputs:</strong><ul><li><code>arduino_core_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\abi.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\CDC.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial0.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial1.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial2.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial3.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\hooks.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\IPAddress.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\main.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\new.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\PluggableUSB.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Print.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Stream.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\USBCore.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WInterrupts.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_analog.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_digital.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.S</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_shift.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WMath.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WString.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>atmega328p_xmini_pins_lib</strong></summary><ul><li><strong>Description:</strong> Object library: atmega328p_xmini_pins</li><li><strong>Outputs:</strong><ul><li><code>atmega328p_xmini_pins_lib</code></li></ul></li></ul></details></li></ul></li></ul></details></li></ul></li></ul></details></li>
 </ul>
+</div>
 
-### rte_compile
+### compile
 
-**Description**: Compile component rte
+**Description:** Compile variant Spa
 
-**Dependency Tree**:
+**Type:** CUSTOM_TARGET
 
+**Dependencies:**
+
+<div class="dependency-tree">
 <ul>
-<li><details><summary><strong>rte_compile</strong> - Compile component rte</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li></ul></details></li>
+<li><details><summary><strong>compile</strong></summary><ul><li><strong>Description:</strong> Compile variant Spa</li><li><strong>Dependencies:</strong><ul><li><details><summary><strong>rte_lib</strong></summary><ul><li><strong>Description:</strong> Object library: rte</li><li><strong>Outputs:</strong><ul><li><code>rte_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\rte\src\rte.c</code></li></ul></li></ul></details></li><li><details><summary><strong>spled_lib</strong></summary><ul><li><strong>Description:</strong> Object library: spled</li><li><strong>Outputs:</strong><ul><li><code>spled_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\spled\src\spled.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_signal_processing_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_signal_processing</li><li><strong>Outputs:</strong><ul><li><code>power_signal_processing_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_signal_processing\src\power_signal_processing.c</code></li></ul></li></ul></details></li><li><details><summary><strong>light_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: light_controller</li><li><strong>Outputs:</strong><ul><li><code>light_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\light_controller\src\light_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_button</li><li><strong>Outputs:</strong><ul><li><code>power_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_button\src\power_button.c</code></li></ul></li></ul></details></li><li><details><summary><strong>main_control_knob_lib</strong></summary><ul><li><strong>Description:</strong> Object library: main_control_knob</li><li><strong>Outputs:</strong><ul><li><code>main_control_knob_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\main_control_knob\src\main_control_knob.c</code></li></ul></li></ul></details></li><li><details><summary><strong>brightness_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: brightness_controller</li><li><strong>Outputs:</strong><ul><li><code>brightness_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\brightness_controller\src\brightness_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_button</li><li><strong>Outputs:</strong><ul><li><code>arduino_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\button.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_led_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_led</li><li><strong>Outputs:</strong><ul><li><code>arduino_led_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\led.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_main_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_main</li><li><strong>Outputs:</strong><ul><li><code>arduino_main_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\main.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_scheduler_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_scheduler</li><li><strong>Outputs:</strong><ul><li><code>arduino_scheduler_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\scheduler.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_core_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_core</li><li><strong>Outputs:</strong><ul><li><code>arduino_core_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\abi.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\CDC.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial0.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial1.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial2.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial3.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\hooks.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\IPAddress.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\main.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\new.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\PluggableUSB.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Print.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Stream.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\USBCore.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WInterrupts.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_analog.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_digital.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.S</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_shift.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WMath.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WString.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>atmega328p_xmini_pins_lib</strong></summary><ul><li><strong>Description:</strong> Object library: atmega328p_xmini_pins</li><li><strong>Outputs:</strong><ul><li><code>atmega328p_xmini_pins_lib</code></li></ul></li></ul></details></li></ul></li></ul></details></li>
 </ul>
-
-### rte_build
-
-**Description**: Compile component rte
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>rte_build</strong> - Compile component rte</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li></ul></details></li>
-</ul>
-
-### spled_compile
-
-**Description**: Compile component spled
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>spled_compile</strong> - Compile component spled</summary><ul><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li></ul></details></li>
-</ul>
-
-### spled_build
-
-**Description**: Compile component spled
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>spled_build</strong> - Compile component spled</summary><ul><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li></ul></details></li>
-</ul>
-
-### power_signal_processing_compile
-
-**Description**: Compile component power_signal_processing
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_signal_processing_compile</strong> - Compile component power_signal_processing</summary><ul><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li></ul></details></li>
-</ul>
-
-### power_signal_processing_build
-
-**Description**: Compile component power_signal_processing
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_signal_processing_build</strong> - Compile component power_signal_processing</summary><ul><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li></ul></details></li>
-</ul>
-
-### light_controller_compile
-
-**Description**: Compile component light_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>light_controller_compile</strong> - Compile component light_controller</summary><ul><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li></ul></details></li>
-</ul>
-
-### light_controller_build
-
-**Description**: Compile component light_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>light_controller_build</strong> - Compile component light_controller</summary><ul><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li></ul></details></li>
-</ul>
-
-### power_button_compile
-
-**Description**: Compile component power_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_button_compile</strong> - Compile component power_button</summary><ul><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li></ul></details></li>
-</ul>
-
-### power_button_build
-
-**Description**: Compile component power_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_button_build</strong> - Compile component power_button</summary><ul><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li></ul></details></li>
-</ul>
-
-### main_control_knob_compile
-
-**Description**: Compile component main_control_knob
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>main_control_knob_compile</strong> - Compile component main_control_knob</summary><ul><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li></ul></details></li>
-</ul>
-
-### main_control_knob_build
-
-**Description**: Compile component main_control_knob
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>main_control_knob_build</strong> - Compile component main_control_knob</summary><ul><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li></ul></details></li>
-</ul>
-
-### brightness_controller_compile
-
-**Description**: Compile component brightness_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>brightness_controller_compile</strong> - Compile component brightness_controller</summary><ul><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li></ul></details></li>
-</ul>
-
-### brightness_controller_build
-
-**Description**: Compile component brightness_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>brightness_controller_build</strong> - Compile component brightness_controller</summary><ul><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li></ul></details></li>
-</ul>
-
-### arduino_button_compile
-
-**Description**: Compile component arduino_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_button_compile</strong> - Compile component arduino_button</summary><ul><li><strong>arduino_button_lib</strong> - Object library: arduino_button -> [arduino_button_lib]</li></ul></details></li>
-</ul>
-
-### arduino_button_build
-
-**Description**: Compile component arduino_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_button_build</strong> - Compile component arduino_button</summary><ul><li><strong>arduino_button_lib</strong> - Object library: arduino_button -> [arduino_button_lib]</li></ul></details></li>
-</ul>
-
-### arduino_led_compile
-
-**Description**: Compile component arduino_led
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_led_compile</strong> - Compile component arduino_led</summary><ul><li><strong>arduino_led_lib</strong> - Object library: arduino_led -> [arduino_led_lib]</li></ul></details></li>
-</ul>
-
-### arduino_led_build
-
-**Description**: Compile component arduino_led
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_led_build</strong> - Compile component arduino_led</summary><ul><li><strong>arduino_led_lib</strong> - Object library: arduino_led -> [arduino_led_lib]</li></ul></details></li>
-</ul>
-
-### arduino_main_compile
-
-**Description**: Compile component arduino_main
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_main_compile</strong> - Compile component arduino_main</summary><ul><li><strong>arduino_main_lib</strong> - Object library: arduino_main -> [arduino_main_lib]</li></ul></details></li>
-</ul>
-
-### arduino_main_build
-
-**Description**: Compile component arduino_main
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_main_build</strong> - Compile component arduino_main</summary><ul><li><strong>arduino_main_lib</strong> - Object library: arduino_main -> [arduino_main_lib]</li></ul></details></li>
-</ul>
-
-### arduino_scheduler_compile
-
-**Description**: Compile component arduino_scheduler
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_scheduler_compile</strong> - Compile component arduino_scheduler</summary><ul><li><strong>arduino_scheduler_lib</strong> - Object library: arduino_scheduler -> [arduino_scheduler_lib]</li></ul></details></li>
-</ul>
-
-### arduino_scheduler_build
-
-**Description**: Compile component arduino_scheduler
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_scheduler_build</strong> - Compile component arduino_scheduler</summary><ul><li><strong>arduino_scheduler_lib</strong> - Object library: arduino_scheduler -> [arduino_scheduler_lib]</li></ul></details></li>
-</ul>
-
-### arduino_core_compile
-
-**Description**: Compile component arduino_core
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_core_compile</strong> - Compile component arduino_core</summary><ul><li><strong>arduino_core_lib</strong> - Object library: arduino_core -> [arduino_core_lib]</li></ul></details></li>
-</ul>
-
-### arduino_core_build
-
-**Description**: Compile component arduino_core
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_core_build</strong> - Compile component arduino_core</summary><ul><li><strong>arduino_core_lib</strong> - Object library: arduino_core -> [arduino_core_lib]</li></ul></details></li>
-</ul>
-
-### atmega328p_xmini_pins_compile
-
-**Description**: Compile component atmega328p_xmini_pins
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>atmega328p_xmini_pins_compile</strong> - Compile component atmega328p_xmini_pins</summary><ul><li><strong>atmega328p_xmini_pins_lib</strong> - Object library: atmega328p_xmini_pins -> [atmega328p_xmini_pins_lib]</li></ul></details></li>
-</ul>
-
-### atmega328p_xmini_pins_build
-
-**Description**: Compile component atmega328p_xmini_pins
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>atmega328p_xmini_pins_build</strong> - Compile component atmega328p_xmini_pins</summary><ul><li><strong>atmega328p_xmini_pins_lib</strong> - Object library: atmega328p_xmini_pins -> [atmega328p_xmini_pins_lib]</li></ul></details></li>
-</ul>
-
-### rte_report
-
-**Description**: Generate report for component rte
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>rte_report</strong> - Generate report for component rte</summary><ul><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### spled_report
-
-**Description**: Generate report for component spled
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>spled_report</strong> - Generate report for component spled</summary><ul><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### power_signal_processing_report
-
-**Description**: Generate report for component power_signal_processing
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_signal_processing_report</strong> - Generate report for component power_signal_processing</summary><ul><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### light_controller_report
-
-**Description**: Generate report for component light_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>light_controller_report</strong> - Generate report for component light_controller</summary><ul><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### power_button_report
-
-**Description**: Generate report for component power_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>power_button_report</strong> - Generate report for component power_button</summary><ul><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### main_control_knob_report
-
-**Description**: Generate report for component main_control_knob
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>main_control_knob_report</strong> - Generate report for component main_control_knob</summary><ul><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### brightness_controller_report
-
-**Description**: Generate report for component brightness_controller
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>brightness_controller_report</strong> - Generate report for component brightness_controller</summary><ul><li><details><summary><strong>brightness_controller_results</strong> - Execute targets to get all results for component brightness_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>brightness_controller_docs</strong> - Generate sources docs for component brightness_controller -> [${CMAKE_BUILD_DIR}/brightness_controller/brightness_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### arduino_button_report
-
-**Description**: Generate report for component arduino_button
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_button_report</strong> - Generate report for component arduino_button</summary><ul><li><details><summary><strong>arduino_button_results</strong> - Execute targets to get all results for component arduino_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_button_docs</strong> - Generate sources docs for component arduino_button -> [${CMAKE_BUILD_DIR}/arduino_button/button.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### arduino_led_report
-
-**Description**: Generate report for component arduino_led
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_led_report</strong> - Generate report for component arduino_led</summary><ul><li><details><summary><strong>arduino_led_results</strong> - Execute targets to get all results for component arduino_led</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_led_docs</strong> - Generate sources docs for component arduino_led -> [${CMAKE_BUILD_DIR}/arduino_led/led.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### arduino_main_report
-
-**Description**: Generate report for component arduino_main
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_main_report</strong> - Generate report for component arduino_main</summary><ul><li><details><summary><strong>arduino_main_results</strong> - Execute targets to get all results for component arduino_main</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_main_docs</strong> - Generate sources docs for component arduino_main -> [${CMAKE_BUILD_DIR}/arduino_main/main.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### arduino_scheduler_report
-
-**Description**: Generate report for component arduino_scheduler
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_scheduler_report</strong> - Generate report for component arduino_scheduler</summary><ul><li><details><summary><strong>arduino_scheduler_results</strong> - Execute targets to get all results for component arduino_scheduler</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_scheduler_docs</strong> - Generate sources docs for component arduino_scheduler -> [${CMAKE_BUILD_DIR}/arduino_scheduler/scheduler.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li>
-</ul>
-
-### arduino_core_report
-
-**Description**: Generate report for component arduino_core
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>arduino_core_report</strong> - Generate report for component arduino_core</summary><ul><li><details><summary><strong>arduino_core_results</strong> - Execute targets to get all results for component arduino_core</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li></ul></details></li></ul></details></li>
-</ul>
-
-### atmega328p_xmini_pins_report
-
-**Description**: Generate report for component atmega328p_xmini_pins
-
-**Dependency Tree**:
-
-<ul>
-<li><details><summary><strong>atmega328p_xmini_pins_report</strong> - Generate report for component atmega328p_xmini_pins</summary><ul><li><details><summary><strong>atmega328p_xmini_pins_results</strong> - Execute targets to get all results for component atmega328p_xmini_pins</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li></ul></details></li></ul></details></li>
-</ul>
+</div>
 
 ### report
 
-**Description**: Run sphinx build for variant Spa
+**Description:** Run sphinx build for variant Spa
 
-**Dependency Tree**:
+**Type:** CUSTOM_TARGET
 
+**Dependencies:**
+
+<div class="dependency-tree">
 <ul>
-<li><details><summary><strong>report</strong> - Run sphinx build for variant Spa</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>results</strong> - Run all targets for all component results for Spa</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_results</strong> - Execute targets to get all results for component rte</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>rte_docs</strong> - Generate sources docs for component rte -> [${CMAKE_BUILD_DIR}/rte/rte.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>spled_results</strong> - Execute targets to get all results for component spled</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>spled_docs</strong> - Generate sources docs for component spled -> [${CMAKE_BUILD_DIR}/spled/spled.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_signal_processing_results</strong> - Execute targets to get all results for component power_signal_processing</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_signal_processing_docs</strong> - Generate sources docs for component power_signal_processing -> [${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>light_controller_results</strong> - Execute targets to get all results for component light_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>light_controller_docs</strong> - Generate sources docs for component light_controller -> [${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>power_button_results</strong> - Execute targets to get all results for component power_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>power_button_docs</strong> - Generate sources docs for component power_button -> [${CMAKE_BUILD_DIR}/power_button/power_button.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>main_control_knob_results</strong> - Execute targets to get all results for component main_control_knob</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>main_control_knob_docs</strong> - Generate sources docs for component main_control_knob -> [${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>brightness_controller_results</strong> - Execute targets to get all results for component brightness_controller</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>brightness_controller_docs</strong> - Generate sources docs for component brightness_controller -> [${CMAKE_BUILD_DIR}/brightness_controller/brightness_controller.c.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>arduino_button_results</strong> - Execute targets to get all results for component arduino_button</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_button_docs</strong> - Generate sources docs for component arduino_button -> [${CMAKE_BUILD_DIR}/arduino_button/button.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>arduino_led_results</strong> - Execute targets to get all results for component arduino_led</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_led_docs</strong> - Generate sources docs for component arduino_led -> [${CMAKE_BUILD_DIR}/arduino_led/led.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>arduino_main_results</strong> - Execute targets to get all results for component arduino_main</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_main_docs</strong> - Generate sources docs for component arduino_main -> [${CMAKE_BUILD_DIR}/arduino_main/main.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>arduino_scheduler_results</strong> - Execute targets to get all results for component arduino_scheduler</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li><li><details><summary><strong>arduino_scheduler_docs</strong> - Generate sources docs for component arduino_scheduler -> [${CMAKE_BUILD_DIR}/arduino_scheduler/scheduler.cpp.md]</summary><ul><li>${CMAKE_BUILD_DIR}/compile_commands.json (external dependency)</li></ul></details></li></ul></details></li><li><details><summary><strong>arduino_core_results</strong> - Execute targets to get all results for component arduino_core</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li></ul></details></li><li><details><summary><strong>atmega328p_xmini_pins_results</strong> - Execute targets to get all results for component atmega328p_xmini_pins</summary><ul><li>${CMAKE_BUILD_DIR}/report_config.json (external dependency)</li></ul></details></li><li><details><summary><strong>objects_deps</strong> - Generate objects dependencies report</summary><ul><li><details><summary><strong>custom command</strong> - Run clanguru to generate the objects dependencies report (uses: ${CMAKE_BUILD_DIR}/reports/objects_deps.html)</summary><ul><li><details><summary><strong>compile</strong> - Compile variant Spa</summary><ul><li><strong>rte_lib</strong> - Object library: rte -> [rte_lib]</li><li><strong>spled_lib</strong> - Object library: spled -> [spled_lib]</li><li><strong>power_signal_processing_lib</strong> - Object library: power_signal_processing -> [power_signal_processing_lib]</li><li><strong>light_controller_lib</strong> - Object library: light_controller -> [light_controller_lib]</li><li><strong>power_button_lib</strong> - Object library: power_button -> [power_button_lib]</li><li><strong>main_control_knob_lib</strong> - Object library: main_control_knob -> [main_control_knob_lib]</li><li><strong>brightness_controller_lib</strong> - Object library: brightness_controller -> [brightness_controller_lib]</li><li><strong>arduino_button_lib</strong> - Object library: arduino_button -> [arduino_button_lib]</li><li><strong>arduino_led_lib</strong> - Object library: arduino_led -> [arduino_led_lib]</li><li><strong>arduino_main_lib</strong> - Object library: arduino_main -> [arduino_main_lib]</li><li><strong>arduino_scheduler_lib</strong> - Object library: arduino_scheduler -> [arduino_scheduler_lib]</li><li><strong>arduino_core_lib</strong> - Object library: arduino_core -> [arduino_core_lib]</li><li><strong>atmega328p_xmini_pins_lib</strong> - Object library: atmega328p_xmini_pins -> [atmega328p_xmini_pins_lib]</li></ul></details></li></ul></details></li></ul></details></li><li><details><summary><strong>targets_data</strong> - Generate targets data report</summary><ul><li><details><summary><strong>custom command</strong> - Generate variant targets data documentation (uses: ${CMAKE_BUILD_DIR}/targets_data.md)</summary><ul><li>${CMAKE_BUILD_DIR}/targets_data.json (external dependency)</li></ul></details></li></ul></details></li></ul></details></li></ul></details></li>
+<li><details><summary><strong>report</strong></summary><ul><li><strong>Description:</strong> Run sphinx build for variant Spa</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>results</strong></summary><ul><li><strong>Description:</strong> Run all targets for all component results for Spa</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>rte_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component rte</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>rte_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component rte</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/rte/rte.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>spled_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component spled</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>spled_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component spled</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/spled/spled.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>power_signal_processing_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component power_signal_processing</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>power_signal_processing_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component power_signal_processing</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/power_signal_processing/power_signal_processing.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>light_controller_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component light_controller</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>light_controller_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component light_controller</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/light_controller/light_controller.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>power_button_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component power_button</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>power_button_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component power_button</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/power_button/power_button.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>main_control_knob_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component main_control_knob</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>main_control_knob_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component main_control_knob</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/main_control_knob/main_control_knob.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>brightness_controller_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component brightness_controller</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>brightness_controller_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component brightness_controller</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/brightness_controller/brightness_controller.c.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>arduino_button_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component arduino_button</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>arduino_button_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component arduino_button</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/arduino_button/button.cpp.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>arduino_led_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component arduino_led</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>arduino_led_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component arduino_led</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/arduino_led/led.cpp.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>arduino_main_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component arduino_main</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>arduino_main_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component arduino_main</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/arduino_main/main.cpp.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>arduino_scheduler_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component arduino_scheduler</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code> <em>(external)</em></li><li><details><summary><strong>arduino_scheduler_docs</strong></summary><ul><li><strong>Description:</strong> Generate sources docs for component arduino_scheduler</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/arduino_scheduler/scheduler.cpp.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/compile_commands.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>arduino_core_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component arduino_core</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code></li></ul></li></ul></details></li><li><details><summary><strong>atmega328p_xmini_pins_results</strong></summary><ul><li><strong>Description:</strong> Execute targets to get all results for component atmega328p_xmini_pins</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/report_config.json</code></li></ul></li></ul></details></li><li><details><summary><strong>objects_deps</strong></summary><ul><li><strong>Description:</strong> Generate objects dependencies report</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/reports/objects_deps.html</code></li><li><details><summary><strong>custom command</strong></summary><ul><li><strong>Description:</strong> Run clanguru to generate the objects dependencies report</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/reports/objects_deps.html</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><details><summary><strong>compile</strong></summary><ul><li><strong>Description:</strong> Compile variant Spa</li><li><strong>Dependencies:</strong><ul><li><details><summary><strong>rte_lib</strong></summary><ul><li><strong>Description:</strong> Object library: rte</li><li><strong>Outputs:</strong><ul><li><code>rte_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\rte\src\rte.c</code></li></ul></li></ul></details></li><li><details><summary><strong>spled_lib</strong></summary><ul><li><strong>Description:</strong> Object library: spled</li><li><strong>Outputs:</strong><ul><li><code>spled_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\spled\src\spled.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_signal_processing_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_signal_processing</li><li><strong>Outputs:</strong><ul><li><code>power_signal_processing_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_signal_processing\src\power_signal_processing.c</code></li></ul></li></ul></details></li><li><details><summary><strong>light_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: light_controller</li><li><strong>Outputs:</strong><ul><li><code>light_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\light_controller\src\light_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>power_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: power_button</li><li><strong>Outputs:</strong><ul><li><code>power_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\power_button\src\power_button.c</code></li></ul></li></ul></details></li><li><details><summary><strong>main_control_knob_lib</strong></summary><ul><li><strong>Description:</strong> Object library: main_control_knob</li><li><strong>Outputs:</strong><ul><li><code>main_control_knob_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\main_control_knob\src\main_control_knob.c</code></li></ul></li></ul></details></li><li><details><summary><strong>brightness_controller_lib</strong></summary><ul><li><strong>Description:</strong> Object library: brightness_controller</li><li><strong>Outputs:</strong><ul><li><code>brightness_controller_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\components\brightness_controller\src\brightness_controller.c</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_button_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_button</li><li><strong>Outputs:</strong><ul><li><code>arduino_button_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\button.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_led_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_led</li><li><strong>Outputs:</strong><ul><li><code>arduino_led_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\led.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_main_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_main</li><li><strong>Outputs:</strong><ul><li><code>arduino_main_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\main.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_scheduler_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_scheduler</li><li><strong>Outputs:</strong><ul><li><code>arduino_scheduler_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\platforms\arduino\src\scheduler.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>arduino_core_lib</strong></summary><ul><li><strong>Description:</strong> Object library: arduino_core</li><li><strong>Outputs:</strong><ul><li><code>arduino_core_lib</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\abi.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\CDC.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial0.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial1.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial2.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\HardwareSerial3.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\hooks.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\IPAddress.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\main.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\new.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\PluggableUSB.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Print.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\Stream.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\USBCore.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WInterrupts.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_analog.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_digital.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_pulse.S</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring_shift.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\wiring.c</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WMath.cpp</code></li><li><code>d:\ateliere\spledy\.yanga\ext\ArduinoCoreAvr\cores\arduino\WString.cpp</code></li></ul></li></ul></details></li><li><details><summary><strong>atmega328p_xmini_pins_lib</strong></summary><ul><li><strong>Description:</strong> Object library: atmega328p_xmini_pins</li><li><strong>Outputs:</strong><ul><li><code>atmega328p_xmini_pins_lib</code></li></ul></li></ul></details></li></ul></li></ul></details></li></ul></li></ul></details></li></ul></li></ul></details></li><li><details><summary><strong>targets_data</strong></summary><ul><li><strong>Description:</strong> Generate targets data report</li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/targets_data.md</code></li><li><details><summary><strong>custom command</strong></summary><ul><li><strong>Description:</strong> Generate variant targets data documentation</li><li><strong>Outputs:</strong><ul><li><code>${CMAKE_BUILD_DIR}/targets_data.md</code></li></ul></li><li><strong>Dependencies:</strong><ul><li><code>${CMAKE_BUILD_DIR}/targets_data.json</code></li></ul></li></ul></details></li></ul></li></ul></details></li></ul></li></ul></details></li></ul></li></ul></details></li>
 </ul>
+</div>
