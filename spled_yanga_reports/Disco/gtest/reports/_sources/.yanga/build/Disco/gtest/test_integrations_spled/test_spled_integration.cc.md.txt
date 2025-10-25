@@ -1,4 +1,4 @@
-# test_spled.cc
+# test_spled_integration.cc
 
 ## Functions
 
