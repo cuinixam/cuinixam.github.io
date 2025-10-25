@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Software Detailed Design &mdash; Spa 2025-10-20</title>
+  <title>Software Detailed Design &mdash; Spa 2025-10-25</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/sphinx_rtd_size.css?v=3b072d6b" />
@@ -22,7 +22,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4009583e"></script>
+        <script src="../../../_static/documentation_options.js?v=1800c680"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
@@ -35,7 +35,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Code Coverage" href="../../../.yanga/build/Spa/gtest/power_signal_processing/coverage.html" />
+    <link rel="next" title="CppCheck Report" href="../../../.yanga/build/Spa/gtest/power_signal_processing/cppcheck_report.html" />
     <link rel="prev" title="test_spled.cc" href="../../../.yanga/build/Spa/gtest/spled/test_spled.cc.html" /> 
 </head>
 
@@ -71,10 +71,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-flow">Function Flow</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/power_signal_processing/coverage.html">Code Coverage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/power_signal_processing/cppcheck_report.html">CppCheck Report</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/power_signal_processing/power_signal_processing.c.html">power_signal_processing.c</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/power_signal_processing/test_power_signal_processing.cc.html">test_power_signal_processing.cc</a></li>
+<li class="toctree-l3"><a class="reference external" href="../../../coverage/power_signal_processing/index.html">Coverage Report</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../doc/components.html#light-controller">light_controller</a></li>
@@ -84,9 +84,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../doc/components.html#rte">rte</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/coverage.html">Code Coverage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/kconfig/autoconf.html">Variant Feature Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/targets_data.html">Target Dependencies Documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="../../../coverage/index.html">Coverage Report</a></li>
 </ul>
 
         </div>
@@ -129,7 +129,7 @@
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">powerSignalProcessing</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="need_container docutils container" id="SNCB-96c91222">
+<div class="need_container docutils container" id="SNCB-d8e775e9">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_PSP-001">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -150,7 +150,7 @@
 </tbody>
 </table>
 </div>
-<div class="need_container docutils container" id="SNCB-1d46d7a4">
+<div class="need_container docutils container" id="SNCB-7f65cf4c">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_PSP-002">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -171,7 +171,7 @@
 </tbody>
 </table>
 </div>
-<div class="need_container docutils container" id="SNCB-6ee5a003">
+<div class="need_container docutils container" id="SNCB-9201e8a1">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_PSP-003">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -219,7 +219,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../../../.yanga/build/Spa/gtest/spled/test_spled.cc.html" class="btn btn-neutral float-left" title="test_spled.cc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../../.yanga/build/Spa/gtest/power_signal_processing/coverage.html" class="btn btn-neutral float-right" title="Code Coverage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../../.yanga/build/Spa/gtest/power_signal_processing/cppcheck_report.html" class="btn btn-neutral float-right" title="CppCheck Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

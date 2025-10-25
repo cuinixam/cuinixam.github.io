@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Software Detailed Design &mdash; Spa 2025-10-20</title>
+  <title>Software Detailed Design &mdash; Spa 2025-10-25</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/sphinx_rtd_size.css?v=3b072d6b" />
@@ -22,7 +22,7 @@
   
         <script src="../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=4009583e"></script>
+        <script src="../../../_static/documentation_options.js?v=1800c680"></script>
         <script src="../../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
@@ -33,7 +33,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Code Coverage" href="../../../.yanga/build/Spa/gtest/brightness_controller/coverage.html" />
+    <link rel="next" title="CppCheck Report" href="../../../.yanga/build/Spa/gtest/brightness_controller/cppcheck_report.html" />
     <link rel="prev" title="test_main_control_knob.cc" href="../../../.yanga/build/Spa/gtest/main_control_knob/test_main_control_knob.cc.html" /> 
 </head>
 
@@ -73,18 +73,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#interfaces">Interfaces</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/brightness_controller/coverage.html">Code Coverage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/brightness_controller/cppcheck_report.html">CppCheck Report</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/brightness_controller/brightness_controller.c.html">brightness_controller.c</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/brightness_controller/test_brightness_controller.cc.html">test_brightness_controller.cc</a></li>
+<li class="toctree-l3"><a class="reference external" href="../../../coverage/brightness_controller/index.html">Coverage Report</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../doc/components.html#rte">rte</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/coverage.html">Code Coverage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/kconfig/autoconf.html">Variant Feature Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../.yanga/build/Spa/gtest/targets_data.html">Target Dependencies Documentation</a></li>
+<li class="toctree-l1"><a class="reference external" href="../../../coverage/index.html">Coverage Report</a></li>
 </ul>
 
         </div>
@@ -122,7 +122,7 @@
 </section>
 <section id="design-considerations">
 <h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Link to this heading"></a></h2>
-<div class="need_container docutils container" id="SNCB-a5618c39">
+<div class="need_container docutils container" id="SNCB-9fadd3ee">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_BC-100">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -146,7 +146,7 @@
 </section>
 <section id="interfaces">
 <h2>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h2>
-<div class="need_container docutils container" id="SNCB-a080661a">
+<div class="need_container docutils container" id="SNCB-d3bc1082">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_BC-200">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -167,7 +167,7 @@
 </tbody>
 </table>
 </div>
-<div class="need_container docutils container" id="SNCB-64e2eed5">
+<div class="need_container docutils container" id="SNCB-43d4e10a">
 <table class="need needs_grid_simple needs_layout_clean rtd-exclude-wy-table no-sphinx-material-strip needs_style_none needs_type_spec docutils align-default" id="SWDD_BC-202">
 <tbody>
 <tr class="need head row-odd"><td class="need head"><div class="needs_head line-block">
@@ -196,7 +196,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../../../.yanga/build/Spa/gtest/main_control_knob/test_main_control_knob.cc.html" class="btn btn-neutral float-left" title="test_main_control_knob.cc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../../.yanga/build/Spa/gtest/brightness_controller/coverage.html" class="btn btn-neutral float-right" title="Code Coverage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../../.yanga/build/Spa/gtest/brightness_controller/cppcheck_report.html" class="btn btn-neutral float-right" title="CppCheck Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
