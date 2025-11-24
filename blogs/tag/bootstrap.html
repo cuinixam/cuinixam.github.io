@@ -6,9 +6,8 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>What you did not want to know about your code &#8212; Alexandru Maxiniuc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Posts tagged bootstrap &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -48,7 +47,372 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2025/what_you_did_not_want_to_know_about_your_code';</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/bootstrap';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -60,7 +424,7 @@
   rel="alternate"
   type="application/atom+xml"
   href="../../blogs/atom.xml"
-  title="Alexandru Maxiniuc"
+  title="Posts tagged bootstrap"
 />
   
   </head>
@@ -254,10 +618,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -377,55 +737,6 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
-<div class="ablog-sidebar-item ablog__postcard">
-   
-  <h2>
-     
-    <i class="fa fa-calendar"></i>
-    
-    <span>26 September 2025</span>
-    
-  </h2>
-  <ul>
-    <div class="ablog-sidebar-item ablog__postcard2">
-      
-  <li id="ablog-sidebar-item category ablog__category">
-    <span>
-      
-      <i class="fa-fw fa fa-folder-open"></i>
-      
-    </span>
-     
-    <a href="../category/learning.html">learning</a>
-      
-  </li>
-   
-  <li id="ablog-sidebar-item tags ablog__tags">
-    <span>
-       
-      <i class="fa-fw fa fa-tags"></i>
-       
-    </span>
-     
-    <a href="../tag/c.html">c</a>
-        
-    <a href="../tag/dependency.html">dependency</a>
-        
-    <a href="../tag/objects.html">objects</a>
-        
-    <a href="../tag/nm.html">nm</a>
-        
-    <a href="../tag/clanguru.html">clanguru</a>
-        
-    <a href="../tag/cytoscape.html">cytoscape</a>
-      
-  </li>
-   
-</div>
-  </ul>
-</div>
-</div>
-        <div class="sidebar-primary-item">
 <div class="ablog-sidebar-item ablog__recentposts">
   <h3>
     <a href="../../blogs.html">Recent Posts</a>
@@ -433,32 +744,32 @@
   <ul>
      
     <li>
-      <a href="spl_bootstrap.html">
+      <a href="../2025/spl_bootstrap.html">
         24 November - SPL Bootstrap - Handle Python Version
       </a>
     </li>
     
     <li>
-      <a href="yanga_spl_components.html">
+      <a href="../2025/yanga_spl_components.html">
         15 October - SPL components in YANGA
       </a>
     </li>
     
     <li>
-      <a href="spled_meets_arduino.html">
+      <a href="../2025/spled_meets_arduino.html">
         03 October - SPLED meets Arduino Uno
       </a>
     </li>
     
     <li>
-      <a href="c_portable_pointer_size.html">
-        24 September - Why unit tests crashed on windows but worked on the microcontroller
+      <a href="../2025/what_you_did_not_want_to_know_about_your_code.html">
+        26 September - What you did not want to know about your code
       </a>
     </li>
     
     <li>
-      <a href="coding_dojo_detect_ci_context.html">
-        08 March - Coding Dojo - Detect CI Context
+      <a href="../2025/c_portable_pointer_size.html">
+        24 September - Why unit tests crashed on windows but worked on the microcontroller
       </a>
     </li>
     
@@ -520,7 +831,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">What you did not want to know about your code</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Posts tagged bootstrap</span></li>
   </ul>
 </nav>
 </div>
@@ -536,87 +847,69 @@
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="what-you-did-not-want-to-know-about-your-code">
-<h1>What you did not want to know about your code<a class="headerlink" href="#what-you-did-not-want-to-know-about-your-code" title="Link to this heading">#</a></h1>
-<p>As any other engineer, I also like to hack around in the weekends at six o’clock in the morning when the family is still asleep.
-This time I wanted to play around with the new Matter smart home connectivity standard and add some temperature and humidity sensors to my smart home setup.</p>
-<p>I bought some <code class="docutils literal notranslate"><span class="pre">esp32-h2</span></code> development boards (they support WiFi, Thread and BLE), some <code class="docutils literal notranslate"><span class="pre">SHT31-D</span></code> sensors and started the old fashioned read the docs to get started.
-I must say the <a class="reference external" href="https://docs.espressif.com/projects/esp-matter/en/latest/esp32/developing.html">espressif docs</a> are well written and the community is very active.</p>
-<p>I am using a WSL Ubuntu on Windows 11 and getting the build environment to work was not as straightforward as I hoped:</p>
-<ul class="simple">
-<li><p>the <code class="docutils literal notranslate"><span class="pre">idf.py</span></code> build system comes in a separate repository and needs to be set up to work</p></li>
-<li><p>the esp-matter repo is huge and takes a while to clone</p></li>
-<li><p>getting the esp32 device visible as <code class="docutils literal notranslate"><span class="pre">/dev/ttyUSB0</span></code> was tricky</p></li>
-</ul>
-<p>After a while I got the first example compiled and flashed to the device.</p>
-<p>What I have noticed though was that the resulting binary was quite large (over 1.5MB) and I wondered what is actually in there.</p>
-<p>Instead of just looking at the final binary and the object files, I thought it would be more interesting to see it as a dependency graph between the object files.
-For this I added a new command in a Python app I use to parse and analyze C/C++ sources, called <a class="reference external" href="https://github.com/cuinixam/clanguru">clanguru</a>.</p>
-<p>The new <code class="docutils literal notranslate"><span class="pre">analyze</span></code> command does the following:</p>
-<ul class="simple">
-<li><p>parse the <code class="docutils literal notranslate"><span class="pre">compile_commands.json</span></code> file to find all the object files</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">nm</span></code> on each object file to get the global symbols and determine their type:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">extern</span></code> for undefined globals - these are the <code class="docutils literal notranslate"><span class="pre">required</span></code> symbols</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">local</span></code> for local globals - these are the <code class="docutils literal notranslate"><span class="pre">provided</span></code> symbols</p></li>
-</ul>
-</li>
-<li><p>create an html report using <a class="reference external" href="https://cytoscape.org/">cytoscape.js</a> to visualize the dependencies between the object files.
-I also added an option to group the object files in named containers based on their path.</p></li>
-</ul>
-<p>The result is a nice interactive graph where you can zoom in and out, drag the nodes around and enjoy the complexity of the code base.</p>
-<p>For my project it looks like this:</p>
-<p><img alt="dependency graph" src="../../_images/objects_dependencies_graph.png" /></p>
-<p>You can find the actual report <a class="reference external" href="https://maxiniuc.com/objects_deps/index.html">here</a>.</p>
-<section id="use-clanguru-to-analyze-your-c-c-code">
-<h2>Use clanguru to analyze your C/C++ code<a class="headerlink" href="#use-clanguru-to-analyze-your-c-c-code" title="Link to this heading">#</a></h2>
-<p>Install clanguru using <code class="docutils literal notranslate"><span class="pre">pipx</span></code> for isolated installation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipx</span> <span class="n">install</span> <span class="n">clanguru</span>
-</pre></div>
+                   
+<div class="section ablog__collection">
+  <h1>
+    
+    <span
+      >Posts tagged  bootstrap 
+    </span>
+  </h1>
+   
+  <div class="section ablog-post">
+    <h2 class="ablog-post-title">
+      <a href="../2025/spl_bootstrap.html">SPL Bootstrap - Handle Python Version</a>
+    </h2>
+    <ul class="ablog-archive">
+      <li>
+         
+        <i class="fa fa-calendar"></i>
+        
+        <span>24 November 2025</span>
+        
+      </li>
+      <div class="ablog-sidebar-item ablog__postcard2">
+      
+  <li id="ablog-sidebar-item category ablog__category">
+    <span>
+      
+      <i class="fa-fw fa fa-folder-open"></i>
+      
+    </span>
+     
+    <a href="../category/review.html">review</a>
+      
+  </li>
+   
+  <li id="ablog-sidebar-item tags ablog__tags">
+    <span>
+       
+      <i class="fa-fw fa fa-tags"></i>
+       
+    </span>
+     
+    <a href="python.html">python</a>
+        
+    <a href="#">bootstrap</a>
+        
+    <a href="venv.html">venv</a>
+      
+  </li>
+   
 </div>
-<p>Check the help for the <code class="docutils literal notranslate"><span class="pre">analyze</span></code> command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clanguru</span> <span class="n">analyze</span> <span class="o">--</span><span class="n">help</span>
-</pre></div>
-</div>
-<p>You need to build your project and provide the compilation database (<code class="docutils literal notranslate"><span class="pre">compile_commands.json</span></code>).
-Also, ensure that the <code class="docutils literal notranslate"><span class="pre">nm</span></code> command-line tool is available in your user PATH.</p>
-<p>To generate an html dynamic dependency report, run the following command:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>clanguru<span class="w"> </span>analyze<span class="w"> </span>--compilation-database<span class="w"> </span>compile_commands.json<span class="w"> </span>--output-file<span class="w"> </span>dependencies.html<span class="w"> </span>--use-parent-deps
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--use-parent-deps</span></code> option will group the object files based on their parent directory.</p>
-<p>If the output file extension is <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code>, an Excel report will be generated instead of an HTML one.</p>
-<p>If you have any questions or feedback, feel free to create an issue in the clanguru GitHub repository.</p>
-<p>Have fun exploring your code dependencies! 😎</p>
-</section>
-</section>
+    </ul>
+    <p class="ablog-post-excerpt"><p>Document headings start at H2, not H1 [myst.header]</p>
+<p>The pipeline implementation for our Software Product Line (SPL) repositories uses the <a class="reference external" href="https://github.com/cuinixam/pypeline">pypeline</a> Python application.
+In order to start the <code class="docutils literal notranslate"><span class="pre">pypeline</span></code> application, we need to install Python (with a specified version) and create the Python virtual environment.
+This step we call <code class="docutils literal notranslate"><span class="pre">bootstrap</span></code> and it is implemented <a class="reference external" href="https://github.com/avengineers/bootstrap">here</a>.</p>
+</p>
 
-<div class="section ablog__blog_comments">
-     
-<div class="section ablog__prev-next">
-  <span class="ablog__prev">
-     
-    <a href="c_portable_pointer_size.html">
-      
-      <i class="fa fa-arrow-circle-left"></i>
-      
-      <span>Why unit tests crashed on windows but worked on the microcontroller</span>
-    </a>
-    
-  </span>
-  <span class="ablog__spacer">&nbsp;</span>
-  <span class="ablog__next">
-     
-    <a href="spled_meets_arduino.html">
-      <span>SPLED meets Arduino Uno</span>
-      
-      <i class="fa fa-arrow-circle-right"></i>
-      
-    </a>
-    
-  </span>
-</div>
-  
+    <p class="ablog-post-expand">
+      <a href="../2025/spl_bootstrap.html"><em>Read more ...</em></a>
+    </p>
+    <hr />
+  </div>
+   
 </div>
 
                 </article>
@@ -634,33 +927,6 @@ Also, ensure that the <code class="docutils literal notranslate"><span class="pr
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-clanguru-to-analyze-your-c-c-code">Use clanguru to analyze your C/C++ code</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../../_sources/blogs/2025/what_you_did_not_want_to_know_about_your_code.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
-
-</div></div>
               
             
           </div>

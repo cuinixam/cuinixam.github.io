@@ -2,10 +2,202 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2025-10-26T15:58:36.344224+00:00</updated>
+  <updated>2025-11-24T15:25:10.020892+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2025/spl_bootstrap.html</id>
+    <title>SPL Bootstrap - Handle Python Version</title>
+    <updated>2025-11-24T00:00:00+00:00</updated>
+    <content type="html">&lt;aside class="system-message"&gt;
+&lt;p class="system-message-title"&gt;System Message: WARNING/2 (&lt;span class="docutils literal"&gt;/home/runner/work/cuinixam.github.io/cuinixam.github.io/docs/blogs/2025/spl_bootstrap.md&lt;/span&gt;, line 8)&lt;/p&gt;
+&lt;p&gt;Document headings start at H2, not H1 [myst.header]&lt;/p&gt;
+&lt;/aside&gt;
+&lt;section id="spl-bootstrap-handle-python-version"&gt;
+
+&lt;section id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The pipeline implementation for our Software Product Line (SPL) repositories uses the &lt;a class="reference external" href="https://github.com/cuinixam/pypeline"&gt;pypeline&lt;/a&gt; Python application.
+In order to start the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pypeline&lt;/span&gt;&lt;/code&gt; application, we need to install Python (with a specified version) and create the Python virtual environment.
+This step we call &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap&lt;/span&gt;&lt;/code&gt; and it is implemented &lt;a class="reference external" href="https://github.com/avengineers/bootstrap"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;Currently bootstrap supports only Windows for installing Python.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;section id="workflow"&gt;
+&lt;h2&gt;Workflow&lt;/h2&gt;
+&lt;p&gt;The bootstrap process is managed by two main scripts: a PowerShell script (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.ps1&lt;/span&gt;&lt;/code&gt;) for environment setup and a Python script (&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.py&lt;/span&gt;&lt;/code&gt;) for dependency management. The diagram below shows the high-level workflow.&lt;/p&gt;
+&lt;pre  class="mermaid"&gt;
+        flowchart TD
+    A[bootstrap.ps1] --&amp;gt; B{Python installed?};
+    B -- No --&amp;gt; C[Install Python w/ Scoop 1️⃣];
+    B -- Yes --&amp;gt; D;
+    C --&amp;gt; D[Execute bootstrap.py];
+
+    D --&amp;gt; E{Dependencies changed?};
+    E -- No --&amp;gt; F[End];
+    E -- Yes --&amp;gt; G[Create/Update .venv 2️⃣];
+    G --&amp;gt; H[Install Dependencies];
+    H --&amp;gt; F;
+    &lt;/pre&gt;&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;This step will first install the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;scoop&lt;/span&gt;&lt;/code&gt; windows package manager and then call &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;scoop&lt;/span&gt;&lt;/code&gt; to install the configured python version.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The python virtual environment is updated in multiple steps:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;create an empty virtual environment with python &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;venv.create&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;install the package manager (e.g., poetry, uv, etc.) and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pip-system-certs&lt;/span&gt;&lt;/code&gt; for using the system SSL certificates&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;run the package manager to install the python dependencies&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;section id="bootstrap-ps1"&gt;
+&lt;h3&gt;bootstrap.ps1&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Scoop configuration and installation&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Python version detection and installation&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Delegates to &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.py&lt;/span&gt;&lt;/code&gt; for virtual environment setup&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="bootstrap-py"&gt;
+&lt;h3&gt;bootstrap.py&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;OS-agnostic virtual environment creation (Windows/Unix)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Smart caching with hash-based dependency tracking. Only runs if dependencies have been updated.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Package manager support: Poetry, UV, Pipenv&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Automatic pip configuration for custom PyPI sources&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="bootstrap-json-configuration"&gt;
+&lt;h3&gt;bootstrap.json Configuration&lt;/h3&gt;
+&lt;div class="highlight-json notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;python_version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;3.11&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;python_package_manager&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;poetry&amp;gt;=2.1.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;scoop_ignore_scoopfile&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="things-to-improve"&gt;
+&lt;h2&gt;Things to Improve&lt;/h2&gt;
+&lt;section id="python-version-management"&gt;
+&lt;h3&gt;Python Version Management&lt;/h3&gt;
+&lt;p&gt;Currently the bootstrap process installs a fixed Python version as specified in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.json&lt;/span&gt;&lt;/code&gt; configuration file.
+When checking if python is installed, it only verifies that the major and minor version match (e.g., &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;3.11&lt;/span&gt;&lt;/code&gt;),
+but does not check for patch versions (e.g., &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;3.11.4&lt;/span&gt;&lt;/code&gt; vs &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;3.11.5&lt;/span&gt;&lt;/code&gt;).
+This can lead to situations that on different machines, slightly different patch versions of Python are installed.&lt;/p&gt;
+&lt;div class="admonition note"&gt;
+&lt;p class="admonition-title"&gt;Note&lt;/p&gt;
+&lt;p&gt;This might not be a big issue in most cases, but it can lead to inconsistencies in our particular case,
+because we use the python &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;venv&lt;/span&gt;&lt;/code&gt; module to create the initial virtual environment,
+which will include the standard library of the installed Python version.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;The solution could be:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;to find all installed python versions in path and check if the exact version is already installed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;it might be that python versions installed with scoop are not available in path, so we need to query scoop for installed versions&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;if the exact version is not installed, install it with scoop&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.py&lt;/span&gt;&lt;/code&gt; shall fail if the python interpreter version does not match exactly the configured version.
+This can happen if the user runs the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pypeline&lt;/span&gt;&lt;/code&gt; including the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;CreateVEnv&lt;/span&gt;&lt;/code&gt; step which calls directly the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.py&lt;/span&gt;&lt;/code&gt; script.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="virtual-environment-management"&gt;
+&lt;h3&gt;Virtual Environment Management&lt;/h3&gt;
+&lt;p&gt;As mention above, the virtual environment is created in three steps:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;create an empty virtual environment with python &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;venv.create&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;install the package manager (e.g., poetry, uv, etc.) and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pip-system-certs&lt;/span&gt;&lt;/code&gt; for using the system SSL certificates&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;run the package manager to install the python dependencies&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There is a problem with the second step: the package manager and pip-system certs are installed with pip.
+These packages have their own dependencies, which are not tracked by pip because pip has no support for &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.lock&lt;/span&gt;&lt;/code&gt; files.&lt;/p&gt;
+&lt;p&gt;When step three is executed, the package manager might need to upgrade/downgrade some packages which were implicitly installed in step two
+and this can cause crashes due to dependency conflicts.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="solution-1-user-defined-initial-packages"&gt;
+&lt;h3&gt;Solution 1: User-defined Initial Packages&lt;/h3&gt;
+&lt;p&gt;One way to solve this is to let the user define the list of package to install in step two in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.json&lt;/span&gt;&lt;/code&gt; configuration file.
+For example:&lt;/p&gt;
+&lt;div class="highlight-json notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;python_version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;3.11.4&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;venv_initial_packages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;poetry==2.1.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;pip-system-certs==2.2.1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;wrapt==1.14.0&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In case there is a conflict between the initial packages and the packages defined in the package manager lock file,
+the user can adjust the versions in the configuration file accordingly.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="solution-2-install-package-manager-with-scoop"&gt;
+&lt;h3&gt;Solution 2: Install Package Manager with Scoop&lt;/h3&gt;
+&lt;p&gt;Another way could be to install both python and the package manager with scoop in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.ps1&lt;/span&gt;&lt;/code&gt; script,
+so that pip is not involved at all in step two. This means that package manager will install exactly the version specified in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.lock&lt;/span&gt;&lt;/code&gt; file
+and therefore always have a consistent set of dependencies.&lt;/p&gt;
+&lt;p&gt;The problem with this approach is that &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pip-system-certs&lt;/span&gt;&lt;/code&gt; is not available as a scoop package
+and package installation will fail when ran against an on-premise PyPI server with self-signed certificates.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="package-manager-command"&gt;
+&lt;h3&gt;Package manager command&lt;/h3&gt;
+&lt;p&gt;Currently the command to install dependencies with the package manager is hardcoded in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.py&lt;/span&gt;&lt;/code&gt; script
+with extra arguments being supported via the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;bootstrap.json&lt;/span&gt;&lt;/code&gt; configuration file.&lt;/p&gt;
+&lt;div class="highlight-json notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;python_package_manager_args&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;--clean&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We added the feature to support extra arguments because we needed for some projects to pass the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;--clean&lt;/span&gt;&lt;/code&gt; to &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;pipenv&lt;/span&gt;&lt;/code&gt;
+to remove unused packages already existing in the virtual environment.&lt;/p&gt;
+&lt;p&gt;A better approach would be to let the user define the full command to install dependencies with the package manager.
+For example:&lt;/p&gt;
+&lt;div class="highlight-json notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;venv_install_command&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;poetry install --no-dev --clean&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This would give the user full control over how dependencies are installed.&lt;/p&gt;
+&lt;aside class="system-message"&gt;
+&lt;p class="system-message-title"&gt;System Message: WARNING/2 (&lt;span class="docutils literal"&gt;/home/runner/work/cuinixam.github.io/cuinixam.github.io/docs/blogs/2025/spl_bootstrap.md&lt;/span&gt;, line 157)&lt;/p&gt;
+&lt;p&gt;Document headings start at H2, not H1 [myst.header]&lt;/p&gt;
+&lt;/aside&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="conclusion"&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;If all these improvements are implemented, the bootstrap process will be more reliable and flexible, ensuring consistent Python environments.&lt;/p&gt;
+&lt;p&gt;The configuration will allow users to tailor the bootstrap process to their specific needs.&lt;/p&gt;
+&lt;div class="highlight-json notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;python_version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;3.11.4&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;venv_initial_packages&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;poetry==2.1.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;pip-system-certs==2.2.1&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;venv_install_command&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;poetry install --no-dev --clean&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This configuration will ensure that:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Python 3.11.4 is installed&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The package manager and pip-system-certs are installed with the specified versions&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Dependencies are installed with the specified command&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Have fun bootstrapping! ✌️&lt;/p&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2025/spl_bootstrap.html"/>
+    <summary>Document headings start at H2, not H1 [myst.header]The pipeline implementation for our Software Product Line (SPL) repositories uses the pypeline Python application.
+In order to start the pypeline application, we need to install Python (with a specified version) and create the Python virtual environment.
+This step we call bootstrap and it is implemented here.</summary>
+    <category term="bootstrap" label="bootstrap"/>
+    <category term="python" label="python"/>
+    <category term="venv" label="venv"/>
+    <published>2025-11-24T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2025/yanga_spl_components.html</id>
     <title>SPL components in YANGA</title>
@@ -1658,8 +1850,8 @@ The constants defined in &lt;code class="docutils literal notranslate"&gt;&lt;sp
 &lt;/section&gt;
 &lt;section id="process-flow-diagram"&gt;
 &lt;h3&gt;Process Flow Diagram&lt;/h3&gt;
-&lt;div class="mermaid"&gt;
-            flowchart TD
+&lt;pre  class="mermaid"&gt;
+        flowchart TD
     A[Start Build] --&amp;gt; B[Generate git_commit_tmp.txt]
     B --&amp;gt; C{Has Commit ID Changed?}
     C -- Yes --&amp;gt; D[Update git_commit.txt]
@@ -1668,7 +1860,7 @@ The constants defined in &lt;code class="docutils literal notranslate"&gt;&lt;sp
     F --&amp;gt; G[Generate link_out.hex]
     G --&amp;gt; H[Merge git_info.hex with link_out.hex]
     H --&amp;gt; I[Produce link_out_with_git_info.hex]
-        &lt;/div&gt;&lt;/section&gt;
+    &lt;/pre&gt;&lt;/section&gt;
 &lt;section id="alternative-approach-as-post-build-command"&gt;
 &lt;h3&gt;Alternative approach as POST_BUILD command&lt;/h3&gt;
 &lt;ul class="simple"&gt;
@@ -1697,8 +1889,8 @@ The constants defined in &lt;code class="docutils literal notranslate"&gt;&lt;sp
 &lt;span class="linenos"&gt;14&lt;/span&gt;&lt;span class="nb"&gt;set_property&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;TARGET&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;src_git_info&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;PROPERTY&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;INTERFACE_LINK_DEPENDS&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GIT_INFO_HEX_FILE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class="mermaid"&gt;
-            flowchart TD
+&lt;pre  class="mermaid"&gt;
+        flowchart TD
     A[Start Build] --&amp;gt; B[Generate git_commit_tmp.txt]
     B --&amp;gt; C{Has Commit ID Changed?}
     C -- Yes --&amp;gt; D[Update git_commit.txt]
@@ -1710,7 +1902,7 @@ The constants defined in &lt;code class="docutils literal notranslate"&gt;&lt;sp
     H --&amp;gt; K[Merging git_info.hex into link_out.hex - Post-Build]
     K --&amp;gt; L[Updated link_out.hex with Git info]
     L --&amp;gt; Z
-        &lt;/div&gt;&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
+    &lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Advantages&lt;/strong&gt;&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;p&gt;Single Output File: Avoids creating an extra hex file; simplifies deployment.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Always Updated: Ensures &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;link_out.hex&lt;/span&gt;&lt;/code&gt; always contains the latest Git info.&lt;/p&gt;&lt;/li&gt;
