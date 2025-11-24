@@ -28,11 +28,11 @@ For this I added a new command in a Python app I use to parse and analyze C/C++ 
 
 The new `analyze` command does the following:
 
-* parse the `compile_commands.json` file to find all the object files
-* run `nm` on each object file to get the global symbols and determine their type:
-   * `extern` for undefined globals - these are the `required` symbols
-   * `local` for local globals - these are the `provided` symbols
-* create an html report using [cytoscape.js](https://cytoscape.org/) to visualize the dependencies between the object files.
+- parse the `compile_commands.json` file to find all the object files
+- run `nm` on each object file to get the global symbols and determine their type:
+  - `extern` for undefined globals - these are the `required` symbols
+  - `local` for local globals - these are the `provided` symbols
+- create an html report using [cytoscape.js](https://cytoscape.org/) to visualize the dependencies between the object files.
   I also added an option to group the object files in named containers based on their path.
 
 The result is a nice interactive graph where you can zoom in and out, drag the nodes around and enjoy the complexity of the code base.

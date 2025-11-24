@@ -12,6 +12,7 @@ These variants consist of *components* that implement the features required for 
 Each variant might be built for different *platforms*, different hardware environments with their own constraints and capabilities.
 
 When thinking about components, there are two main categories:
+
 - Components which implement your product's features
 - Components which provide the functionality for other components to run on a certain hardware platform
 
@@ -37,6 +38,7 @@ variants:
 ```
 
 Example for a platform configuration:
+
 ```{code-block} yaml
 platforms:
   - name: arduino_uno
@@ -55,6 +57,7 @@ I had a component that it only worked for Arduino, but I used it only for one of
 YANGA gives you three places to define components:
 
 ### 1. In Your Product Variant
+
 For components that define what your product does, regardless of platform.
 
 ```{code-block} yaml
@@ -67,6 +70,7 @@ variants:
 ```
 
 ### 2. In Your Platform Configuration
+
 For components that every product needs when targeting this platform.
 
 ```{code-block} yaml
@@ -79,6 +83,7 @@ platforms:
 ```
 
 ### 3. In Your Variant's Platform-Specific Section
+
 For components that only some products need, and only on specific platforms.
 
 ```{code-block} yaml
