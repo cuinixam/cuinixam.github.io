@@ -22,4 +22,12 @@ grade schoolers. It is designed to be used by parents and children together, wit
 helping children understand these concepts in a fun and engaging way.
 ````
 
+````{grid-item-card} Statistical Analysis of Experimental Data.
+:text-align: justify
+:link: statistical_analysis/index.html
+
+This notebook demonstrates how to analyze experimental data using basic statistical methods.
+We'll work through an example to show the practical steps involved in exploring data, assessing distributions, and ranking samples based on multiple parameters.
+````
+
 `````
