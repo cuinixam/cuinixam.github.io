@@ -28,10 +28,12 @@ dependencies = [
   "typer>=0,<1",
 ]
 
+urls."Bug Tracker" = "https://github.com/cuinixam/jarvis/issues"
 urls.Changelog = "https://github.com/cuinixam/jarvis/blob/main/CHANGELOG.md"
+urls.documentation = "https://jarvis.readthedocs.io"
+
 urls.repository = "https://github.com/cuinixam/jarvis"
-rls."Bug Tracker" = "https://github.com/cuinixam/jarvis/issues"
-documentation = "https://jarvis.readthedocs.io"
+scripts.jarvis = "jarvis.main:main"
 
 [dependency-groups]
 dev = [
