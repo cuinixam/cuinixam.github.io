@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2026-02-01T18:48:04.248487+00:00</updated>
+  <updated>2026-02-01T18:54:55.234033+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
@@ -137,12 +137,17 @@ Objects dependencies&lt;/div&gt;
 &lt;/div&gt;
 &lt;a class="sd-stretched-link sd-hide-link-text reference external" href="/objects_deps_hello_world_zephyr/index.html"&gt;&lt;span&gt;/objects_deps_hello_world_zephyr/index.html&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;p&gt;We can see that there are two main parts:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;zephyr&lt;/span&gt;&lt;/code&gt;: for the Zephyr kernel, drivers and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;espressif&lt;/span&gt;&lt;/code&gt; soc support&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;hal_espressif&lt;/span&gt;&lt;/code&gt;: for the espressif hardware abstraction layer including the bootloader support&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p class="rubric" id="next-steps"&gt;Next steps&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="next-steps"&gt;
+&lt;h2&gt;Next steps&lt;/h2&gt;
 &lt;p&gt;We identified the main parts and the toolchain required to build the hello world example. Next I will setup a &lt;a class="reference external" href="https://github.com/cuinixam/yanga"&gt;yanga&lt;/a&gt; project to build the same example. The goal is to configure in &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;yanga&lt;/span&gt;&lt;/code&gt;:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;p&gt;the two external dependencies &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;zephyr&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;hal_espressif&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
@@ -153,16 +158,15 @@ Objects dependencies&lt;/div&gt;
 &lt;p&gt;One shall be able to clone the repository and build it using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;yanga&lt;/span&gt;&lt;/code&gt; on both Ubuntu and Windows by running a single command.
 No extra steps to install toolchains or other dependencies.&lt;/p&gt;
 &lt;p&gt;I think this will be fun and I hope I’ll get to it by the end of the week.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/section&gt;
 &lt;/section&gt;
 &lt;/section&gt;
 </content>
     <link href="https://maxiniuc.com/blogs/2026/smarty.html"/>
     <summary>I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:Be an engineer who also knows their sh*t.esp32-h2 devkit board</summary>
+    <category term="clanguru" label="clanguru"/>
     <category term="esp-idf" label="esp-idf"/>
     <category term="esp32" label="esp32"/>
+    <category term="espressif" label="espressif"/>
     <category term="matter" label="matter"/>
     <category term="smarthome" label="smart home"/>
     <category term="thread" label="thread"/>

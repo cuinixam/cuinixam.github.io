@@ -424,6 +424,10 @@
     <a href="../tag/esp32.html">esp32</a>
         
     <a href="../tag/esp-idf.html">esp-idf</a>
+        
+    <a href="../tag/espressif.html">espressif</a>
+        
+    <a href="../tag/clanguru.html">clanguru</a>
       
   </li>
    
@@ -673,12 +677,17 @@ Objects dependencies</div>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference external" href="/objects_deps_hello_world_zephyr/index.html"><span>/objects_deps_hello_world_zephyr/index.html</span></a></div>
 </div>
+</div>
+</div>
 <p>We can see that there are two main parts:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span></code>: for the Zephyr kernel, drivers and <code class="docutils literal notranslate"><span class="pre">espressif</span></code> soc support</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code>: for the espressif hardware abstraction layer including the bootloader support</p></li>
 </ul>
-<p class="rubric" id="next-steps">Next steps</p>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
 <p>We identified the main parts and the toolchain required to build the hello world example. Next I will setup a <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> project to build the same example. The goal is to configure in <code class="docutils literal notranslate"><span class="pre">yanga</span></code>:</p>
 <ul class="simple">
 <li><p>the two external dependencies <code class="docutils literal notranslate"><span class="pre">zephyr</span></code> and <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
@@ -689,9 +698,6 @@ Objects dependencies</div>
 <p>One shall be able to clone the repository and build it using <code class="docutils literal notranslate"><span class="pre">yanga</span></code> on both Ubuntu and Windows by running a single command.
 No extra steps to install toolchains or other dependencies.</p>
 <p>I think this will be fun and I hope I’ll get to it by the end of the week.</p>
-</div>
-</div>
-</section>
 </section>
 </section>
 
@@ -748,6 +754,7 @@ No extra steps to install toolchains or other dependencies.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-build-environment-and-generated-artifacts">Analyze the build environment and generated artifacts</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
 </ul>
   </nav></div>
 
