@@ -51,9 +51,9 @@ dev = [
   "sphinx-copybutton>=0,<1",
   "sphinx-design>=0,<1",
   "sphinx-new-tab-link>=0,<1",
+  "sphinx-togglebutton>=0,<1",
   "sphinxcontrib-mermaid>=1,<2",
   "sphinxext-rediraffe>=0,<1",
-  "wrapt",
 ]
 
 [tool.ruff]

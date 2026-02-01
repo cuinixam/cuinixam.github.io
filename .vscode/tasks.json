@@ -39,7 +39,10 @@
     },
     {
       "label": "autobuild docs",
-      "command": ".venv/Scripts/sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
+      "command": ".venv/bin/sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs",
+      "windows": {
+        "command": ".venv/Scripts/sphinx-autobuild -E -a ${workspaceFolder}/docs ${workspaceFolder}/build/docs"
+      },
       "type": "shell",
       "presentation": {
         "reveal": "always"
@@ -51,7 +54,13 @@
     },
     {
       "label": "open docs index.html",
-      "command": "${workspaceFolder}/build/docs/index.html",
+      "command": "xdg-open ${workspaceFolder}/build/docs/index.html",
+      "osx": {
+        "command": "open ${workspaceFolder}/build/docs/index.html"
+      },
+      "windows": {
+        "command": "explorer ${workspaceFolder}\\build\\docs\\index.html"
+      },
       "type": "shell",
       "presentation": {
         "reveal": "always"

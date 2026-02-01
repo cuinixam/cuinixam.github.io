@@ -57,6 +57,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "presentations"]
 # copy button for code block
 extensions.append("sphinx_copybutton")
 
+extensions.append("sphinx_togglebutton")
+
 # -- HTML output ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
