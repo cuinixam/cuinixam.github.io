@@ -2,15 +2,67 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2026-02-01T18:54:55.234033+00:00</updated>
+  <updated>2026-02-06T14:48:14.639110+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
   <entry>
-    <id>https://maxiniuc.com/blogs/2026/smarty.html</id>
-    <title>Smarty - Matter on ESP32 with Zephyr</title>
+    <id>https://maxiniuc.com/blogs/2026/smarty_p2.html</id>
+    <title>Smarty - Matter on ESP32 with Zephyr - Part 2</title>
     <updated>2026-01-25T00:00:00+00:00</updated>
-    <content type="html">&lt;section id="smarty-matter-on-esp32-with-zephyr"&gt;
+    <content type="html">&lt;section id="smarty-matter-on-esp32-with-zephyr-part-2"&gt;
+
+&lt;div class="dropdown warning admonition"&gt;
+&lt;p class="admonition-title"&gt;Disclaimer&lt;/p&gt;
+&lt;p&gt;I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Be an engineer who also knows their sh*t.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Accept that you are responsible for your own components and safety.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Or just sit back and enjoy the read.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Reading is still learning, and you are more than welcome to just follow the code without touching a single wire. However, if you do decide to dive into the hardware and things go sideways, whether it’s a fried ESP32, a tripped breaker, or a “spicy” encounter with mains power, I am not to be held accountable. I take no responsibility for your hardware, your home, or yourself. You are the captain of your own (hopefully well-insulated) ship.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;In the &lt;a class="reference internal" href="blogs/2026/smarty_p1.html"&gt;&lt;span class="std std-doc"&gt;previous part&lt;/span&gt;&lt;/a&gt; we built the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;Hello&lt;/span&gt; &lt;span class="pre"&gt;World&lt;/span&gt;&lt;/code&gt; Zephyr sample project and analyzed the build environment, dependencies and generated artifacts.&lt;/p&gt;
+&lt;p&gt;Now I will setup a &lt;a class="reference external" href="https://github.com/cuinixam/yanga"&gt;yanga&lt;/a&gt; project to build the same example. The goal is to configure in &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;yanga&lt;/span&gt;&lt;/code&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;the two external dependencies &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;zephyr&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;hal_espressif&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the toolchain &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;riscv64-zephyr-elf&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the platform &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;esp32h2_devkitm&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;hello_world&lt;/span&gt;&lt;/code&gt; component&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;One shall be able to clone the repository and build it using &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;yanga&lt;/span&gt;&lt;/code&gt; on both Ubuntu and Windows by running a single command.
+No extra steps to install toolchains or other dependencies.&lt;/p&gt;
+&lt;section id="part-2-hello-world-on-esp32-h2-with-yanga"&gt;
+&lt;h2&gt;PART 2: Hello World on ESP32-H2 with Yanga&lt;/h2&gt;
+&lt;p&gt;I followed the &lt;a class="reference external" href="https://yanga.readthedocs.io/en/latest/getting_started/hello_yanga.html"&gt;yanga getting started guide&lt;/a&gt; to setup my project. This project has two variants, &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;English&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;German&lt;/span&gt;&lt;/code&gt;, which greet the user in their language (e.g. “Hello World” or “Hallo Welt”).&lt;/p&gt;
+&lt;p&gt;I pushed the code to github &lt;a class="reference external" href="https://github.com/cuinixam/smarty"&gt;cuinixam/smarty&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Next steps are to add a new &lt;a class="reference external" href="https://yanga.readthedocs.io/en/latest/features/platform.html"&gt;platform&lt;/a&gt; for ESP32-H2 and Zephyr.&lt;/p&gt;
+&lt;p&gt;The new platform &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;esp32h2-zephyr&lt;/span&gt;&lt;/code&gt; will:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;use the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;riscv64-zephyr-elf&lt;/span&gt;&lt;/code&gt; toolchain&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;define two dependencies: &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;zephyr&lt;/span&gt;&lt;/code&gt; and &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;hal_espressif&lt;/span&gt;&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To be continued…&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2026/smarty_p2.html"/>
+    <summary>I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:Be an engineer who also knows their sh*t.</summary>
+    <category term="clanguru" label="clanguru"/>
+    <category term="esp-idf" label="esp-idf"/>
+    <category term="esp32" label="esp32"/>
+    <category term="espressif" label="espressif"/>
+    <category term="matter" label="matter"/>
+    <category term="smarthome" label="smart home"/>
+    <category term="thread" label="thread"/>
+    <category term="zephyr" label="zephyr"/>
+    <published>2026-01-25T00:00:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2026/smarty_p1.html</id>
+    <title>Smarty - Matter on ESP32 with Zephyr - Part 1</title>
+    <updated>2026-01-25T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="smarty-matter-on-esp32-with-zephyr-part-1"&gt;
 
 &lt;div class="dropdown warning admonition"&gt;
 &lt;p class="admonition-title"&gt;Disclaimer&lt;/p&gt;
@@ -161,7 +213,7 @@ No extra steps to install toolchains or other dependencies.&lt;/p&gt;
 &lt;/section&gt;
 &lt;/section&gt;
 </content>
-    <link href="https://maxiniuc.com/blogs/2026/smarty.html"/>
+    <link href="https://maxiniuc.com/blogs/2026/smarty_p1.html"/>
     <summary>I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:Be an engineer who also knows their sh*t.esp32-h2 devkit board</summary>
     <category term="clanguru" label="clanguru"/>
     <category term="esp-idf" label="esp-idf"/>

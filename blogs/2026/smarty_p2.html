@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Smarty - Matter on ESP32 with Zephyr &#8212; Alexandru Maxiniuc</title>
+    <title>Smarty - Matter on ESP32 with Zephyr - Part 2 &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -54,14 +54,14 @@
     <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2026/smarty';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2026/smarty_p2';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 01, 2026"/> 
+    <meta name="docbuild:last-update" content="Feb 06, 2026"/> 
 <link
   rel="alternate"
   type="application/atom+xml"
@@ -443,6 +443,12 @@
   <ul>
      
     <li>
+      <a href="smarty_p1.html">
+        25 January - Smarty - Matter on ESP32 with Zephyr - Part 1
+      </a>
+    </li>
+    
+    <li>
       <a href="hello_di%C3%A1taxis.html">
         25 January - Hello Diátaxis
       </a>
@@ -466,12 +472,6 @@
       </a>
     </li>
     
-    <li>
-      <a href="../2025/what_you_did_not_want_to_know_about_your_code.html">
-        26 September - What you did not want to know about your code
-      </a>
-    </li>
-    
   </ul>
 </div>
 </div>
@@ -483,7 +483,7 @@
   <ul>
      
     <li>
-      <a href="../2026.html">2026 (2)</a>
+      <a href="../2026.html">2026 (3)</a>
     </li>
       
     <li>
@@ -534,7 +534,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Smarty - Matter on ESP32 with Zephyr</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Smarty - Matter on ESP32 with Zephyr - Part 2</span></li>
   </ul>
 </nav>
 </div>
@@ -550,8 +550,8 @@
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="smarty-matter-on-esp32-with-zephyr">
-<h1>Smarty - Matter on ESP32 with Zephyr<a class="headerlink" href="#smarty-matter-on-esp32-with-zephyr" title="Link to this heading">#</a></h1>
+                   <section id="smarty-matter-on-esp32-with-zephyr-part-2">
+<h1>Smarty - Matter on ESP32 with Zephyr - Part 2<a class="headerlink" href="#smarty-matter-on-esp32-with-zephyr-part-2" title="Link to this heading">#</a></h1>
 <div class="dropdown warning admonition">
 <p class="admonition-title">Disclaimer</p>
 <p>I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:</p>
@@ -562,133 +562,8 @@
 </ul>
 <p>Reading is still learning, and you are more than welcome to just follow the code without touching a single wire. However, if you do decide to dive into the hardware and things go sideways, whether it’s a fried ESP32, a tripped breaker, or a “spicy” encounter with mains power, I am not to be held accountable. I take no responsibility for your hardware, your home, or yourself. You are the captain of your own (hopefully well-insulated) ship.</p>
 </div>
-<p>This is the first in a series of articles about upgrading my DIY smart home devices software stack to use Zephyr and Matter.</p>
-<p>My existing smart home devices are based on <code class="docutils literal notranslate"><span class="pre">esp32-h2</span></code> development boards and use the ESP-IDF framework with the <a class="reference external" href="https://github.com/espressif/esp-matter">esp-matter</a> stack. I had <a class="reference external" href="https://zephyrproject.org/">Zephyr</a> on my todo list for a while now and I finally decided to give it a try.</p>
-<p>The plan is to migrate my existing smart home devices to use Zephyr and Matter.</p>
-<ul class="simple">
-<li><p>Start with the <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">World</span></code> Zephyr example and try to understand the build system</p></li>
-<li><p>Build the same example using <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> build system generator. This will allow me to separate the Zephyr build tools from the Zephyr source code, and to use my own build system generator with the proper abstraction layer for defining software products.</p></li>
-<li><p>Make the onboard LED a “smart light” Matter device that I can integrate with Home Assistant and Apple HomeKit.</p></li>
-</ul>
-<section id="part-1-hello-world-on-esp32-h2">
-<h2>PART 1: Hello World on ESP32-H2<a class="headerlink" href="#part-1-hello-world-on-esp32-h2" title="Link to this heading">#</a></h2>
-<p>I started by following the <a class="reference external" href="https://docs.zephyrproject.org/latest/develop/getting_started/index.html">Zephyr Getting Started Guide</a>.
-I followed the Ubuntu instructions because I am using an Ubuntu VM on my Mac using Parallels.</p>
-<p>These are basically the commands I ran:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a virtual environment and activate it</span>
-python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>~/zephyrproject/.venv
-<span class="nb">source</span><span class="w"> </span>~/zephyrproject/.venv/bin/activate
-
-<span class="c1"># Install west and initialize the zephyr project</span>
-pip<span class="w"> </span>install<span class="w"> </span>west
-west<span class="w"> </span>init<span class="w"> </span>~/zephyrproject<span class="se">\</span>
-<span class="nb">cd</span><span class="w"> </span>~/zephyrproject<span class="se">\</span>
-west<span class="w"> </span>update
-
-<span class="c1"># Export the zephyr project</span>
-west<span class="w"> </span>zephyr-export
-
-<span class="c1"># Install west packages</span>
-west<span class="w"> </span>packages<span class="w"> </span>pip<span class="w"> </span>--install
-<span class="nb">cd</span><span class="w"> </span>~/zephyrproject/zephyr
-
-<span class="c1"># Install Zephyr SDK</span>
-west<span class="w"> </span>sdk<span class="w"> </span>install<span class="w"> </span>--help
-west<span class="w"> </span>sdk<span class="w"> </span>install<span class="w"> </span>--toolchains<span class="w"> </span>riscv64-zephyr-elf
-
-<span class="c1"># Fetch the hal_espressif zephyr module</span>
-west<span class="w"> </span>blobs<span class="w"> </span>fetch<span class="w"> </span>hal_espressif
-
-<span class="c1"># Check available boards</span>
-west<span class="w"> </span>boards<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>esp32h2
-
-<span class="c1"># Build the hello world example for the esp32-h2</span>
-west<span class="w"> </span>build<span class="w"> </span>-b<span class="w"> </span>esp32h2_devkitm<span class="w"> </span>samples/hello_world
-</pre></div>
-</div>
-<p>I have an ESP32-H2 devkit board from Waveshare:</p>
-<p><a class="reference internal" href="../../_images/esp32-h2-devkitm.jpeg"><img alt="esp32-h2 devkit board" src="../../_images/esp32-h2-devkitm.jpeg" style="width: 200px;" /></a></p>
-<p>I connected it to my computer, answered yes to a dozen questions to confirm that I want to make the USB port available to my VM and then I wanted to flash the hello world example to it.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>west<span class="w"> </span>flash
-</pre></div>
-</div>
-<div class="admonition error">
-<p class="admonition-title">Error</p>
-<p>This failed because it could not access the serial port.</p>
-<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>Serial port /dev/ttyACM0:
-/dev/ttyACM0 failed to connect: Could not open /dev/ttyACM0: Permission denied
-</pre></div>
-</div>
-<p>I had to add my user to the dialout group (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">usermod</span> <span class="pre">-aG</span> <span class="pre">dialout</span> <span class="pre">$USER</span></code>) and reboot to make it work.
-I skipped installing the official espressif udev tools which ensures the system
-recognizes the ESP32-H2 correctly and assigns the right permissions every time you plug it in.</p>
-</div>
-<p>I now flashed the hello world example to the esp32-h2 and connected to it using the espressif monitor.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>west<span class="w"> </span>flash
-west<span class="w"> </span>espressif<span class="w"> </span>monitor<span class="w"> </span>--port<span class="w"> </span>/dev/ttyACM0
-</pre></div>
-</div>
-<p>It worked! 🤓</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>*** Booting Zephyr OS build v4.3.0-5066-gf28522e03666 ***
-Hello World! esp32h2_devkitm/esp32h2
-</pre></div>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If it still doesn’t work, your board might be in the <em>download mode</em>.
-You can exit it by pressing and holding the <em>BOOT</em> button shortly.</p>
-</div>
-<section id="analyze-the-build-environment-and-generated-artifacts">
-<h3>Analyze the build environment and generated artifacts<a class="headerlink" href="#analyze-the-build-environment-and-generated-artifacts" title="Link to this heading">#</a></h3>
-<p>First, let’s analyze what did we installed:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">~/zephyrproject</span> <span class="pre">-</span> <span class="pre">9GB</span></code>:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">modules</span> <span class="pre">-</span> <span class="pre">6.7GB</span></code>: it contains the hardware abstraction layers (HAL) modules, including <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span> <span class="pre">-</span> <span class="pre">1.4GB</span></code>: this is the main Zephyr source code (core, drivers, cmake scripts, west scripts, etc.)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.venv</span> <span class="pre">-</span> <span class="pre">800MB</span></code>: this is the virtual environment used to run west and other Zephyr tools</p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">~/zephyr-sdk-0.17.4</span> <span class="pre">-</span> <span class="pre">2.4GB</span></code>: this is the Zephyr SDK having the compiler suite for <code class="docutils literal notranslate"><span class="pre">riscv64-zephyr-elf</span></code> and the host tools</p></li>
-</ul>
-<p>It seems we need around 12GB of disk space to build the hello world example. 🫣
-The modules directory has not only the espressif HAL, but also many other HAL modules.
-Of course, we downloaded more than we needed, but it is still a lot of space.</p>
-<p>Let’s us now have a look at the binary file to understand which components are included and the dependencies.</p>
-<p>I implemented a python app <a class="reference external" href="https://github.com/cuinixam/clanguru">clanguru</a> to help me analyze binary files and C code in general.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install clanguru</span>
-pipx<span class="w"> </span>install<span class="w"> </span>clanguru
-clanguru<span class="w"> </span>--version
-<span class="c1"># Generate the objects dependencies graph</span>
-clanguru<span class="w"> </span>analyze<span class="w"> </span>--help
-clanguru<span class="w"> </span>analyze<span class="w"> </span>--compilation-database<span class="w"> </span>build/compile_commands.json<span class="w"> </span>--output-file<span class="w"> </span>obj_deps.html
-</pre></div>
-</div>
-<p>I linked below the interactive objects dependencies graph.
-This is a interactive view where you can select which directories shall be visible, search for particular files or click on nodes to highlight their direct dependencies. Check the help button for an overview of all features.</p>
-<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
-<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-1 sd-g-1 sd-g-xs-1 sd-g-sm-1 sd-g-md-1 sd-g-lg-1 docutils">
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-50 sd-shadow-sm sd-card-hover sd-text-justify docutils">
-<img alt="" class="sd-card-img-top" src="../../_images/obj_deps_hello_world.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Objects dependencies</div>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference external" href="/objects_deps_hello_world_zephyr/index.html"><span>/objects_deps_hello_world_zephyr/index.html</span></a></div>
-</div>
-</div>
-</div>
-<p>We can see that there are two main parts:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span></code>: for the Zephyr kernel, drivers and <code class="docutils literal notranslate"><span class="pre">espressif</span></code> soc support</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code>: for the espressif hardware abstraction layer including the bootloader support</p></li>
-</ul>
-</section>
-</section>
-<section id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
-<p>We identified the main parts and the toolchain required to build the hello world example. Next I will setup a <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> project to build the same example. The goal is to configure in <code class="docutils literal notranslate"><span class="pre">yanga</span></code>:</p>
+<p>In the <a class="reference internal" href="smarty_p1.html"><span class="std std-doc">previous part</span></a> we built the <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">World</span></code> Zephyr sample project and analyzed the build environment, dependencies and generated artifacts.</p>
+<p>Now I will setup a <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> project to build the same example. The goal is to configure in <code class="docutils literal notranslate"><span class="pre">yanga</span></code>:</p>
 <ul class="simple">
 <li><p>the two external dependencies <code class="docutils literal notranslate"><span class="pre">zephyr</span></code> and <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
 <li><p>the toolchain <code class="docutils literal notranslate"><span class="pre">riscv64-zephyr-elf</span></code></p></li>
@@ -697,7 +572,17 @@ Objects dependencies</div>
 </ul>
 <p>One shall be able to clone the repository and build it using <code class="docutils literal notranslate"><span class="pre">yanga</span></code> on both Ubuntu and Windows by running a single command.
 No extra steps to install toolchains or other dependencies.</p>
-<p>I think this will be fun and I hope I’ll get to it by the end of the week.</p>
+<section id="part-2-hello-world-on-esp32-h2-with-yanga">
+<h2>PART 2: Hello World on ESP32-H2 with Yanga<a class="headerlink" href="#part-2-hello-world-on-esp32-h2-with-yanga" title="Link to this heading">#</a></h2>
+<p>I followed the <a class="reference external" href="https://yanga.readthedocs.io/en/latest/getting_started/hello_yanga.html">yanga getting started guide</a> to setup my project. This project has two variants, <code class="docutils literal notranslate"><span class="pre">English</span></code> and <code class="docutils literal notranslate"><span class="pre">German</span></code>, which greet the user in their language (e.g. “Hello World” or “Hallo Welt”).</p>
+<p>I pushed the code to github <a class="reference external" href="https://github.com/cuinixam/smarty">cuinixam/smarty</a>.</p>
+<p>Next steps are to add a new <a class="reference external" href="https://yanga.readthedocs.io/en/latest/features/platform.html">platform</a> for ESP32-H2 and Zephyr.</p>
+<p>The new platform <code class="docutils literal notranslate"><span class="pre">esp32h2-zephyr</span></code> will:</p>
+<ul class="simple">
+<li><p>use the <code class="docutils literal notranslate"><span class="pre">riscv64-zephyr-elf</span></code> toolchain</p></li>
+<li><p>define two dependencies: <code class="docutils literal notranslate"><span class="pre">zephyr</span></code> and <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
+</ul>
+<p>To be continued…</p>
 </section>
 </section>
 
@@ -706,11 +591,11 @@ No extra steps to install toolchains or other dependencies.</p>
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
      
-    <a href="hello_di%C3%A1taxis.html">
+    <a href="smarty_p1.html">
       
       <i class="fa fa-arrow-circle-left"></i>
       
-      <span>Hello Diátaxis</span>
+      <span>Smarty - Matter on ESP32 with Zephyr - Part 1</span>
     </a>
     
   </span>
@@ -750,11 +635,7 @@ No extra steps to install toolchains or other dependencies.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-hello-world-on-esp32-h2">PART 1: Hello World on ESP32-H2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-build-environment-and-generated-artifacts">Analyze the build environment and generated artifacts</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2-hello-world-on-esp32-h2-with-yanga">PART 2: Hello World on ESP32-H2 with Yanga</a></li>
 </ul>
   </nav></div>
 
@@ -762,7 +643,7 @@ No extra steps to install toolchains or other dependencies.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/blogs/2026/smarty.md.txt"
+      <li><a href="../../_sources/blogs/2026/smarty_p2.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

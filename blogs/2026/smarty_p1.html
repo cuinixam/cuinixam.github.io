@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimizing Tool Installation in SPL Build Environments &#8212; Alexandru Maxiniuc</title>
+    <title>Smarty - Matter on ESP32 with Zephyr - Part 1 &#8212; Alexandru Maxiniuc</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2024/optimizing_tool_installation_in_spl_build_environments';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/2026/smarty_p1';</script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -389,7 +389,7 @@
      
     <i class="fa fa-calendar"></i>
     
-    <span>26 October 2024</span>
+    <span>25 January 2026</span>
     
   </h2>
   <ul>
@@ -413,17 +413,21 @@
        
     </span>
      
-    <a href="../tag/spl.html">spl</a>
+    <a href="../tag/smart-home.html">smart home</a>
         
-    <a href="../tag/yanga.html">yanga</a>
+    <a href="../tag/matter.html">matter</a>
         
-    <a href="../tag/build.html">build</a>
+    <a href="../tag/thread.html">thread</a>
         
-    <a href="../tag/optimization.html">optimization</a>
+    <a href="../tag/zephyr.html">zephyr</a>
         
-    <a href="../tag/tool.html">tool</a>
+    <a href="../tag/esp32.html">esp32</a>
         
-    <a href="../tag/dependency.html">dependency</a>
+    <a href="../tag/esp-idf.html">esp-idf</a>
+        
+    <a href="../tag/espressif.html">espressif</a>
+        
+    <a href="../tag/clanguru.html">clanguru</a>
       
   </li>
    
@@ -439,19 +443,13 @@
   <ul>
      
     <li>
-      <a href="../2026/smarty_p2.html">
+      <a href="smarty_p2.html">
         25 January - Smarty - Matter on ESP32 with Zephyr - Part 2
       </a>
     </li>
     
     <li>
-      <a href="../2026/smarty_p1.html">
-        25 January - Smarty - Matter on ESP32 with Zephyr - Part 1
-      </a>
-    </li>
-    
-    <li>
-      <a href="../2026/hello_di%C3%A1taxis.html">
+      <a href="hello_di%C3%A1taxis.html">
         25 January - Hello Diátaxis
       </a>
     </li>
@@ -465,6 +463,12 @@
     <li>
       <a href="../2025/yanga_spl_components.html">
         15 October - SPL components in YANGA
+      </a>
+    </li>
+    
+    <li>
+      <a href="../2025/spled_meets_arduino.html">
+        03 October - SPLED meets Arduino Uno
       </a>
     </li>
     
@@ -530,7 +534,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Optimizing Tool Installation in SPL Build Environments</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Smarty - Matter on ESP32 with Zephyr - Part 1</span></li>
   </ul>
 </nav>
 </div>
@@ -546,130 +550,154 @@
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-                   <section id="optimizing-tool-installation-in-spl-build-environments">
-<h1>Optimizing Tool Installation in SPL Build Environments<a class="headerlink" href="#optimizing-tool-installation-in-spl-build-environments" title="Link to this heading">#</a></h1>
-<p>I assume that the reader is familiar with the concept of software product lines (SPLs) and build environments. If not, as this is a blog post about optimizing tool installation in SPL build environments, I recommend you read up on these topics first.</p>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>In software product line (SPL) engineering, efficiently managing tool dependencies is essential for optimizing build environments and enhancing developer productivity. This blog post explores the thought process in addressing the challenge of optimizing tool installations in an SPL. We’ll walk through the problem statement, initial ideas, the evolution of those ideas, and the final approach.</p>
-</section>
-<section id="the-problem-inefficient-tool-installation">
-<h2>The Problem: Inefficient Tool Installation<a class="headerlink" href="#the-problem-inefficient-tool-installation" title="Link to this heading">#</a></h2>
-<p>In our SPL build environments, all tools are being installed regardless of the specific needs of a developer or build target. This was not noticeable initially, but as the number of variants and use cases (e.g. different packaging formats, on target debugging, etc.) increased, the inefficiency became apparent.</p>
-<p>Basically, there is an <code class="docutils literal notranslate"><span class="pre">install</span></code> step at the beginning of the build pipeline that installs all the tools required by all variants and all possible build targets.</p>
-<p>Some use cases where this inefficiency is particularly noticeable include:</p>
+                   <section id="smarty-matter-on-esp32-with-zephyr-part-1">
+<h1>Smarty - Matter on ESP32 with Zephyr - Part 1<a class="headerlink" href="#smarty-matter-on-esp32-with-zephyr-part-1" title="Link to this heading">#</a></h1>
+<div class="dropdown warning admonition">
+<p class="admonition-title">Disclaimer</p>
+<p>I am an engineer who knows his sh*t and prioritizes learning and innovation to getting certifications for tinkering with hardware. To follow along with the hardware portions of this guide, you should either:</p>
 <ul class="simple">
-<li><p>A developer working on a specific variant needs only a subset of tools.</p></li>
-<li><p>A CI pipeline for running static analysis (e.g. Mathworks Polyspace) does not need to build or package the software.</p></li>
+<li><p>Be an engineer who also knows their sh*t.</p></li>
+<li><p>Accept that you are responsible for your own components and safety.</p></li>
+<li><p>Or just sit back and enjoy the read.</p></li>
 </ul>
-<p>The problem is more noticeable for developers spinning up a virtual machine (VM) to quickly test a change or for a developer setting up their environment for the first time.</p>
-<p>On the other hand, when releasing a product, it is essential to ensure that all tools are available because we have to make sure that all variants are passing the defined quality gates.</p>
-</section>
-<section id="brainstorming">
-<h2>Brainstorming<a class="headerlink" href="#brainstorming" title="Link to this heading">#</a></h2>
-<section id="categorizing-tools-into-generic-variant-and-build-target-sets">
-<h3>💡 Categorizing Tools into Generic, Variant, and Build Target Sets<a class="headerlink" href="#categorizing-tools-into-generic-variant-and-build-target-sets" title="Link to this heading">#</a></h3>
-<p>Let us categorize tools into three distinct sets:</p>
-<ol class="arabic simple">
-<li><p><strong>Generic Tools</strong>: Tools required by all variants and build targets (e.g., CMake, Python).</p></li>
-<li><p><strong>Variant-Specific Tools</strong>: Tools required only for certain variants (e.g., specific compilers for microcontrollers).</p></li>
-<li><p><strong>Build Target-Specific Tools</strong>: Tools required for specific build targets (e.g., static analysis tools like Polyspace).</p></li>
-</ol>
-<p><strong>Implementation Concept</strong></p>
-<ul class="simple">
-<li><p><strong>Separate Tool Dependency Files</strong>:</p>
-<ul>
-<li><p><strong>Generic Tool Dependencies File</strong>: Contains tools common to all variants.</p></li>
-<li><p><strong>Variant-Specific Tool Dependencies Files</strong>: Contains tools specific to a variant or overrides for generic tools.</p></li>
-</ul>
-</li>
-<li><p><strong>Merging Process</strong>:</p>
-<ul>
-<li><p>When building a variant, merge the generic and variant-specific tool files, with the variant-specific tools overriding any conflicts.</p></li>
-</ul>
-</li>
-<li><p><strong>Handling Build Target-Specific Tools</strong>:</p>
-<ul>
-<li><p>Dynamically add tools based on the selected build target.</p></li>
-</ul>
-</li>
-</ul>
-<p>This means that the <code class="docutils literal notranslate"><span class="pre">install</span></code> step in the pipeline will install only the tools required for the specific variant and build target.</p>
-<p><strong>Considerations</strong></p>
-<p>While this idea provides a structured approach to managing tool dependencies, there are some challenges/limitations to consider:</p>
-<ul class="simple">
-<li><p><strong>Complexity in Linking Tools to Build Targets</strong>: Tightly coupling tools to build targets might limit flexibility for other activities that require specific tools, such as generating reports or on-target debugging.</p></li>
-<li><p><strong>Aggregation of Tools for CI</strong>: Collecting all tools from generic, variant, and build target files for CI builds might introduce complexity in managing tool versions and resolving conflicts.</p></li>
-</ul>
-</section>
-<section id="introducing-scopes-as-an-abstraction-layer">
-<h3>💡 Introducing “Scopes” as an Abstraction Layer<a class="headerlink" href="#introducing-scopes-as-an-abstraction-layer" title="Link to this heading">#</a></h3>
-<p>One issue with the previous idea is the tight coupling of tools to build targets. The problem is that, in contrast to <code class="docutils literal notranslate"><span class="pre">variant</span></code>, a <code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">target</span></code> is not a domain term in SPL engineering. It is a technical term from the build system. This tight coupling might lead to confusion and make the system less flexible.</p>
-<p>To address this limitation, we proposed introducing <code class="docutils literal notranslate"><span class="pre">scopes</span></code> as a higher-level abstraction.</p>
-<div class="admonition-scopes admonition">
-<p class="admonition-title">Scopes</p>
-<p>Scopes encompass a specific activity or domain within the development process, representing a set of tools, configurations and steps required for that activity.</p>
-<p>Examples of scopes may include: <code class="docutils literal notranslate"><span class="pre">Build</span></code>, <code class="docutils literal notranslate"><span class="pre">StaticAnalysis</span></code>, <code class="docutils literal notranslate"><span class="pre">Debugging</span></code>, <code class="docutils literal notranslate"><span class="pre">Reporting</span></code>, and <code class="docutils literal notranslate"><span class="pre">Deployment</span></code>.</p>
+<p>Reading is still learning, and you are more than welcome to just follow the code without touching a single wire. However, if you do decide to dive into the hardware and things go sideways, whether it’s a fried ESP32, a tripped breaker, or a “spicy” encounter with mains power, I am not to be held accountable. I take no responsibility for your hardware, your home, or yourself. You are the captain of your own (hopefully well-insulated) ship.</p>
 </div>
-<p><strong>Implementation Concept</strong></p>
+<p>This is the first in a series of articles about upgrading my DIY smart home devices software stack to use Zephyr and Matter.</p>
+<p>My existing smart home devices are based on <code class="docutils literal notranslate"><span class="pre">esp32-h2</span></code> development boards and use the ESP-IDF framework with the <a class="reference external" href="https://github.com/espressif/esp-matter">esp-matter</a> stack. I had <a class="reference external" href="https://zephyrproject.org/">Zephyr</a> on my todo list for a while now and I finally decided to give it a try.</p>
+<p>The plan is to migrate my existing smart home devices to use Zephyr and Matter.</p>
 <ul class="simple">
-<li><p><strong>Scope-Specific Configuration Files</strong>:</p>
+<li><p>Start with the <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">World</span></code> Zephyr example and try to understand the build system</p></li>
+<li><p>Build the same example using <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> build system generator. This will allow me to separate the Zephyr build tools from the Zephyr source code, and to use my own build system generator with the proper abstraction layer for defining software products.</p></li>
+<li><p>Make the onboard LED a “smart light” Matter device that I can integrate with Home Assistant and Apple HomeKit.</p></li>
+</ul>
+<section id="part-1-hello-world-on-esp32-h2">
+<h2>PART 1: Hello World on ESP32-H2<a class="headerlink" href="#part-1-hello-world-on-esp32-h2" title="Link to this heading">#</a></h2>
+<p>I started by following the <a class="reference external" href="https://docs.zephyrproject.org/latest/develop/getting_started/index.html">Zephyr Getting Started Guide</a>.
+I followed the Ubuntu instructions because I am using an Ubuntu VM on my Mac using Parallels.</p>
+<p>These are basically the commands I ran:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a virtual environment and activate it</span>
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>~/zephyrproject/.venv
+<span class="nb">source</span><span class="w"> </span>~/zephyrproject/.venv/bin/activate
+
+<span class="c1"># Install west and initialize the zephyr project</span>
+pip<span class="w"> </span>install<span class="w"> </span>west
+west<span class="w"> </span>init<span class="w"> </span>~/zephyrproject<span class="se">\</span>
+<span class="nb">cd</span><span class="w"> </span>~/zephyrproject<span class="se">\</span>
+west<span class="w"> </span>update
+
+<span class="c1"># Export the zephyr project</span>
+west<span class="w"> </span>zephyr-export
+
+<span class="c1"># Install west packages</span>
+west<span class="w"> </span>packages<span class="w"> </span>pip<span class="w"> </span>--install
+<span class="nb">cd</span><span class="w"> </span>~/zephyrproject/zephyr
+
+<span class="c1"># Install Zephyr SDK</span>
+west<span class="w"> </span>sdk<span class="w"> </span>install<span class="w"> </span>--help
+west<span class="w"> </span>sdk<span class="w"> </span>install<span class="w"> </span>--toolchains<span class="w"> </span>riscv64-zephyr-elf
+
+<span class="c1"># Fetch the hal_espressif zephyr module</span>
+west<span class="w"> </span>blobs<span class="w"> </span>fetch<span class="w"> </span>hal_espressif
+
+<span class="c1"># Check available boards</span>
+west<span class="w"> </span>boards<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>esp32h2
+
+<span class="c1"># Build the hello world example for the esp32-h2</span>
+west<span class="w"> </span>build<span class="w"> </span>-b<span class="w"> </span>esp32h2_devkitm<span class="w"> </span>samples/hello_world
+</pre></div>
+</div>
+<p>I have an ESP32-H2 devkit board from Waveshare:</p>
+<p><a class="reference internal" href="../../_images/esp32-h2-devkitm.jpeg"><img alt="esp32-h2 devkit board" src="../../_images/esp32-h2-devkitm.jpeg" style="width: 200px;" /></a></p>
+<p>I connected it to my computer, answered yes to a dozen questions to confirm that I want to make the USB port available to my VM and then I wanted to flash the hello world example to it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>west<span class="w"> </span>flash
+</pre></div>
+</div>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>This failed because it could not access the serial port.</p>
+<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>Serial port /dev/ttyACM0:
+/dev/ttyACM0 failed to connect: Could not open /dev/ttyACM0: Permission denied
+</pre></div>
+</div>
+<p>I had to add my user to the dialout group (<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">usermod</span> <span class="pre">-aG</span> <span class="pre">dialout</span> <span class="pre">$USER</span></code>) and reboot to make it work.
+I skipped installing the official espressif udev tools which ensures the system
+recognizes the ESP32-H2 correctly and assigns the right permissions every time you plug it in.</p>
+</div>
+<p>I now flashed the hello world example to the esp32-h2 and connected to it using the espressif monitor.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>west<span class="w"> </span>flash
+west<span class="w"> </span>espressif<span class="w"> </span>monitor<span class="w"> </span>--port<span class="w"> </span>/dev/ttyACM0
+</pre></div>
+</div>
+<p>It worked! 🤓</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>*** Booting Zephyr OS build v4.3.0-5066-gf28522e03666 ***
+Hello World! esp32h2_devkitm/esp32h2
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If it still doesn’t work, your board might be in the <em>download mode</em>.
+You can exit it by pressing and holding the <em>BOOT</em> button shortly.</p>
+</div>
+<section id="analyze-the-build-environment-and-generated-artifacts">
+<h3>Analyze the build environment and generated artifacts<a class="headerlink" href="#analyze-the-build-environment-and-generated-artifacts" title="Link to this heading">#</a></h3>
+<p>First, let’s analyze what did we installed:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">~/zephyrproject</span> <span class="pre">-</span> <span class="pre">9GB</span></code>:</p>
 <ul>
-<li><p>Each scope has its own configuration that lists the tools required for that scope.</p></li>
-<li><p>It might also need to specify also what has to be done, which steps have to be executed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modules</span> <span class="pre">-</span> <span class="pre">6.7GB</span></code>: it contains the hardware abstraction layers (HAL) modules, including <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span> <span class="pre">-</span> <span class="pre">1.4GB</span></code>: this is the main Zephyr source code (core, drivers, cmake scripts, west scripts, etc.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.venv</span> <span class="pre">-</span> <span class="pre">800MB</span></code>: this is the virtual environment used to run west and other Zephyr tools</p></li>
 </ul>
 </li>
-<li><p><strong>Merging Tool Dependencies</strong>:</p>
-<ul>
-<li><p><strong>Hierarchy</strong>: Generic tools &lt; Variant Build Tools &lt; Scope-specific tools.</p></li>
-<li><p>When building, the script merges tools from these files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p>There shall no be no variant specific tools anymore other than the toolchain for building the software.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/zephyr-sdk-0.17.4</span> <span class="pre">-</span> <span class="pre">2.4GB</span></code>: this is the Zephyr SDK having the compiler suite for <code class="docutils literal notranslate"><span class="pre">riscv64-zephyr-elf</span></code> and the host tools</p></li>
 </ul>
-</li>
-</ul>
-<p><strong>Considerations</strong></p>
+<p>It seems we need around 12GB of disk space to build the hello world example. 🫣
+The modules directory has not only the espressif HAL, but also many other HAL modules.
+Of course, we downloaded more than we needed, but it is still a lot of space.</p>
+<p>Let’s us now have a look at the binary file to understand which components are included and the dependencies.</p>
+<p>I implemented a python app <a class="reference external" href="https://github.com/cuinixam/clanguru">clanguru</a> to help me analyze binary files and C code in general.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install clanguru</span>
+pipx<span class="w"> </span>install<span class="w"> </span>clanguru
+clanguru<span class="w"> </span>--version
+<span class="c1"># Generate the objects dependencies graph</span>
+clanguru<span class="w"> </span>analyze<span class="w"> </span>--help
+clanguru<span class="w"> </span>analyze<span class="w"> </span>--compilation-database<span class="w"> </span>build/compile_commands.json<span class="w"> </span>--output-file<span class="w"> </span>obj_deps.html
+</pre></div>
+</div>
+<p>I linked below the interactive objects dependencies graph.
+This is a interactive view where you can select which directories shall be visible, search for particular files or click on nodes to highlight their direct dependencies. Check the help button for an overview of all features.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-1 sd-g-1 sd-g-xs-1 sd-g-sm-1 sd-g-md-1 sd-g-lg-1 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-50 sd-shadow-sm sd-card-hover sd-text-justify docutils">
+<img alt="" class="sd-card-img-top" src="../../_images/obj_deps_hello_world.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Objects dependencies</div>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="/objects_deps_hello_world_zephyr/index.html"><span>/objects_deps_hello_world_zephyr/index.html</span></a></div>
+</div>
+</div>
+</div>
+<p>We can see that there are two main parts:</p>
 <ul class="simple">
-<li><p><strong>Complexity in Managing Scopes</strong>: Managing a growing number of scopes might become complex.</p></li>
-<li><p><strong>User Awareness</strong>: Developers need to understand which scopes are relevant for their tasks.</p>
-<ul>
-<li><p>How are scopes related to build targets?</p></li>
-</ul>
-</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zephyr</span></code>: for the Zephyr kernel, drivers and <code class="docutils literal notranslate"><span class="pre">espressif</span></code> soc support</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code>: for the espressif hardware abstraction layer including the bootloader support</p></li>
 </ul>
 </section>
-<section id="keep-current-solution-and-speed-up-installation-of-all-tools">
-<h3>💡 Keep current solution and speed up installation of all tools<a class="headerlink" href="#keep-current-solution-and-speed-up-installation-of-all-tools" title="Link to this heading">#</a></h3>
-<p>Another idea was to keep the current solution but speed up the installation process. This could be achieved by:</p>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<p>We identified the main parts and the toolchain required to build the hello world example. Next I will setup a <a class="reference external" href="https://github.com/cuinixam/yanga">yanga</a> project to build the same example. The goal is to configure in <code class="docutils literal notranslate"><span class="pre">yanga</span></code>:</p>
 <ul class="simple">
-<li><p>CI jobs to install all tools on all agents</p></li>
-<li><p>Disable automatic installation of tools on developer machines. The developer can then install the required tools manually.</p></li>
+<li><p>the two external dependencies <code class="docutils literal notranslate"><span class="pre">zephyr</span></code> and <code class="docutils literal notranslate"><span class="pre">hal_espressif</span></code></p></li>
+<li><p>the toolchain <code class="docutils literal notranslate"><span class="pre">riscv64-zephyr-elf</span></code></p></li>
+<li><p>the platform <code class="docutils literal notranslate"><span class="pre">esp32h2_devkitm</span></code></p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">hello_world</span></code> component</p></li>
 </ul>
-<p>This idea is the least intrusive and requires the least amount of changes. However, it does not address the root cause of the problem. It is more of a workaround. 🙈</p>
-</section>
-</section>
-<section id="final-approach-introducing-scopes">
-<h2>Final Approach: Introducing Scopes<a class="headerlink" href="#final-approach-introducing-scopes" title="Link to this heading">#</a></h2>
-<p>Introducing “scopes” as an abstraction layer offers a more flexible and domain-aligned solution for optimizing tool installation in an SPL build environment.</p>
-<p>Scopes align with the development process, makes it easier for developers and platform engineers to understand and manage not only tool dependencies but also the steps required for a specific activity.</p>
-<p>The final approach involves:</p>
-<ol class="arabic simple">
-<li><p><strong>Defining Scopes</strong>: Identify and define scopes that represent activities or domains within the development process.</p></li>
-<li><p><strong>Scope-Specific Configuration Files</strong>: Create configuration files for each scope that list the tools required for that scope.</p></li>
-<li><p><strong>Merging Tool Dependencies</strong>: Merge tools from generic, variant build, and scope-specific files, with later ones overriding earlier ones in case of conflicts.</p></li>
-<li><p><strong>Implementing Scope-Specific Steps</strong>: Define and implement steps for each scope that specify what has to be done, which tools have to be installed, and which steps have to be executed.</p></li>
-</ol>
-<p>This approach ensures that only the tools required for a specific activity are installed, optimizing the build environment and enhancing developer productivity.</p>
-<p>There is one important aspect to consider: in the end one must be able insure a certain quality level for the software product as a whole. This means one needs to:</p>
-<ul class="simple">
-<li><p>define quality gates for the whole product and breaking them down to the individual variants</p></li>
-<li><p>map scopes to quality gates for each variant. Different variants might have different quality gates based on their maturity (e.g., prototype, beta, street ready).</p></li>
-</ul>
-<p>The topics of quality gates and maturity levels, although related, deserve a separate blog post and I will not go into detail here.</p>
-</section>
-<section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
-<p>I hope this blog post has provided you with insights into the challenges of optimizing tool installation in SPL build environments and the thought process in addressing this challenge.</p>
-<p>There will for sure be more questions to answer when actually implementing the solution but until then, keep fingers crossed and stay tuned for more updates on this topic.</p>
+<p>One shall be able to clone the repository and build it using <code class="docutils literal notranslate"><span class="pre">yanga</span></code> on both Ubuntu and Windows by running a single command.
+No extra steps to install toolchains or other dependencies.</p>
+<p>I think this will be fun and I hope I’ll get to it by the end of the week.</p>
 </section>
 </section>
 
@@ -678,19 +706,19 @@
 <div class="section ablog__prev-next">
   <span class="ablog__prev">
      
-    <a href="efficiently_embedding_git_information_in_c_projects.html">
+    <a href="hello_di%C3%A1taxis.html">
       
       <i class="fa fa-arrow-circle-left"></i>
       
-      <span>Efficiently Embedding Git Information in C Projects</span>
+      <span>Hello Diátaxis</span>
     </a>
     
   </span>
   <span class="ablog__spacer">&nbsp;</span>
   <span class="ablog__next">
      
-    <a href="homelab_setup_main_machine.html">
-      <span>Homelab - setup main machine</span>
+    <a href="smarty_p2.html">
+      <span>Smarty - Matter on ESP32 with Zephyr - Part 2</span>
       
       <i class="fa fa-arrow-circle-right"></i>
       
@@ -729,16 +757,11 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-problem-inefficient-tool-installation">The Problem: Inefficient Tool Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brainstorming">Brainstorming</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorizing-tools-into-generic-variant-and-build-target-sets">💡 Categorizing Tools into Generic, Variant, and Build Target Sets</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introducing-scopes-as-an-abstraction-layer">💡 Introducing “Scopes” as an Abstraction Layer</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-current-solution-and-speed-up-installation-of-all-tools">💡 Keep current solution and speed up installation of all tools</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1-hello-world-on-esp32-h2">PART 1: Hello World on ESP32-H2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-build-environment-and-generated-artifacts">Analyze the build environment and generated artifacts</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-approach-introducing-scopes">Final Approach: Introducing Scopes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
 </ul>
   </nav></div>
 
@@ -746,7 +769,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/blogs/2024/optimizing_tool_installation_in_spl_build_environments.md.txt"
+      <li><a href="../../_sources/blogs/2026/smarty_p1.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
