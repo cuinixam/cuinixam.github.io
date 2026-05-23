@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   Filament — workshop dark theme
+
+   Palette adapted from monkeytype's serika_dark and darkened
+   for more contrast. Warm yellow accent on cool dark grey,
+   like a tungsten filament glowing in a dim workshop.
+
+     bg          #1a1c1e   deep workshop background
+     surface     #2a2c2f   raised cards
+     surface-2   #32353a   hover surface
+     text        #ebe9df   warm cream
+     muted       #8f9196   legible muted grey
+     dim         #5d6065   deepest muted
+     accent      #e2b714   the filament (yellow)
+     accent-2    #ca4754   warning red
+     border      #34373b   subtle separator
+   ============================================================ */
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --filament-bg: #1a1c1e;
+  --filament-surface: #2a2c2f;
+  --filament-surface-2: #32353a;
+  --filament-text: #ebe9df;
+  --filament-muted: #8f9196;
+  --filament-dim: #5d6065;
+  --filament-accent: #e2b714;
+  --filament-accent-soft: rgba(226, 183, 20, 0.12);
+  --filament-accent-2: #ca4754;
+  --filament-border: #34373b;
+
+  --pst-color-primary: var(--filament-accent);
+  --pst-color-primary-bg: var(--filament-accent-soft);
+  --pst-color-primary-text: #1a1c1e;
+  --pst-color-secondary: var(--filament-accent);
+  --pst-color-secondary-bg: var(--filament-accent-soft);
+  --pst-color-accent: var(--filament-accent);
+  --pst-color-accent-bg: var(--filament-accent-soft);
+  --pst-color-background: var(--filament-bg);
+  --pst-color-on-background: var(--filament-surface);
+  --pst-color-surface: var(--filament-surface);
+  --pst-color-on-surface: var(--filament-text);
+  --pst-color-text-base: var(--filament-text);
+  --pst-color-text-muted: var(--filament-muted);
+  --pst-color-heading-color: var(--filament-text);
+  --pst-color-border: var(--filament-border);
+  --pst-color-border-muted: var(--filament-border);
+  --pst-color-shadow: rgba(0, 0, 0, 0.5);
+  --pst-color-link: var(--filament-accent);
+  --pst-color-link-hover: #f5cc35;
+  --pst-color-inline-code: var(--filament-accent);
+  --pst-color-inline-code-links: var(--filament-accent);
+  --pst-color-target: var(--filament-accent-soft);
+  --pst-color-attention: var(--filament-accent);
+  --pst-color-info: #6db4e2;
+  --pst-color-info-bg: rgba(109, 180, 226, 0.12);
+  --pst-color-success: #98c379;
+  --pst-color-success-bg: rgba(152, 195, 121, 0.12);
+  --pst-color-warning: var(--filament-accent);
+  --pst-color-warning-bg: var(--filament-accent-soft);
+  --pst-color-danger: var(--filament-accent-2);
+  --pst-color-danger-bg: rgba(202, 71, 84, 0.12);
+  --pst-color-table-row-hover-bg: var(--filament-surface);
+
+  --pst-font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --pst-font-family-heading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --pst-font-family-monospace: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Single palette: hide the dark/light switcher entirely. */
+.theme-switch-button,
+button.theme-switch-button { display: none !important; }
+
+/* Subtle workshop grid behind the page. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+main, .bd-container { position: relative; z-index: 1; }

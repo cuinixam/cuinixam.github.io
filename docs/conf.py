@@ -65,7 +65,10 @@ extensions.append("sphinx_togglebutton")
 html_theme = "pydata_sphinx_theme"
 html_logo = "_static/bio-photo-circle.png"
 html_title = "Alexandru Maxiniuc"
+# Filament theme: single dark palette, no light/dark switcher.
 html_theme_options = {
+    "default_mode": "dark",
+    "navbar_end": ["navbar-icon-links"],
     "icon_links": [
         {
             "name": "GitHub",
@@ -84,6 +87,9 @@ html_theme_options = {
         },
     ],
 }
+
+# Filament: warm-toned syntax highlighting for code blocks.
+pygments_dark_style = "gruvbox-dark"
 html_last_updated_fmt = ""
 html_static_path = ["_static"]
 
@@ -117,5 +123,6 @@ post_auto_excerpt = 2
 
 
 def setup(app):
+    app.add_css_file("filament.css")
     app.add_css_file("custom.css")
     app.add_css_file("lessons.css")
