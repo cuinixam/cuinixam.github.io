@@ -12,3 +12,5 @@ pipeline:
     run: pytest
   - step: BuildDocs
     run: sphinx-build -E -a docs build/docs
+  - step: BuildLanding
+    run: jarvis landing --timeline-file docs/timeline.json --output-dir build/docs

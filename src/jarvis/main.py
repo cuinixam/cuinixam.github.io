@@ -8,6 +8,7 @@ from py_app_dev.core.logging import logger, setup_logger, time_it
 
 from jarvis import __version__
 from jarvis.blog import BlogWritter
+from jarvis.landing import LandingWriter
 from jarvis.timeline import TimelineWriter
 
 package_name = "jarvis"
@@ -43,6 +44,15 @@ def blog(
     tags: Annotated[list[str] | None, typer.Option()] = None,
 ) -> None:
     BlogWritter(output_dir, title, category, tags).write()
+
+
+@app.command()
+@time_it("landing")
+def landing(
+    timeline_file: Path = typer.Option(help="Input timeline JSON file."),  # noqa: B008
+    output_dir: Path = typer.Option(help="Output directory (typically the Sphinx build root)."),  # noqa: B008
+) -> None:
+    LandingWriter(timeline_file, output_dir).write()
 
 
 def main() -> int:

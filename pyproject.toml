@@ -1,3 +1,7 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [ "hatchling" ]
+
 [project]
 name = "jarvis"
 version = "0.0.0"
@@ -22,7 +26,9 @@ classifiers = [
 ]
 
 dependencies = [
+  "jinja2>=3,<4",
   "marimo>=0.11,<1",
+  "markdown>=3,<4",
   "matplotlib>=3.10,<4",
   "py-app-dev>=2.5,<3",
   "typer>=0,<1",
@@ -54,6 +60,7 @@ dev = [
   "sphinx-togglebutton>=0,<1",
   "sphinxcontrib-mermaid>=1,<2",
   "sphinxext-rediraffe>=0,<1",
+  "types-markdown>=3,<4",
 ]
 
 [tool.ruff]

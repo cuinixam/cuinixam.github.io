@@ -652,9 +652,11 @@ wheels = [
 [[package]]
 name = "jarvis"
 version = "0.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
+    { name = "jinja2" },
     { name = "marimo" },
+    { name = "markdown" },
     { name = "matplotlib" },
     { name = "py-app-dev" },
     { name = "typer" },
@@ -679,11 +681,14 @@ dev = [
     { name = "sphinx-togglebutton" },
     { name = "sphinxcontrib-mermaid" },
     { name = "sphinxext-rediraffe" },
+    { name = "types-markdown" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "jinja2", specifier = ">=3,<4" },
     { name = "marimo", specifier = ">=0.11,<1" },
+    { name = "markdown", specifier = ">=3,<4" },
     { name = "matplotlib", specifier = ">=3.10,<4" },
     { name = "py-app-dev", specifier = ">=2.5,<3" },
     { name = "typer", specifier = ">=0,<1" },
@@ -707,6 +712,7 @@ dev = [
     { name = "sphinx-togglebutton", specifier = ">=0,<1" },
     { name = "sphinxcontrib-mermaid", specifier = ">=1,<2" },
     { name = "sphinxext-rediraffe", specifier = ">=0,<1" },
+    { name = "types-markdown", specifier = ">=3,<4" },
 ]
 
 [[package]]
@@ -2395,6 +2401,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8f/28/7c85c8032b91dbe79725b6f17d2fffc595dff06a35c7a30a37bef73a1ab4/typer-0.20.0.tar.gz", hash = "sha256:1aaf6494031793e4876fb0bacfa6a912b551cf43c1e63c800df8b1a866720c37", size = 106492, upload-time = "2025-10-20T17:03:49.445Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/78/64/7713ffe4b5983314e9d436a90d5bd4f63b6054e2aca783a3cfc44cb95bbf/typer-0.20.0-py3-none-any.whl", hash = "sha256:5b463df6793ec1dca6213a3cf4c0f03bc6e322ac5e16e13ddd622a889489784a", size = 47028, upload-time = "2025-10-20T17:03:47.617Z" },
+]
+
+[[package]]
+name = "types-markdown"
+version = "3.10.2.20260518"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/82/c605b9c9cfa244922449af20b93f8c4ecdc936b926d3340830036e0f87f1/types_markdown-3.10.2.20260518.tar.gz", hash = "sha256:206b044dd55a02ed66dfb9cfc02b1e500005d60370834cee5b41d26a3d8f0f72", size = 19865, upload-time = "2026-05-18T06:01:32.268Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/db/fa5eef03f646f507d078a382ff8b239871ea847460f79effcfc44977865d/types_markdown-3.10.2.20260518-py3-none-any.whl", hash = "sha256:146fa9997a7d3aa3de1e3a51c56f3875d3947b7c545e58691e79f65fb56a663f", size = 25821, upload-time = "2026-05-18T06:01:31.35Z" },
 ]
 
 [[package]]

@@ -66,12 +66,19 @@ html_theme = "pydata_sphinx_theme"
 html_logo = "_static/bio-photo-circle.png"
 html_title = "Alexandru Maxiniuc"
 # Filament theme: single dark palette, no light/dark switcher.
+# `default_mode` belongs in html_context, not html_theme_options.
+html_context = {"default_mode": "dark"}
 html_theme_options = {
-    "default_mode": "dark",
     "navbar_end": ["navbar-icon-links"],
     # Right sidebar (page TOC) only adds value on long-form blog posts.
+    # Explicit page list avoids wildcard overlap warnings between ** and blogs/**.
     "secondary_sidebar_items": {
-        "**": [],
+        "index": [],
+        "about": [],
+        "presentations": [],
+        "teaching": [],
+        "timeline": [],
+        "projects": [],
         "blogs/**": ["page-toc"],
     },
     "icon_links": [

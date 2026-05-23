@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Alexandru Maxiniuc</title>
+<link rel="icon" href="_static/bio-photo-circle.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="_landing/landing.css" />
+</head>
+<body>
+
+<nav>
+  <div class="brand">maxiniuc.com</div>
+  <ul>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#timeline">timeline</a></li>
+    <li><a href="blogs.html">writing</a></li>
+    <li><a href="presentations.html">talks</a></li>
+    <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow"></div>
+  <h1>Alexandru<br/><span class="accent">Maxiniuc</span>.</h1>
+  <div class="tagline">I'm not just another engineer.<span class="cursor"></span></div>
+  <div class="meta">
+    <span>Automotive software</span>
+    <span>Software product lines</span>
+    <span>Build systems</span>
+    <span>Architecture</span>
+  </div>
+  <div class="scroll-hint">SCROLL ↓</div>
+</section>
+
+<!-- HORIZONTAL CAROUSEL: PROJECTS -->
+<section class="carousel-wrap" id="projects" style="height: {{ (projects|length) * 100 }}vh;">
+  <div class="carousel-pin">
+    <div class="carousel-head">
+      <h2>Things I've <span class="accent">built.</span></h2>
+      <div class="carousel-progress">
+        <span id="panelLabel">01 / {{ "%02d" | format(projects|length) }}</span>
+        <div class="bar"><div class="fill" id="carouselFill"></div></div>
+      </div>
+    </div>
+    <div class="carousel-track" id="carouselTrack">
+      {%- for project in projects %}
+      <div class="panel">
+        <div class="panel-text">
+          <div class="tag">// {{ project.year_range }}</div>
+          <h3>{{ project.name }}</h3>
+          <div class="subtitle">{{ project.subtitle }}</div>
+          <p>{{ project.description }}</p>
+          <div class="links">
+            <a href="{{ project.github_url }}" target="_blank" rel="noopener">{{ project.github_label }}</a>
+          </div>
+        </div>
+        <div class="panel-code">
+          <div class="titlebar">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="path">{{ project.code_title }}</div>
+          </div>
+<pre>{{ project.code_html | safe }}</pre>
+        </div>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section" id="timeline">
+  <div class="eyebrow">// the long version</div>
+  <h2>Twenty years of <span class="accent">making things work.</span></h2>
+  <div class="timeline" id="timelineList">
+    {%- for entry in timeline_entries %}
+    <div class="tl-entry">
+      <div class="year">{{ entry.year }}</div>
+      <div class="title">{{ entry.title | md }}</div>
+      <div class="desc">{{ entry.description | md }}</div>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="eyebrow">// about</div>
+  <p>Currently I develop software applications for the automotive industry and I help individuals and teams to improve their software development skills.</p>
+  <p class="muted">I am interested in engineering software product lines, software architecture and build systems.</p>
+</section>
+
+<footer>
+  <div>© <span id="year"></span> Alexandru Maxiniuc</div>
+  <div>
+    <a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a>
+    <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" target="_blank" rel="noopener">linkedin</a>
+    <a href="blogs/atom.xml">rss</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ----- Horizontal carousel -----
+  (function () {
+    const wrap = document.querySelector('.carousel-wrap');
+    const track = document.getElementById('carouselTrack');
+    const fill = document.getElementById('carouselFill');
+    const label = document.getElementById('panelLabel');
+    if (!wrap || !track) return;
+    const panels = track.children.length;
+
+    function onScroll() {
+      const rect = wrap.getBoundingClientRect();
+      const total = wrap.offsetHeight - window.innerHeight;
+      const progress = Math.min(1, Math.max(0, -rect.top / total));
+      const travel = (panels - 1) * 100;
+      track.style.transform = `translateX(-${progress * travel}vw)`;
+      fill.style.width = (progress * 100) + '%';
+      const idx = Math.min(panels - 1, Math.floor(progress * panels + 0.0001));
+      label.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(panels).padStart(2, '0');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // ----- Timeline reveal -----
+  (function () {
+    const entries = document.querySelectorAll('.tl-entry');
+    const io = new IntersectionObserver((items) => {
+      items.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -80px 0px' });
+    entries.forEach((c, i) => {
+      c.style.transitionDelay = (Math.min(i, 6) * 60) + 'ms';
+      io.observe(c);
+    });
+  })();
+</script>
+
+</body>
+</html>
