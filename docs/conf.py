@@ -69,6 +69,11 @@ html_title = "Alexandru Maxiniuc"
 html_theme_options = {
     "default_mode": "dark",
     "navbar_end": ["navbar-icon-links"],
+    # Right sidebar (page TOC) only adds value on long-form blog posts.
+    "secondary_sidebar_items": {
+        "**": [],
+        "blogs/**": ["page-toc"],
+    },
     "icon_links": [
         {
             "name": "GitHub",
@@ -99,12 +104,8 @@ html_sidebars = {
     "presentations": ["hello.html"],
     "teaching": ["hello.html"],
     "projects": ["hello.html"],
-    "blogs": ["ablog/categories.html", "ablog/tagcloud.html", "ablog/archives.html"],
-    "blogs/**": [
-        "ablog/postcard.html",
-        "ablog/recentposts.html",
-        "ablog/archives.html",
-    ],
+    "blogs": ["ablog/categories.html"],
+    "blogs/**": ["ablog/recentposts.html"],
 }
 
 html_extra_path = ["presentations", "notebooks"]
