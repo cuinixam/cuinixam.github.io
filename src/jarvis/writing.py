@@ -32,7 +32,8 @@ def _parse_frontmatter(text: str) -> dict[str, str]:
 
 
 def scan_blogs(blogs_dir: Path, limit: int = 4) -> list[WritingEntry]:
-    """Return the most recent ``limit`` blog posts, newest first.
+    """
+    Return the most recent ``limit`` blog posts, newest first.
 
     Skips files whose frontmatter is missing the required ``date``, ``title``, or ``category`` keys.
     """

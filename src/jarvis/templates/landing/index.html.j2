@@ -16,12 +16,9 @@
   <div class="brand">maxiniuc.com</div>
   <ul>
     <li><a href="#projects">projects</a></li>
-    <li><a href="#talks">talks</a></li>
-    <li><a href="#demos">demos</a></li>
-    <li><a href="#writing">writing</a></li>
     <li><a href="#teaching">teaching</a></li>
+    <li><a href="#writing">writing</a></li>
     <li><a href="#about">about</a></li>
-    <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
   </ul>
 </nav>
 
@@ -74,35 +71,51 @@
   </div>
 </section>
 
-<!-- TALKS -->
-<section class="talks" id="talks">
-  <div class="section-head">
-    <h2>Selected <span class="accent">talks.</span></h2>
+<!-- TEACHING (one nav anchor, three original sub-sections inside) -->
+<section id="teaching">
+  <div class="talks">
+    <div class="section-head">
+      <h2>Selected <span class="accent">talks.</span></h2>
+    </div>
+    <div class="talks-grid">
+      {%- for talk in talks %}
+      <a class="talk" href="{{ talk.link }}">
+        <div class="num">{{ "%02d" | format(loop.index) }}</div>
+        <h3>{{ talk.title }}</h3>
+        <p>{{ talk.description }}</p>
+      </a>
+      {%- endfor %}
+    </div>
   </div>
-  <div class="talks-grid">
-    {%- for talk in talks %}
-    <a class="talk" href="{{ talk.link }}">
-      <div class="num">{{ "%02d" | format(loop.index) }}</div>
-      <h3>{{ talk.title }}</h3>
-      <p>{{ talk.description }}</p>
-    </a>
-    {%- endfor %}
-  </div>
-</section>
 
-<!-- DEMOS -->
-<section class="talks" id="demos">
-  <div class="section-head">
-    <h2>Interactive <span class="accent">demos.</span></h2>
+  <div class="talks">
+    <div class="section-head">
+      <h2>Interactive <span class="accent">demos.</span></h2>
+    </div>
+    <div class="talks-grid">
+      {%- for demo in demos %}
+      <a class="talk" href="{{ demo.link }}">
+        <div class="num">{{ "%02d" | format(loop.index) }}</div>
+        <h3>{{ demo.title }}</h3>
+        <p>{{ demo.description }}</p>
+      </a>
+      {%- endfor %}
+    </div>
   </div>
-  <div class="talks-grid">
-    {%- for demo in demos %}
-    <a class="talk" href="{{ demo.link }}">
-      <div class="num">{{ "%02d" | format(loop.index) }}</div>
-      <h3>{{ demo.title }}</h3>
-      <p>{{ demo.description }}</p>
-    </a>
-    {%- endfor %}
+
+  <div class="talks">
+    <div class="section-head">
+      <h2>Notebooks for <span class="accent">learning.</span></h2>
+    </div>
+    <div class="talks-grid">
+      {%- for notebook in notebooks %}
+      <a class="talk" href="{{ notebook.link }}">
+        <div class="num">{{ "%02d" | format(loop.index) }}</div>
+        <h3>{{ notebook.title }}</h3>
+        <p>{{ notebook.description }}</p>
+      </a>
+      {%- endfor %}
+    </div>
   </div>
 </section>
 
@@ -118,22 +131,6 @@
       <div class="date">{{ post.date_label }}</div>
       <div class="title">{{ post.title }}</div>
       <div class="tag">// {{ post.category }}</div>
-    </a>
-    {%- endfor %}
-  </div>
-</section>
-
-<!-- TEACHING -->
-<section class="talks" id="teaching">
-  <div class="section-head">
-    <h2>Notebooks for <span class="accent">learning.</span></h2>
-  </div>
-  <div class="talks-grid">
-    {%- for notebook in notebooks %}
-    <a class="talk" href="{{ notebook.link }}">
-      <div class="num">{{ "%02d" | format(loop.index) }}</div>
-      <h3>{{ notebook.title }}</h3>
-      <p>{{ notebook.description }}</p>
     </a>
     {%- endfor %}
   </div>

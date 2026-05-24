@@ -2,7 +2,7 @@
 
 Working doc to pick up the redesign later. Architecture lives in [AGENTS.md](AGENTS.md); this file captures the *in-progress* state and parked decisions.
 
-Last touched: 2026-05-24 (writing section live on the landing).
+Last touched: 2026-05-24 (nav consolidated; teaching is now the umbrella for talks · demos · notebooks).
 
 ## The vision (one paragraph)
 
@@ -48,9 +48,15 @@ The site is migrating from "Sphinx renders everything" to "Sphinx renders blogs 
   - `conf.py`: teaching removed from `html_sidebars` + `secondary_sidebar_items`; `html_extra_path` is now `[]`
   - `docs/index.md`: removed `teaching.html` card + toctree entry
 
+- **Nav consolidation** (the talks · demos · notebooks merge)
+  - Three top-level sections wrapped in a single `<section id="teaching">` so one nav entry now points to the trio. **Original H2 titles preserved verbatim**: `Selected talks.`, `Interactive demos.`, `Notebooks for learning.` (Earlier attempt to add a "What I teach." umbrella H2 + shorten sub-titles reverted on user feedback — titles are user-voice copy.)
+  - Cards keep their original h3 titles and existing `.talks` / `.talks-grid` styling. No new sub-section CSS needed.
+  - Nav reduced to: `projects · teaching · writing · about`. Dropped: `talks`, `demos`, separate `teaching`, `github`. (GitHub still reachable via the footer.)
+  - Section order on the page: `projects → teaching (talks + demos + notebooks) → writing → about`.
+
 - **Writing section on the landing**
   - `src/jarvis/writing.py` — `WritingEntry` dataclass + `scan_blogs(blogs_dir, limit=4)`. Tiny custom frontmatter parser (no PyYAML dep) — only reads `title`, `date`, `category`.
-  - Posts missing required keys or with unparseable dates are skipped (not a build error). `.md.md` stragglers are ignored explicitly.
+  - Posts missing required keys or with unparsable dates are skipped (not a build error). `.md.md` stragglers are ignored explicitly.
   - 4 most recent posts, newest first, displayed `date · title · // category` using the pre-existing `.writing-list` / `.writing-row` CSS that was already in `landing.css`. Rows are full anchor (`<a class="writing-row">`); hover slides them in with a subtle background fill.
   - `all posts ↗` in the section header links to `blogs.html`.
   - Section placed between `#demos` and `#teaching`; nav `writing` switched from `blogs.html` to `#writing` anchor.
@@ -74,27 +80,19 @@ The site is migrating from "Sphinx renders everything" to "Sphinx renders blogs 
 
 ## In flight (current design discussion, not yet implemented)
 
-Remaining from the design discussion:
+Resolved so far:
 
-- **Menu items are in-page anchors only.** No external links in the nav. *(Still pending: `github` is still in the nav as an external link.)*
-- **Menu structure**: `projects · talks · demos · writing · about` (drop `github`; order writing after demos)  *(Current order is `projects · writing · talks · demos · teaching · about · github` — close, but `writing` is still before talks and `github` still present.)*
-- **Writing section (new on landing)**: 3-5 most recent blog posts (date · title · category), with "all posts ↗" top-right linking to `blogs.html` *(Not yet implemented — needs the writing data-source decision below.)*
-- **General principle**: landing = overview for every section; separate page if depth is needed
-- **Teaching**: confirmed name = "Teaching" (not "Learning") ✅
-
-Resolved by the about-page migration:
-
-- ✅ **About section on landing**: short overview + `↗` link(s) to the about page (we shipped two: `full about` + `timeline`)
-- ✅ **Timeline moves OFF the landing INTO the about page**
+- ✅ **Menu items are in-page anchors only.** No external links in the nav.
+- ✅ **Nav structure**: `projects · teaching · writing · about` (talks + demos + notebooks consolidated under `teaching`; github moved to footer).
+- ✅ **Writing section on landing**: 4 most recent blog posts, frontmatter-driven.
+- ✅ **General principle**: landing = overview for every section; separate page if depth is needed.
+- ✅ **Teaching**: name confirmed; now the umbrella for talks · demos · notebooks.
+- ✅ **About section on landing**: short overview + `full about` / `timeline` links.
+- ✅ **Timeline moves OFF the landing INTO the about page.**
 
 ## What's next (ordered)
 
-1. **Nav cleanup**
-   - Drop `github` from the nav (still reachable via footer + brand)
-   - `teaching` doesn't appear in the doc's target list — confirm with user whether to keep it in nav or fold into a different section
-   - Current order is `projects · talks · demos · writing · teaching · about · github` — close to the target (`projects · talks · demos · writing · about`)
-
-2. **Final cleanup toward "Sphinx for blogs only"**
+1. **Final cleanup toward "Sphinx for blogs only"**
    - `docs/index.md` → minimal stub (Sphinx needs a master_doc; jarvis overwrites the rendered output anyway)
    - Eliminate `docs/timeline.md` and `jarvis timeline` (timeline now goes JSON → about page directly; standalone `timeline.html` is orphaned)
    - Eliminate `docs/_templates/hello.html` if no longer referenced
@@ -139,4 +137,4 @@ Resolved by the about-page migration:
 
 ## Resume signal
 
-All content sections are now jarvis-rendered (landing, about, writing-on-landing, presentations, teaching). The Sphinx-for-blogs-only target is in reach: only **nav cleanup** (#1) and **final Sphinx-side cleanup** (#2 — orphan `timeline.html`, stub `index.md`, prune `hello.html`) remain. Neither is blocked.
+Nav consolidation done. Content surfaces (landing, about, writing, teaching umbrella) all jarvis-rendered. Only **final Sphinx-side cleanup** remains: prune orphan `timeline.html` + `jarvis timeline`, stub `docs/index.md`, drop unused `docs/_templates/hello.html`, reduce `html_sidebars` to `blogs` only. The user mentioned wanting to discuss the **projects** carousel next — that's an open thread (probably the showcase, descriptions, or code-panel content).
