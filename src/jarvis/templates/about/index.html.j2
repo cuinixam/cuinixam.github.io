@@ -55,6 +55,86 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ----- Timeline typewriter -----
+  (function () {
+    const entries = document.querySelectorAll('.tl-entry');
+    if (!entries.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function splitChars(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      const chars = [];
+      for (const node of textNodes) {
+        const text = node.nodeValue;
+        if (!text) continue;
+        const frag = document.createDocumentFragment();
+        for (const ch of Array.from(text)) {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = ch;
+          frag.appendChild(span);
+          chars.push(span);
+        }
+        node.parentNode.replaceChild(frag, node);
+      }
+      return chars;
+    }
+
+    const data = Array.from(entries).map(el => ({
+      el,
+      groups: [
+        { root: el.querySelector('.year'),  delay: 30, chars: [] },
+        { root: el.querySelector('.title'), delay: 14, chars: [] },
+        { root: el.querySelector('.desc'),  delay: 5,  chars: [] },
+      ],
+    }));
+
+    for (const d of data) {
+      for (const g of d.groups) g.chars = splitChars(g.root);
+    }
+
+    if (reduced) {
+      for (const d of data) {
+        for (const g of d.groups) {
+          for (const c of g.chars) c.classList.add('shown');
+        }
+      }
+      return;
+    }
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    async function typeEntry(d) {
+      const caret = document.createElement('span');
+      caret.className = 'typing-caret';
+      for (const g of d.groups) {
+        g.root.prepend(caret);
+        for (const c of g.chars) {
+          c.classList.add('shown');
+          c.after(caret);
+          await sleep(g.delay);
+        }
+      }
+      caret.remove();
+    }
+
+    const io = new IntersectionObserver((items) => {
+      for (const e of items) {
+        if (!e.isIntersecting) continue;
+        const d = data.find(x => x.el === e.target);
+        if (!d || d.started) continue;
+        d.started = true;
+        typeEntry(d);
+        io.unobserve(e.target);
+      }
+    }, { threshold: 0.25, rootMargin: '0px 0px -10% 0px' });
+
+    for (const d of data) io.observe(d.el);
+  })();
 </script>
 
 </body>

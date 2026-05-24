@@ -18,7 +18,8 @@ class About:
 
 
 def parse_about_md(text: str) -> About:
-    """Extract the H1 title and bio paragraphs, dropping anything from the first H2 onward.
+    """
+    Extract the H1 title and bio paragraphs, dropping anything from the first H2 onward.
 
     The first H2 in about.md is "A rough timeline" — its content is now rendered from
     timeline.json by the template, so the markdown source's timeline-include block is ignored.

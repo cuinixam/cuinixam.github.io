@@ -531,6 +531,24 @@ section { position: relative; z-index: 1; }
 }
 .about p.muted { color: var(--muted); font-size: 1.1rem; }
 
+/* ========== TIMELINE TYPEWRITER (about.html) ========== */
+/* JS wraps each text node into .char spans, which start hidden and gain .shown one-by-one
+   as the entry types in. Pre-JS / no-JS fallback shows the full text (no .char wrap = no rule). */
+.about-page .tl-entry .char { visibility: hidden; }
+.about-page .tl-entry .char.shown { visibility: visible; }
+.about-page .tl-entry .typing-caret {
+  display: inline-block;
+  width: 0.55ch; height: 1em;
+  background: var(--accent);
+  margin-left: 0.2ch;
+  vertical-align: text-bottom;
+  animation: blink 1.1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-page .tl-entry .char { visibility: visible; }
+  .about-page .tl-entry .typing-caret { display: none; }
+}
+
 /* ========== ABOUT PAGE (about.html) ========== */
 .about-page nav .brand { color: var(--text); }
 .about-page nav .brand:hover { color: var(--accent); }
