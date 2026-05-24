@@ -91,7 +91,10 @@ section { position: relative; z-index: 1; }
 .hero-text { min-width: 0; }
 .hero-art {
   font-family: var(--mono);
-  font-size: clamp(0.32rem, 0.55vw, 0.48rem);
+  /* Smooth viewport-relative scaling so the portrait stays proportional to the
+     hero text as the viewport shrinks. Don't add fixed font-sizes in mobile
+     breakpoints below — they break the proportion. */
+  font-size: clamp(0.3rem, 0.9vw, 0.55rem);
   line-height: 1.2;
   color: var(--text);
   white-space: pre;
@@ -138,12 +141,12 @@ section { position: relative; z-index: 1; }
 }
 @keyframes blink { 50% { opacity: 0; } }
 .hero .meta {
-  margin-top: 4rem;
+  margin-top: clamp(2rem, 5vw, 4rem);
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: clamp(0.65rem, 1.3vw, 0.8rem);
   color: var(--dim);
   display: flex;
-  gap: 2rem;
+  gap: clamp(0.8rem, 2vw, 2rem);
   flex-wrap: wrap;
 }
 .hero .meta span { display: flex; align-items: center; gap: 0.5rem; }
@@ -164,7 +167,10 @@ section { position: relative; z-index: 1; }
 /* ========== HORIZONTAL CAROUSEL ========== */
 .carousel-wrap {
   position: relative;
-  height: 400vh; /* (panels-1) * 100vh travel + 100vh sticky; JS scales correctly for any count */
+  /* --panel-count is set as an inline custom property by the template.
+     Height = panel_count * 100vh: (count-1)*100vh of scroll-driven travel
+     plus 100vh of sticky pinning. Falls back to 4 if unset. */
+  height: calc(var(--panel-count, 4) * 100vh);
   background: var(--bg-2);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -643,24 +649,74 @@ footer a { color: var(--muted); text-decoration: none; margin-left: 1.25rem; }
 footer a:hover { color: var(--accent); }
 footer .copy { color: var(--dim); font-size: 0.78rem; }
 
+/* Hamburger button: hidden on desktop, shown on mobile via media query below. */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 0.25rem 0.5rem;
+  margin: 0;
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.nav-toggle:hover { color: var(--accent); }
+.nav-toggle:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
 @media (max-width: 880px) {
-  nav { padding: 1rem 1.25rem; }
-  nav ul { gap: 1rem; }
+  nav {
+    padding: 0.75rem 1.25rem;
+    position: fixed;
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  /* Collapsed menu: only navs that actually have a hamburger toggle get
+     the full-width-drawer treatment. The about page nav has no toggle, so
+     its `← home` link stays inline. */
+  nav:has(.nav-toggle) ul {
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1rem 0 0.5rem;
+    display: none;
+  }
+  nav:has(.nav-toggle).open ul { display: flex; }
+  nav:has(.nav-toggle) ul li { width: 100%; }
+  nav:has(.nav-toggle) ul a { display: block; padding: 0.25rem 0; }
   .hero, .timeline-section, .writing, .talks, .teaching, .about, .about-hero, .bio, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
   .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-art { justify-self: start; font-size: 0.5rem; opacity: 0.85; }
+  .hero-art { justify-self: center; opacity: 0.9; }
   .hero-art::before { font-size: 0.7rem; }
-  .bio-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .bio-photo { display: none; }
-  .carousel-wrap { height: auto; }
-  .carousel-pin { position: relative; height: auto; }
-  .carousel-track { flex-direction: column; transform: none !important; }
-  .panel { flex: 0 0 auto; width: 100%; grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.25rem; height: auto; }
-  .panel-code { height: 50vh; }
+  .bio-grid { grid-template-columns: 1fr; gap: 1.5rem; justify-items: center; }
+  .bio-photo { display: block; width: 140px; margin: 0 auto; }
+  .bio-prose { width: 100%; }
+  /* Carousel: full reset to a plain block stack — no flex, no grid, no sticky, no transforms.
+     iOS Safari has quirks with sticky-on-flex parents and transforms applied by JS, so the
+     mobile layout deliberately strips all of that. */
+  .carousel-wrap { height: auto; position: static; overflow: visible; }
+  .carousel-pin { display: block; position: static; height: auto; overflow: visible; }
+  .carousel-track { display: block; flex: none; transform: none !important; will-change: auto; }
+  .panel {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 3rem 1.25rem;
+    margin: 0 0 2rem;
+  }
+  .panel-text { padding-right: 0; margin-bottom: 2rem; }
+  .panel-code {
+    display: block;
+    height: auto;
+    max-height: 70vh;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .panel-code pre { flex: none; overflow: auto; max-height: 60vh; }
   .talks-grid, .teach-grid { grid-template-columns: 1fr; }
   .writing-row { grid-template-columns: 90px 1fr; }
   .writing-row .tag { display: none; }
-}
-@media (max-width: 420px) {
-  .hero-art { display: none; }
+  .carousel-progress { display: none; }
 }

@@ -14,7 +14,10 @@
 
 <nav>
   <a class="brand" href="index.html">maxiniuc.com</a>
-  <ul>
+  <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+    <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="#projects">projects</a></li>
     <li><a href="#teaching">teaching</a></li>
     <li><a href="#writing">writing</a></li>
@@ -41,7 +44,7 @@
 </section>
 
 <!-- HORIZONTAL CAROUSEL: PROJECTS -->
-<section class="carousel-wrap" id="projects" style="height: {{ (projects|length) * 100 }}vh;">
+<section class="carousel-wrap" id="projects" style="--panel-count: {{ projects|length }};">
   <div class="carousel-pin">
     <div class="carousel-head">
       <h2>Some things I am <span class="accent">working on.</span></h2>
@@ -168,6 +171,24 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // ----- Mobile nav toggle -----
+  (function () {
+    const nav = document.querySelector('nav');
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    if (!nav || !btn || !menu) return;
+    const setOpen = (open) => {
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.querySelector('.nav-toggle-icon').textContent = open ? '✕' : '☰';
+    };
+    btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    // Close menu after picking a destination
+    menu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') setOpen(false);
+    });
+  })();
+
   // ----- Horizontal carousel -----
   (function () {
     const wrap = document.querySelector('.carousel-wrap');
@@ -176,8 +197,15 @@
     const label = document.getElementById('panelLabel');
     if (!wrap || !track) return;
     const panels = track.children.length;
+    const mobileMQ = window.matchMedia('(max-width: 880px)');
 
     function onScroll() {
+      if (mobileMQ.matches) {
+        // Mobile stacks panels vertically — clear any leftover horizontal
+        // transform and skip the scroll-driven layout so it can't fight the CSS.
+        track.style.transform = '';
+        return;
+      }
       const rect = wrap.getBoundingClientRect();
       const total = wrap.offsetHeight - window.innerHeight;
       const progress = Math.min(1, Math.max(0, -rect.top / total));
