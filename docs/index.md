@@ -30,6 +30,5 @@ Teaching 📚
 :hidden:
 about
 blogs
-presentations
 teaching
 ```

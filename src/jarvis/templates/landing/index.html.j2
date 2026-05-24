@@ -18,7 +18,8 @@
     <li><a href="#projects">projects</a></li>
     <li><a href="#timeline">timeline</a></li>
     <li><a href="blogs.html">writing</a></li>
-    <li><a href="presentations.html">talks</a></li>
+    <li><a href="#talks">talks</a></li>
+    <li><a href="#demos">demos</a></li>
     <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
   </ul>
 </nav>
@@ -87,6 +88,38 @@
   </div>
 </section>
 
+<!-- TALKS -->
+<section class="talks" id="talks">
+  <div class="section-head">
+    <h2>Selected <span class="accent">talks.</span></h2>
+  </div>
+  <div class="talks-grid">
+    {%- for talk in talks %}
+    <a class="talk" href="{{ talk.link }}">
+      <div class="num">{{ "%02d" | format(loop.index) }}</div>
+      <h3>{{ talk.title }}</h3>
+      <p>{{ talk.description }}</p>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+<!-- DEMOS -->
+<section class="talks" id="demos">
+  <div class="section-head">
+    <h2>Interactive <span class="accent">demos.</span></h2>
+  </div>
+  <div class="talks-grid">
+    {%- for demo in demos %}
+    <a class="talk" href="{{ demo.link }}">
+      <div class="num">{{ "%02d" | format(loop.index) }}</div>
+      <h3>{{ demo.title }}</h3>
+      <p>{{ demo.description }}</p>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section class="about" id="about">
   <div class="eyebrow">// about</div>
@@ -142,6 +175,23 @@
     }, { threshold: 0.18, rootMargin: '0px 0px -80px 0px' });
     entries.forEach((c, i) => {
       c.style.transitionDelay = (Math.min(i, 6) * 60) + 'ms';
+      io.observe(c);
+    });
+  })();
+
+  // ----- Card reveal (talks + teaching) -----
+  (function () {
+    const cards = document.querySelectorAll('.talk, .teach');
+    const io = new IntersectionObserver((items) => {
+      items.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach((c, i) => {
+      c.style.transitionDelay = ((i % 3) * 90) + 'ms';
       io.observe(c);
     });
   })();

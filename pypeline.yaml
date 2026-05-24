@@ -13,4 +13,4 @@ pipeline:
   - step: BuildDocs
     run: sphinx-build -E -a docs build/docs
   - step: BuildLanding
-    run: jarvis landing --timeline-file docs/timeline.json --output-dir build/docs
+    run: jarvis landing --timeline-file docs/timeline.json --presentations-file docs/presentations.json --presentations-dir docs/presentations --output-dir build/docs

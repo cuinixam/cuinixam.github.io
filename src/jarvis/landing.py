@@ -9,6 +9,7 @@ import markdown as md
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
+from jarvis.presentations import Presentations
 from jarvis.timeline import Timeline
 
 
@@ -140,10 +141,14 @@ class LandingWriter:
     def __init__(
         self,
         timeline_file: Path,
+        presentations_file: Path,
+        presentations_dir: Path,
         output_dir: Path,
         templates_dir: Path | None = None,
     ) -> None:
         self.timeline_file = timeline_file
+        self.presentations_file = presentations_file
+        self.presentations_dir = presentations_dir
         self.output_dir = output_dir
         self.templates_dir = templates_dir or Path(__file__).parent / "templates" / "landing"
 
@@ -151,6 +156,7 @@ class LandingWriter:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         timeline = Timeline.from_json_file(self.timeline_file)
+        presentations = Presentations.from_json_file(self.presentations_file)
         env = Environment(
             loader=FileSystemLoader(str(self.templates_dir)),
             autoescape=select_autoescape(["html"]),
@@ -161,6 +167,8 @@ class LandingWriter:
         html = tmpl.render(
             projects=PROJECTS,
             timeline_entries=timeline.entries,
+            talks=presentations.talks,
+            demos=presentations.demos,
         )
         (self.output_dir / "index.html").write_text(html)
 
@@ -170,3 +178,18 @@ class LandingWriter:
             if assets_dst.exists():
                 shutil.rmtree(assets_dst)
             shutil.copytree(assets_src, assets_dst)
+
+        self._copy_presentation_dirs()
+
+    def _copy_presentation_dirs(self) -> None:
+        """Copy each subdirectory of presentations_dir into output_dir (mirrors Sphinx html_extra_path behavior)."""
+        if not self.presentations_dir.exists():
+            return
+        for item in self.presentations_dir.iterdir():
+            dst = self.output_dir / item.name
+            if item.is_dir():
+                if dst.exists():
+                    shutil.rmtree(dst)
+                shutil.copytree(item, dst)
+            else:
+                shutil.copy2(item, dst)

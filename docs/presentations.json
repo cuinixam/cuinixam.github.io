@@ -1,0 +1,38 @@
+{
+  "talks": [
+    {
+      "title": "Coding Dojo - Determine CI context",
+      "description": "Coding Dojos are a great way to practice and enhance your skills in Test-Driven Development (TDD), software craftsmanship, and incremental software design. Detect whether your program runs on Jenkins or locally and determine the CI context based on the environment variables.",
+      "link": "coding_dojo_ci_context/presentation.html",
+      "image": "presentations/coding_dojo_ci_context/images/presentation_logo.png"
+    },
+    {
+      "title": "YANGA",
+      "description": "Designing a build environment for engineering software product lines.",
+      "link": "yanga/presentation.html",
+      "image": "presentations/yanga/images/assembly_line_colorful-th.png"
+    },
+    {
+      "title": "🛠 Working Experience",
+      "description": "Here are some highlights on the projects/applications I have been working over the years.",
+      "link": "working_experience/presentation.html"
+    }
+  ],
+  "demos": [
+    {
+      "title": "💡 SPL Mindmap",
+      "description": "Mindmap as basis for discussing about Software Product Line Engineering.",
+      "link": "spl/index.html"
+    },
+    {
+      "title": "🔎 Objects Dependencies Graph",
+      "description": "I have generated a dependency graph of the objects in my Matter Smart Temperature Sensor project. It is surprising how many objects are created and how they are connected to each other, for just a simple temperature and humidity monitoring application.",
+      "link": "objects_deps/index.html"
+    },
+    {
+      "title": "SPLED Yanga Reports",
+      "description": "Example of generated reports for an embedded software product line with multiple variants using YANGA.",
+      "link": "spled_yanga_reports/index.html"
+    }
+  ]
+}
