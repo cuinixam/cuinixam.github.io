@@ -63,12 +63,13 @@ extensions.append("sphinx_togglebutton")
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "pydata_sphinx_theme"
-html_logo = "_static/bio-photo-circle.png"
+html_favicon = "_static/bio-photo-circle.png"
 html_title = "Alexandru Maxiniuc"
 # Filament theme: single dark palette, no light/dark switcher.
 # `default_mode` belongs in html_context, not html_theme_options.
 html_context = {"default_mode": "dark"}
 html_theme_options = {
+    "logo": {"text": "maxiniuc.com"},
     "navbar_end": ["navbar-icon-links"],
     # Right sidebar (page TOC) only adds value on long-form blog posts.
     # Explicit page list avoids wildcard overlap warnings between ** and blogs/**.

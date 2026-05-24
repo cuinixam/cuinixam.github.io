@@ -47,4 +47,6 @@ Then build everything (Sphinx blog + jarvis landing, into `build/docs/`):
 pypeline run
 ```
 
+Always use `pypeline run` to regenerate the site — running `sphinx-build` on its own only produces the blog pages and a stub `index.html`, leaving the landing and about pages stale.
+
 VS Code tasks for the common commands live in `.vscode/tasks.json`.

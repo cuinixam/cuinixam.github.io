@@ -74,6 +74,21 @@ html[data-theme="dark"] {
 .theme-switch-button,
 button.theme-switch-button { display: none !important; }
 
+/* Brand: text "maxiniuc.com" with the landing-nav filament glyph. */
+.navbar-brand.logo .logo__title {
+  font-family: var(--pst-font-family-monospace);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--filament-text);
+  margin: 0;
+}
+.navbar-brand.logo .logo__title::before {
+  content: "▌ ";
+  color: var(--filament-accent);
+}
+.navbar-brand.logo:hover .logo__title { color: var(--filament-accent); }
+
 /* Subtle workshop grid behind the page. */
 body::before {
   content: "";

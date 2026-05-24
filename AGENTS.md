@@ -71,12 +71,14 @@ The project is mid-migration toward the Sphinx-for-blogs-only model.
 ## Common commands
 
 ```bash
-pypeline run                                          # full build
+pypeline run                                          # full build — ALWAYS use this to regenerate the site
 jarvis landing --help                                 # see flags
 jarvis blog --title "Hello" --category tech           # scaffold a new post
 pre-commit run --all-files                            # lint/format manually
-sphinx-autobuild docs build/docs                      # blog-only live reload
+sphinx-autobuild docs build/docs                      # blog-only live reload (does NOT rebuild landing/about)
 ```
+
+**To regenerate the site after any change, run `pypeline run` — not `sphinx-build` directly.** Sphinx alone only produces the blog pages and a stub `index.html`; the landing and about pages come from steps 5–6 of the pipeline. The only time bare `sphinx-build` / `sphinx-autobuild` is appropriate is iterating on blog-only content with the live reloader.
 
 ## Conventions to NOT break
 

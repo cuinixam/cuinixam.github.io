@@ -1,7 +1,7 @@
 ---
 tags: smart home, matter, thread, zephyr, esp32, esp-idf, espressif, clanguru
 category: learning
-date: 2026-01-25
+date: 2026-03-01
 title: Smarty - Matter on ESP32 with Zephyr - Part 2
 ---
 
