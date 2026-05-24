@@ -534,6 +534,9 @@ section { position: relative; z-index: 1; }
 }
 .about p.muted { color: var(--muted); font-size: 1.1rem; }
 
+nav a.brand { text-decoration: none; }
+nav a.brand:hover { color: var(--accent); }
+
 /* ========== TIMELINE TYPEWRITER (about.html) ========== */
 /* JS wraps each text node into .char spans, which start hidden and gain .shown one-by-one
    as the entry types in. Pre-JS / no-JS fallback shows the full text (no .char wrap = no rule). */
@@ -553,8 +556,6 @@ section { position: relative; z-index: 1; }
 }
 
 /* ========== ABOUT PAGE (about.html) ========== */
-.about-page nav .brand { color: var(--text); }
-.about-page nav .brand:hover { color: var(--accent); }
 .about-hero {
   padding: 6rem 2.5rem 2rem;
   max-width: 900px;

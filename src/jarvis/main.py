@@ -10,7 +10,6 @@ from jarvis import __version__
 from jarvis.about import AboutWriter
 from jarvis.blog import BlogWritter
 from jarvis.landing import LandingWriter
-from jarvis.timeline import TimelineWriter
 
 package_name = "jarvis"
 
@@ -24,16 +23,6 @@ def version(
     if version:
         typer.echo(f"{package_name} {__version__}")
         raise typer.Exit()
-
-
-@app.command()
-@time_it("timeline")
-def timeline(
-    input_file: Path = typer.Option(help="Input timeline json file."),  # noqa: B008
-    output_file: Path = typer.Option(help="Output timeline markdown file."),  # noqa: B008
-    reverse_order: bool = False,
-) -> None:
-    TimelineWriter(input_file, output_file).write(reverse_order)
 
 
 @app.command()

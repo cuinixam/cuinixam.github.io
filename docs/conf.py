@@ -51,7 +51,6 @@ source_suffix = [
     ".md",
 ]
 
-templates_path = ["_templates"]
 # about.md is the prose source for the jarvis-rendered about.html — Sphinx no longer renders it.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "presentations", "about.md"]
 
@@ -74,9 +73,6 @@ html_theme_options = {
     # Right sidebar (page TOC) only adds value on long-form blog posts.
     # Explicit page list avoids wildcard overlap warnings between ** and blogs/**.
     "secondary_sidebar_items": {
-        "index": [],
-        "timeline": [],
-        "projects": [],
         "blogs/**": ["page-toc"],
     },
     "icon_links": [
@@ -104,8 +100,6 @@ html_last_updated_fmt = ""
 html_static_path = ["_static"]
 
 html_sidebars = {
-    "index": ["hello.html"],
-    "projects": ["hello.html"],
     "blogs": ["ablog/categories.html"],
     "blogs/**": ["ablog/recentposts.html"],
 }

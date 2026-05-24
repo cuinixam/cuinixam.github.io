@@ -65,8 +65,8 @@ The project is mid-migration toward the Sphinx-for-blogs-only model.
 | `docs/presentations.md` + `html_extra_path = ["presentations"]` | `docs/presentations.json` + jarvis-copied dirs + landing sections | ✅ Done |
 | `docs/teaching.md` + `html_extra_path = ["notebooks"]` | `docs/teaching.json` + jarvis-copied dirs + landing section | ✅ Done |
 | `docs/about.md` (Sphinx renders) | jarvis-rendered `about.html` (about.md is now prose source only; `exclude_patterns` keeps Sphinx out) | ✅ Done |
-| `docs/timeline.md` (generated from JSON) | inlined into `about.html` via jarvis (standalone `timeline.html` still rendered by Sphinx but orphaned — safe to remove next) | 🟡 Partial |
-| `docs/index.md` (Sphinx tries to render an index doc) | minimal stub; `jarvis landing` overwrites the output | ⏳ Pending |
+| `docs/timeline.md` (generated from JSON) | deleted; timeline content lives only in `about.html`, rendered by jarvis from `timeline.json` | ✅ Done |
+| `docs/index.md` (Sphinx tries to render an index doc) | reduced to minimal master_doc stub; `jarvis landing` overwrites the output | ✅ Done |
 
 ## Common commands
 
@@ -83,15 +83,15 @@ sphinx-autobuild docs build/docs                      # blog-only live reload
 - **No new `.md` files outside `docs/blogs/`.** Anything new is a JSON data file consumed by `jarvis landing`.
 - **No Sphinx extensions to solve landing-page problems.** The landing is plain HTML/CSS/JS rendered from a Jinja template; nothing fancier should creep in.
 - **No content duplication.** If something appears on the landing AND on a Sphinx page, the JSON is the single source of truth — never edit two files.
-- **No reaching into `docs/_templates/hello.html` or `docs/about.md` text without the user's per-line permission.** That copy is the user's voice; visuals can change, words cannot. See [the personal-voice rule](https://github.com/cuinixam/cuinixam.github.io/blob/main/AGENTS.md#personal-voice-rule) below.
+- **No reaching into `docs/about.md` text without the user's per-line permission.** That copy is the user's voice; visuals can change, words cannot. See [the personal-voice rule](https://github.com/cuinixam/cuinixam.github.io/blob/main/AGENTS.md#personal-voice-rule) below.
 
 ## Personal-voice rule
 
 Treat as sacred (do not edit without explicit per-line approval):
 
-- The homepage tagline `I'm not just another engineer.`
-- The `focusareas` and `whatido` blocks in `docs/_templates/hello.html`
-- All About-page prose
+- The homepage tagline `I'm not just another engineer.` (in the landing template)
+- All About-page prose (`docs/about.md` and the inlined landing `#about` paragraphs)
+- Section/sub-section H2s like `Selected talks.`, `Interactive demos.`, `Notebooks for learning.`, `Recent writing.`, `Some things I am working on.`
 - Section labels with personality (including emojis in titles like `🛠 Working Experience`, `💡 SPL Mindmap`, `🔎 Objects Dependencies Graph`)
 
 A redesign request is about visuals (CSS, layout, theme) — never a license to rewrite the user's words.
