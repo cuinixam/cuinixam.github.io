@@ -20,28 +20,31 @@
 
 ---
 
-This is my personal website, built with Sphinx!
-It is hosted on GitHub Pages and available at [maxiniuc.com](https://maxiniuc.com).
+This is my personal website at [maxiniuc.com](https://maxiniuc.com).
 
-## Contributing
+## How it's built
 
-The project uses UV for dependencies management and [pypeline](https://github.com/cuinixam/pypeline) for streamlining the development workflow.
-Use pipx (or your favorite package manager) to install the `pypeline` in an isolated environment:
+Two builders, one output directory:
+
+- **Sphinx + ABlog** renders the blog (`build/docs/blogs/**`). That's all Sphinx does.
+- **`jarvis landing`** (a small typer CLI in `src/jarvis/`) renders the landing page from JSON data files and copies the presentation / notebook directories into the build root.
+
+The principle is "Sphinx for blogs only." Everything else is hand-crafted HTML/CSS/JS, generated from data files so there is exactly one source of truth per piece of content.
+
+See [AGENTS.md](AGENTS.md) for the architecture in detail and the "where do I add X" table.
+
+## Build
+
+The project uses [pypeline](https://github.com/cuinixam/pypeline) to orchestrate the build. Install it once:
 
 ```shell
 pipx install pypeline-runner
 ```
 
-To bootstrap the project and run all the steps configured in the `pypeline.yaml` file, execute the following command:
+Then build everything (Sphinx blog + jarvis landing, into `build/docs/`):
 
 ```shell
 pypeline run
 ```
 
-For those using [VS Code](https://code.visualstudio.com/) there are tasks defined for the most common commands:
-
-- run tests
-- run pre-commit checks (linters, formatters, etc.)
-- generate documentation
-
-See the `.vscode/tasks.json` for more details.
+VS Code tasks for the common commands live in `.vscode/tasks.json`.

@@ -1,106 +1,93 @@
-# Copilot Instructions for cuinixam.github.io
+# Agent instructions for cuinixam.github.io
 
-This is a personal website/blog project built with Sphinx, hosted on GitHub Pages at [maxiniuc.com](https://maxiniuc.com).
+This is the personal website at [maxiniuc.com](https://maxiniuc.com), hosted on GitHub Pages.
 
-## Architecture Overview
+## Architecture: one principle
 
-**Core Components:**
-- `jarvis`: Python CLI tool for content generation (blogs, timelines)
-- `docs/`: Sphinx documentation source (Markdown with MyST parser)
-- `docs/presentations/`: Reveal.js slide decks built from Markdown (`slides.md` → `presentation.html`)
-- `src/jarvis/notebooks/`: Marimo interactive notebooks exported as HTML to `docs/notebooks/`
-- `build/docs/`: Generated static site (deployed to GitHub Pages)
+**Sphinx is for BLOGS ONLY.** Every other page is hand-crafted HTML rendered by `jarvis`, a small typer CLI in `src/jarvis/`, from JSON data files. Static asset directories (presentations, notebooks) are copied into the build root by `jarvis` — not by Sphinx via `html_extra_path`.
 
-**Build System:** Uses [pypeline](https://github.com/cuinixam/pypeline) orchestrator with UV package manager. The `pypeline.yaml` defines all build steps.
+The end state:
 
-## Development Workflows
+| URL | Written by |
+|---|---|
+| `index.html` (landing) | `jarvis landing` |
+| `about.html`, future non-blog pages | `jarvis landing` (planned) |
+| `blogs/**` (blog index + all posts) | Sphinx + ABlog |
+| `<presentation_or_notebook>/**` (static HTML) | `jarvis landing` copies the dirs |
 
-### Quick Start
-```powershell
-# Bootstrap project (creates venv with UV, runs all steps)
-pypeline run
+If something is going to be new, do not reach for a `.md` file. The only `.md` source files in this project belong inside `docs/blogs/`.
 
-# Use the jarvis CLI via PowerShell wrapper
-.\jarvis.ps1 --help
+## Build pipeline
 
-# Alternative: Use VS Code tasks for common operations
-# - "run tests" (pytest)
-# - "generate docs" (sphinx-build)
-# - "autobuild docs" (sphinx-autobuild with live reload)
+`pypeline run` walks the steps in `pypeline.yaml`:
+
+1. **CreateVEnv** — uv-bootstrapped Python 3.13 venv
+2. **PreCommit** — ruff, ruff-format, mypy, codespell, hooks
+3. **PyTest** — tests
+4. **BuildDocs** — `sphinx-build docs build/docs` (writes blog pages and a stub `index.html`)
+5. **BuildLanding** — `jarvis landing …` (overwrites `index.html` with the real landing, copies static dirs)
+
+Steps 4 and 5 both write into `build/docs/`; step 5 deliberately overwrites Sphinx's stub `index.html`.
+
+## Where to add what
+
+| Want to | Edit |
+|---|---|
+| New blog post | `jarvis blog --title "…" --category … --tags …` — creates `docs/blogs/<year>/<slug>.md` |
+| New timeline entry | `docs/timeline.json` |
+| New talk (slide deck) | `docs/presentations.json` `talks` array + drop the static dir under `docs/presentations/` |
+| New demo (interactive HTML) | `docs/presentations.json` `demos` array + drop the static dir under `docs/presentations/` |
+| New featured project (carousel) | `PROJECTS` list at the top of `src/jarvis/landing.py` |
+| New notebook *(once teaching is migrated)* | `docs/teaching.json` + drop HTML under `docs/notebooks/` |
+| Landing page styles | `src/jarvis/templates/landing/assets/landing.css` |
+| Landing page layout / new sections | `src/jarvis/templates/landing/index.html.j2` |
+| Blog page styles (palette overrides) | `docs/_static/filament.css` |
+
+If a presentation/notebook directory exists under `docs/presentations/` or `docs/notebooks/` but is **not** listed in the corresponding JSON, it is still copied into the build (URL works) but is not surfaced on the landing. This is how internal/private content (e.g. `docs/presentations/objectives_2024/`, `docs/presentations/alex/`) is handled.
+
+## Theme
+
+One palette: **Filament**, a warm-yellow-on-dark theme adapted from monkeytype's serika_dark. Two stylesheets, one per surface:
+
+- `src/jarvis/templates/landing/assets/landing.css` — full standalone styles for jarvis-rendered pages
+- `docs/_static/filament.css` — pydata-sphinx-theme variable overrides for blog pages
+
+## Migration status
+
+The project is mid-migration toward the Sphinx-for-blogs-only model.
+
+| Old (Sphinx) | New | Status |
+|---|---|---|
+| `docs/presentations.md` + `html_extra_path = ["presentations"]` | `docs/presentations.json` + jarvis-copied dirs + landing sections | ✅ Done |
+| `docs/teaching.md` + `html_extra_path = ["notebooks"]` | `docs/teaching.json` + jarvis-copied dirs + landing section | ⏳ Pending |
+| `docs/about.md` | jarvis-rendered `about.html` | ⏳ Pending |
+| `docs/timeline.md` (generated from JSON) | merged into the about page | ⏳ Pending |
+| `docs/index.md` (Sphinx tries to render an index doc) | minimal stub; `jarvis landing` overwrites the output | ⏳ Pending |
+
+## Common commands
+
+```bash
+pypeline run                                          # full build
+jarvis landing --help                                 # see flags
+jarvis blog --title "Hello" --category tech           # scaffold a new post
+pre-commit run --all-files                            # lint/format manually
+sphinx-autobuild docs build/docs                      # blog-only live reload
 ```
 
-### Running Individual Steps
-```powershell
-pypeline run --step CreateVEnv --step PyTest  # Run specific steps
-pypeline run --step BuildDocs --single        # Skip dependencies
-```
+## Conventions to NOT break
 
-### Documentation Development
-- **Edit:** Modify `.md` files in `docs/`
-- **Build:** `pypeline run --step BuildDocs --single` or use "generate docs" task
-- **Preview:** Run "autobuild docs" task, opens live-reloading server at http://127.0.0.1:8000
-- **View:** Open `build/docs/index.html` or use "open docs index.html" task
+- **No new `.md` files outside `docs/blogs/`.** Anything new is a JSON data file consumed by `jarvis landing`.
+- **No Sphinx extensions to solve landing-page problems.** The landing is plain HTML/CSS/JS rendered from a Jinja template; nothing fancier should creep in.
+- **No content duplication.** If something appears on the landing AND on a Sphinx page, the JSON is the single source of truth — never edit two files.
+- **No reaching into `docs/_templates/hello.html` or `docs/about.md` text without the user's per-line permission.** That copy is the user's voice; visuals can change, words cannot. See [the personal-voice rule](https://github.com/cuinixam/cuinixam.github.io/blob/main/AGENTS.md#personal-voice-rule) below.
 
-## Key Conventions
+## Personal-voice rule
 
-### Blog Posts
-- Created via `jarvis blog --title "Post Title" --category tech --tags python,sphinx`
-- Auto-generates file at `docs/blogs/<YEAR>/<title_snake_case>.md` with frontmatter
-- Uses [ABlog](https://ablog.readthedocs.io/) Sphinx extension for blog functionality
-- Post pattern: `blog_post_pattern = "blogs/*/*"` in `docs/conf.py`
+Treat as sacred (do not edit without explicit per-line approval):
 
-### Timeline Feature
-- Defined as JSON in `docs/timeline.json` with `TimelineEntry` objects (year, title, description)
-- Converted to Sphinx grid-based Markdown via `jarvis timeline` command
-- Uses custom CSS classes (`.timeline`, `.entry.left`, `.entry.right`) in `docs/_static/lessons.css`
-- Outputs to `docs/timeline.md` with alternating left/right grid layout
+- The homepage tagline `I'm not just another engineer.`
+- The `focusareas` and `whatido` blocks in `docs/_templates/hello.html`
+- All About-page prose
+- Section labels with personality (including emojis in titles like `🛠 Working Experience`, `💡 SPL Mindmap`, `🔎 Objects Dependencies Graph`)
 
-### Presentations
-- Source: `docs/presentations/<name>/slides.md` (Reveal.js Markdown)
-- Output: `docs/presentations/<name>/presentation.html` (built externally, copied to `docs/`)
-- Excluded from Sphinx processing via `exclude_patterns` but included in final output via `html_extra_path`
-- Linked from `docs/presentations.md` using Sphinx Design grid cards
-
-### Notebooks
-- Source: `src/jarvis/notebooks/<name>.py` (Marimo Python apps)
-- Export as HTML via: `marimo export html <name>.py -o docs/notebooks/<name>/index.html`
-- Marimo notebooks are reactive Python notebooks with `marimo.App()` structure
-- Excluded from mypy checking: `[[tool.mypy.overrides]]` for `jarvis.notebooks.*`
-
-### Sphinx Configuration Patterns
-- **Theme:** pydata-sphinx-theme with custom sidebar configs per page type
-- **Extensions:** MyST Parser (Markdown), ABlog (blog), sphinx-design (grids/cards), sphinxcontrib-mermaid
-- **Static paths:** Custom CSS in `docs/_static/` auto-added via `setup(app)` function
-- **MyST features:** Colon fences, definition lists, HTML admonitions, inline attributes
-
-## Testing & Quality
-
-```powershell
-pytest                              # Run tests
-pre-commit run --all-files          # Linters, formatters (ruff, codespell, etc.)
-```
-
-## Python Environment
-
-- **Package manager:** UV (not pip/poetry)
-- **Python version:** >=3.10, <4.0
-- **Dev dependencies:** All in `[dependency-groups.dev]` section
-- **Editable install:** Via `setup.py` shim (required for GitHub package detection)
-- **Entry point:** `jarvis.main:main()` via Typer CLI
-
-## Common Pitfalls
-
-1. **Don't run `pip install` directly** - use UV or `pypeline run --step CreateVEnv`
-2. **Presentations/notebooks are pre-built** - HTML files are committed, not generated during Sphinx build
-3. **PowerShell commands use `;` not `&&`** - e.g., `cd docs ; sphinx-build ...`
-4. **Jarvis CLI from repo root** - use `.\jarvis.ps1` not `python -m jarvis` (requires special `_run.py` path setup)
-5. **Timeline JSON must match dataclass** - Fields: year (int), title (str), description (str)
-
-## File/Directory Purposes
-
-- `jarvis.ps1`: PowerShell wrapper to run jarvis CLI with correct venv/paths
-- `src/jarvis/_run.py`: Bootstrap script for running jarvis module from repo (adds `src/` to path)
-- `setup.py`: Minimal shim for GitHub package detection (actual build uses UV)
-- `pypeline.yaml`: Build orchestration config (steps: CreateVEnv, PreCommit, PyTest, BuildDocs)
-- `docs/conf.py`: Sphinx configuration with ABlog, MyST, and custom sidebar layouts
-- `build/CreateVEnv.deps.json`: Pypeline dependency tracking (auto-generated)
+A redesign request is about visuals (CSS, layout, theme) — never a license to rewrite the user's words.
