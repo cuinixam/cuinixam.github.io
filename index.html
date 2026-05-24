@@ -312,8 +312,15 @@ artifacts: build/Disco/</pre>
     const label = document.getElementById('panelLabel');
     if (!wrap || !track) return;
     const panels = track.children.length;
+    const mobileMQ = window.matchMedia('(max-width: 880px)');
 
     function onScroll() {
+      if (mobileMQ.matches) {
+        // Mobile stacks panels vertically — clear any leftover horizontal
+        // transform and skip the scroll-driven layout so it can't fight the CSS.
+        track.style.transform = '';
+        return;
+      }
       const rect = wrap.getBoundingClientRect();
       const total = wrap.offsetHeight - window.innerHeight;
       const progress = Math.min(1, Math.max(0, -rect.top / total));
