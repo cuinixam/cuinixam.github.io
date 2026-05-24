@@ -14,7 +14,10 @@
 
 <nav>
   <a class="brand" href="index.html">maxiniuc.com</a>
-  <ul>
+  <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+    <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="#projects">projects</a></li>
     <li><a href="#teaching">teaching</a></li>
     <li><a href="#writing">writing</a></li>
@@ -303,6 +306,24 @@ artifacts: build/Disco/</pre>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ----- Mobile nav toggle -----
+  (function () {
+    const nav = document.querySelector('nav');
+    const btn = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('nav-menu');
+    if (!nav || !btn || !menu) return;
+    const setOpen = (open) => {
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.querySelector('.nav-toggle-icon').textContent = open ? '✕' : '☰';
+    };
+    btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    // Close menu after picking a destination
+    menu.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') setOpen(false);
+    });
+  })();
 
   // ----- Horizontal carousel -----
   (function () {
