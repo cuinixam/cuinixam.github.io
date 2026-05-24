@@ -2,14 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2026-02-06T14:48:14.639110+00:00</updated>
+  <updated>2026-05-24T13:52:44.473516+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
   <entry>
     <id>https://maxiniuc.com/blogs/2026/smarty_p2.html</id>
     <title>Smarty - Matter on ESP32 with Zephyr - Part 2</title>
-    <updated>2026-01-25T00:00:00+00:00</updated>
+    <updated>2026-03-01T00:00:00+00:00</updated>
     <content type="html">&lt;section id="smarty-matter-on-esp32-with-zephyr-part-2"&gt;
 
 &lt;div class="dropdown warning admonition"&gt;
@@ -56,12 +56,12 @@ No extra steps to install toolchains or other dependencies.&lt;/p&gt;
     <category term="smarthome" label="smart home"/>
     <category term="thread" label="thread"/>
     <category term="zephyr" label="zephyr"/>
-    <published>2026-01-25T00:00:00+00:00</published>
+    <published>2026-03-01T00:00:00+00:00</published>
   </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2026/smarty_p1.html</id>
     <title>Smarty - Matter on ESP32 with Zephyr - Part 1</title>
-    <updated>2026-01-25T00:00:00+00:00</updated>
+    <updated>2026-02-25T00:00:00+00:00</updated>
     <content type="html">&lt;section id="smarty-matter-on-esp32-with-zephyr-part-1"&gt;
 
 &lt;div class="dropdown warning admonition"&gt;
@@ -223,7 +223,7 @@ No extra steps to install toolchains or other dependencies.&lt;/p&gt;
     <category term="smarthome" label="smart home"/>
     <category term="thread" label="thread"/>
     <category term="zephyr" label="zephyr"/>
-    <published>2026-01-25T00:00:00+00:00</published>
+    <published>2026-02-25T00:00:00+00:00</published>
   </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2026/hello_di%C3%A1taxis.html</id>

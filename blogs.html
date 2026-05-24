@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="./" >
+<html lang="en" data-content_root="./" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -12,8 +12,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   <!--
     this give us a css class that will be invisible only if js is disabled
@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/filament.css?v=9a7effcd" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=4004345f" />
     <link rel="stylesheet" type="text/css" href="_static/lessons.css?v=25c46371" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
@@ -419,13 +420,13 @@ const load = async () => {
 window.addEventListener("load", load);
 </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'blogs';</script>
-    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="icon" href="_static/bio-photo-circle.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 06, 2026"/> 
+    <meta name="docbuild:last-update" content="May 24, 2026"/> 
 <link
   rel="alternate"
   type="application/atom+xml"
@@ -436,7 +437,7 @@ window.addEventListener("load", load);
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -493,14 +494,8 @@ window.addEventListener("load", load);
   
   
   
-    
-    
-      
-    
-    
-    <img src="_static/bio-photo-circle.png" class="logo__image only-light" alt="Alexandru Maxiniuc - Home"/>
-    <img src="_static/bio-photo-circle.png" class="logo__image only-dark pst-js-only" alt="Alexandru Maxiniuc - Home"/>
   
+    <p class="title logo__title">maxiniuc.com</p>
   
 </a></div>
     
@@ -514,30 +509,9 @@ window.addEventListener("load", load);
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="about.html">
-    About me
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     Blogs
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="presentations.html">
-    Presentations
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="teaching.html">
-    Teaching
   </a>
 </li>
 
@@ -559,14 +533,6 @@ window.addEventListener("load", load);
 </button>
         </div>
       
-      
-        <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -650,30 +616,9 @@ window.addEventListener("load", load);
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="about.html">
-    About me
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     Blogs
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="presentations.html">
-    Presentations
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="teaching.html">
-    Teaching
   </a>
 </li>
 
@@ -686,14 +631,6 @@ window.addEventListener("load", load);
     
     
       <div class="sidebar-header-items__end">
-        
-          <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -770,261 +707,6 @@ window.addEventListener("load", load);
   </ul>
 </div>
 </div>
-        <div class="sidebar-primary-item">
-<div class="ablog-sidebar-item ablog__tagcloud">
-  <link
-    rel="stylesheet"
-    href="_static/ablog/tagcloud.css"
-    type="text/css"
-  />
-  <h3><a href="blogs/tag.html">Tags</a></h3>
-  <ul class="ablog-cloud">
-     
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/ai.html">ai</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/ansible.html">ansible</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/arduino.html">arduino</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/bootstrap.html">bootstrap</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/build.html">build</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/c.html">c</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-5">
-      <a href="blogs/tag/clanguru.html">clanguru</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/cmake.html">cmake</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/coding-dojo.html">coding-dojo</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/component.html">component</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/ctest.html">ctest</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/cytoscape.html">cytoscape</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/dependency.html">dependency</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/diataxis.html">diátaxis</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/docker.html">docker</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/docs.html">docs</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/esp-idf.html">esp-idf</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/esp32.html">esp32</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/espressif.html">espressif</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/gcc.html">gcc</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/getting-started.html">getting started</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/gtest.html">gtest</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/homelab.html">homelab</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/linker.html">linker</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/linker-scripting-language.html">linker scripting language</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/lsl.html">lsl</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/matter.html">matter</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/memory.html">memory</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/nm.html">nm</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/objects.html">objects</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/optimization.html">optimization</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/pointer.html">pointer</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/portability.html">portability</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/portainer.html">portainer</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/python.html">python</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/section.html">section</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/setup.html">setup</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/smart-home.html">smart home</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/software-craftsmanship.html">software-craftsmanship</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/sphinx.html">sphinx</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-5">
-      <a href="blogs/tag/spl.html">spl</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/spl-git-post-build-cmake.html">spl git post-build cmake</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/spled.html">spled</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/tasking.html">tasking</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/tdd.html">tdd</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/technical-documentation.html">technical documentation</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/testing.html">testing</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/thread.html">thread</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/tool.html">tool</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/variant.html">variant</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/venv.html">venv</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/vs-code.html">vs code</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-1">
-      <a href="blogs/tag/windows.html">windows</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-5">
-      <a href="blogs/tag/yanga.html">yanga</a>
-    </li>
-      
-    <li class="ablog-cloud ablog-cloud-3">
-      <a href="blogs/tag/zephyr.html">zephyr</a>
-    </li>
-     
-  </ul>
-</div>
-</div>
-        <div class="sidebar-primary-item">
-<div class="ablog-sidebar-item ablog__archives">
-  <h3>
-    <a href="blogs/archive.html">Archives</a>
-  </h3>
-  <ul>
-     
-    <li>
-      <a href="blogs/2026.html">2026 (3)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/2025.html">2025 (8)</a>
-    </li>
-      
-    <li>
-      <a href="blogs/2024.html">2024 (3)</a>
-    </li>
-     
-  </ul>
-</div>
-</div>
     </div>
   
   
@@ -1096,7 +778,7 @@ window.addEventListener("load", load);
          
         <i class="fa fa-calendar"></i>
         
-        <span>25 January 2026</span>
+        <span>01 March 2026</span>
         
       </li>
       <div class="ablog-sidebar-item ablog__postcard2">
@@ -1158,7 +840,7 @@ window.addEventListener("load", load);
          
         <i class="fa fa-calendar"></i>
         
-        <span>25 January 2026</span>
+        <span>25 February 2026</span>
         
       </li>
       <div class="ablog-sidebar-item ablog__postcard2">
@@ -1934,7 +1616,7 @@ When checking the linker configuration file (<code class="docutils literal notra
 
   <p class="copyright">
     
-      © Copyright 2024, Alexandru Maxiniuc.
+      © Copyright 2026, Alexandru Maxiniuc.
       <br/>
     
   </p>

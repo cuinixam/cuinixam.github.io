@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="../../" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -12,8 +12,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   <!--
     this give us a css class that will be invisible only if js is disabled
@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/filament.css?v=9a7effcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=4004345f" />
     <link rel="stylesheet" type="text/css" href="../../_static/lessons.css?v=25c46371" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
@@ -419,13 +420,13 @@ const load = async () => {
 window.addEventListener("load", load);
 </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'blogs/tag/ai';</script>
-    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="icon" href="../../_static/bio-photo-circle.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 06, 2026"/> 
+    <meta name="docbuild:last-update" content="May 24, 2026"/> 
 <link
   rel="alternate"
   type="application/atom+xml"
@@ -436,7 +437,7 @@ window.addEventListener("load", load);
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -493,14 +494,8 @@ window.addEventListener("load", load);
   
   
   
-    
-    
-      
-    
-    
-    <img src="../../_static/bio-photo-circle.png" class="logo__image only-light" alt="Alexandru Maxiniuc - Home"/>
-    <img src="../../_static/bio-photo-circle.png" class="logo__image only-dark pst-js-only" alt="Alexandru Maxiniuc - Home"/>
   
+    <p class="title logo__title">maxiniuc.com</p>
   
 </a></div>
     
@@ -515,29 +510,8 @@ window.addEventListener("load", load);
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../about.html">
-    About me
-  </a>
-</li>
-
-
-<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../blogs.html">
     Blogs
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../presentations.html">
-    Presentations
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../teaching.html">
-    Teaching
   </a>
 </li>
 
@@ -559,14 +533,6 @@ window.addEventListener("load", load);
 </button>
         </div>
       
-      
-        <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -653,29 +619,8 @@ window.addEventListener("load", load);
   <ul class="bd-navbar-elements navbar-nav">
     
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../about.html">
-    About me
-  </a>
-</li>
-
-
-<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../blogs.html">
     Blogs
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../presentations.html">
-    Presentations
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../teaching.html">
-    Teaching
   </a>
 </li>
 
@@ -688,14 +633,6 @@ window.addEventListener("load", load);
     
     
       <div class="sidebar-header-items__end">
-        
-          <div class="navbar-item">
-
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -751,13 +688,13 @@ window.addEventListener("load", load);
      
     <li>
       <a href="../2026/smarty_p2.html">
-        25 January - Smarty - Matter on ESP32 with Zephyr - Part 2
+        01 March - Smarty - Matter on ESP32 with Zephyr - Part 2
       </a>
     </li>
     
     <li>
       <a href="../2026/smarty_p1.html">
-        25 January - Smarty - Matter on ESP32 with Zephyr - Part 1
+        25 February - Smarty - Matter on ESP32 with Zephyr - Part 1
       </a>
     </li>
     
@@ -779,28 +716,6 @@ window.addEventListener("load", load);
       </a>
     </li>
     
-  </ul>
-</div>
-</div>
-        <div class="sidebar-primary-item">
-<div class="ablog-sidebar-item ablog__archives">
-  <h3>
-    <a href="../archive.html">Archives</a>
-  </h3>
-  <ul>
-     
-    <li>
-      <a href="../2026.html">2026 (3)</a>
-    </li>
-      
-    <li>
-      <a href="../2025.html">2025 (8)</a>
-    </li>
-      
-    <li>
-      <a href="../2024.html">2024 (3)</a>
-    </li>
-     
   </ul>
 </div>
 </div>
@@ -965,7 +880,7 @@ I already had some documentation, but this was … well, let’s say not the bes
 
   <p class="copyright">
     
-      © Copyright 2024, Alexandru Maxiniuc.
+      © Copyright 2026, Alexandru Maxiniuc.
       <br/>
     
   </p>
