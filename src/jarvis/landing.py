@@ -8,6 +8,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from jarvis.presentations import Presentations
 from jarvis.teaching import Teaching
+from jarvis.writing import scan_blogs
 
 
 @dataclass
@@ -128,6 +129,7 @@ class LandingWriter:
         presentations_dir: Path,
         teaching_file: Path,
         notebooks_dir: Path,
+        blogs_dir: Path,
         output_dir: Path,
         templates_dir: Path | None = None,
     ) -> None:
@@ -135,6 +137,7 @@ class LandingWriter:
         self.presentations_dir = presentations_dir
         self.teaching_file = teaching_file
         self.notebooks_dir = notebooks_dir
+        self.blogs_dir = blogs_dir
         self.output_dir = output_dir
         self.templates_dir = templates_dir or Path(__file__).parent / "templates" / "landing"
 
@@ -143,6 +146,7 @@ class LandingWriter:
 
         presentations = Presentations.from_json_file(self.presentations_file)
         teaching = Teaching.from_json_file(self.teaching_file)
+        writing = scan_blogs(self.blogs_dir)
         env = Environment(
             loader=FileSystemLoader(str(self.templates_dir)),
             autoescape=select_autoescape(["html"]),
@@ -154,6 +158,7 @@ class LandingWriter:
             talks=presentations.talks,
             demos=presentations.demos,
             notebooks=teaching.notebooks,
+            writing=writing,
         )
         (self.output_dir / "index.html").write_text(html)
 

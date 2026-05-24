@@ -13,6 +13,6 @@ pipeline:
   - step: BuildDocs
     run: sphinx-build -E -a docs build/docs
   - step: BuildLanding
-    run: jarvis landing --presentations-file docs/presentations.json --presentations-dir docs/presentations --teaching-file docs/teaching.json --notebooks-dir docs/notebooks --output-dir build/docs
+    run: jarvis landing --presentations-file docs/presentations.json --presentations-dir docs/presentations --teaching-file docs/teaching.json --notebooks-dir docs/notebooks --blogs-dir docs/blogs --output-dir build/docs
   - step: BuildAbout
     run: jarvis about --about-md-file docs/about.md --timeline-file docs/timeline.json --output-dir build/docs

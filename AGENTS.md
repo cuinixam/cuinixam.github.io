@@ -35,7 +35,7 @@ Steps 4–6 all write into `build/docs/`; step 5 deliberately overwrites Sphinx'
 
 | Want to | Edit |
 |---|---|
-| New blog post | `jarvis blog --title "…" --category … --tags …` — creates `docs/blogs/<year>/<slug>.md` |
+| New blog post | `jarvis blog --title "…" --category … --tags …` — creates `docs/blogs/<year>/<slug>.md`. Appears on the landing's writing section automatically if it's in the 4 most recent. |
 | New timeline entry | `docs/timeline.json` |
 | New talk (slide deck) | `docs/presentations.json` `talks` array + drop the static dir under `docs/presentations/` |
 | New demo (interactive HTML) | `docs/presentations.json` `demos` array + drop the static dir under `docs/presentations/` |

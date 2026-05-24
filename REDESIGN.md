@@ -2,7 +2,7 @@
 
 Working doc to pick up the redesign later. Architecture lives in [AGENTS.md](AGENTS.md); this file captures the *in-progress* state and parked decisions.
 
-Last touched: 2026-05-24 (about-page migration complete).
+Last touched: 2026-05-24 (writing section live on the landing).
 
 ## The vision (one paragraph)
 
@@ -48,6 +48,14 @@ The site is migrating from "Sphinx renders everything" to "Sphinx renders blogs 
   - `conf.py`: teaching removed from `html_sidebars` + `secondary_sidebar_items`; `html_extra_path` is now `[]`
   - `docs/index.md`: removed `teaching.html` card + toctree entry
 
+- **Writing section on the landing**
+  - `src/jarvis/writing.py` — `WritingEntry` dataclass + `scan_blogs(blogs_dir, limit=4)`. Tiny custom frontmatter parser (no PyYAML dep) — only reads `title`, `date`, `category`.
+  - Posts missing required keys or with unparseable dates are skipped (not a build error). `.md.md` stragglers are ignored explicitly.
+  - 4 most recent posts, newest first, displayed `date · title · // category` using the pre-existing `.writing-list` / `.writing-row` CSS that was already in `landing.css`. Rows are full anchor (`<a class="writing-row">`); hover slides them in with a subtle background fill.
+  - `all posts ↗` in the section header links to `blogs.html`.
+  - Section placed between `#demos` and `#teaching`; nav `writing` switched from `blogs.html` to `#writing` anchor.
+  - LandingWriter takes a new `--blogs-dir docs/blogs` flag; pypeline updated.
+
 - **About-page migration (full)** — last big content surface off Sphinx
   - `docs/about.md` kept as **prose source only** (not deleted — user's bio lives here, untouched). Trailing `## A rough timeline` + `{include} timeline.md` section removed (now redundant: jarvis pulls timeline straight from JSON).
   - `src/jarvis/about.py` — `parse_about_md` (extracts H1 + paragraphs, stops at first H2), `AboutWriter`
@@ -81,26 +89,25 @@ Resolved by the about-page migration:
 
 ## What's next (ordered)
 
-1. **Writing section on the landing** (the last big design-discussion item)
-   - Add `writing` section between `#demos` and `#teaching` (or wherever fits final nav order)
-   - 3–5 most recent blog posts, `date · title · category`, with `all posts ↗` linking to `blogs.html`
-   - Needs the writing-data-source decision (frontmatter scan vs `writing.json`)
-
-2. **Nav cleanup**
+1. **Nav cleanup**
    - Drop `github` from the nav (still reachable via footer + brand)
-   - Reorder to the agreed final: `projects · talks · demos · writing · about`
    - `teaching` doesn't appear in the doc's target list — confirm with user whether to keep it in nav or fold into a different section
+   - Current order is `projects · talks · demos · writing · teaching · about · github` — close to the target (`projects · talks · demos · writing · about`)
 
-3. **Final cleanup toward "Sphinx for blogs only"**
+2. **Final cleanup toward "Sphinx for blogs only"**
    - `docs/index.md` → minimal stub (Sphinx needs a master_doc; jarvis overwrites the rendered output anyway)
    - Eliminate `docs/timeline.md` and `jarvis timeline` (timeline now goes JSON → about page directly; standalone `timeline.html` is orphaned)
    - Eliminate `docs/_templates/hello.html` if no longer referenced
    - `html_sidebars` in conf.py: only `blogs` / `blogs/**` keys
 
+3. **Polish ideas (parked, low priority)**
+   - Same-date posts on the writing section currently rely on filesystem walk order — if it matters, add an optional `weight:` or `time:` frontmatter key
+   - Consider exposing `tags` (currently unused) on the writing row, maybe behind a hover state
+
 ## Open decisions (need user input before action)
 
 - ✅ **Timeline placement on the about page**: resolved — jarvis pulls timeline straight from `timeline.json` into the about template; no markdown include.
-- **Writing data source**: scan `docs/blogs/**/*.md` frontmatter at landing build time *(recommended)* vs maintain a `docs/writing.json`
+- ✅ **Writing data source**: resolved — frontmatter scan (`src/jarvis/writing.py`). No double-bookkeeping; new posts appear on the landing automatically.
 - **`objects_deps_hello_world_zephyr/`**: surface as a 4th demo? Need a one-line description in user's voice — not invented
 - **`alex/` and `objectives_2024/`**: confirmed copy-but-don't-list. Keep as-is.
 
@@ -132,4 +139,4 @@ Resolved by the about-page migration:
 
 ## Resume signal
 
-About-page migration shipped and verified locally (build is green, both surfaces render). The next concrete content move is the **writing section on the landing** (#1 above) — but it's blocked on the writing-data-source decision (frontmatter scan vs `writing.json`). Either resolve that and code the section, or do the smaller nav cleanup (#2: drop `github`, reorder) which has no blockers.
+All content sections are now jarvis-rendered (landing, about, writing-on-landing, presentations, teaching). The Sphinx-for-blogs-only target is in reach: only **nav cleanup** (#1) and **final Sphinx-side cleanup** (#2 — orphan `timeline.html`, stub `index.md`, prune `hello.html`) remain. Neither is blocked.

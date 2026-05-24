@@ -54,9 +54,10 @@ def landing(
     presentations_dir: Path = typer.Option(help="Directory of presentation HTML subdirs to copy into the output."),  # noqa: B008
     teaching_file: Path = typer.Option(help="Input teaching JSON file."),  # noqa: B008
     notebooks_dir: Path = typer.Option(help="Directory of notebook HTML subdirs to copy into the output."),  # noqa: B008
+    blogs_dir: Path = typer.Option(help="Directory of blog post markdown files (scanned for the writing section)."),  # noqa: B008
     output_dir: Path = typer.Option(help="Output directory (typically the Sphinx build root)."),  # noqa: B008
 ) -> None:
-    LandingWriter(presentations_file, presentations_dir, teaching_file, notebooks_dir, output_dir).write()
+    LandingWriter(presentations_file, presentations_dir, teaching_file, notebooks_dir, blogs_dir, output_dir).write()
 
 
 @app.command()

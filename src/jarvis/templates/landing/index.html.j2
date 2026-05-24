@@ -16,9 +16,9 @@
   <div class="brand">maxiniuc.com</div>
   <ul>
     <li><a href="#projects">projects</a></li>
-    <li><a href="blogs.html">writing</a></li>
     <li><a href="#talks">talks</a></li>
     <li><a href="#demos">demos</a></li>
+    <li><a href="#writing">writing</a></li>
     <li><a href="#teaching">teaching</a></li>
     <li><a href="#about">about</a></li>
     <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
@@ -101,6 +101,23 @@
       <div class="num">{{ "%02d" | format(loop.index) }}</div>
       <h3>{{ demo.title }}</h3>
       <p>{{ demo.description }}</p>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+<!-- WRITING -->
+<section class="writing" id="writing">
+  <div class="section-head">
+    <h2>Recent <span class="accent">writing.</span></h2>
+    <a class="see-all" href="blogs.html">all posts</a>
+  </div>
+  <div class="writing-list">
+    {%- for post in writing %}
+    <a class="writing-row" href="{{ post.url }}">
+      <div class="date">{{ post.date_label }}</div>
+      <div class="title">{{ post.title }}</div>
+      <div class="tag">// {{ post.category }}</div>
     </a>
     {%- endfor %}
   </div>

@@ -399,6 +399,9 @@ section { position: relative; z-index: 1; }
   padding: 1.5rem 0;
   border-top: 1px solid var(--border);
   text-decoration: none;
+  color: inherit;
+  transition: padding 0.2s, background 0.2s;
+  text-decoration: none;
   color: var(--text);
   transition: padding 0.3s, background 0.3s;
   align-items: baseline;
