@@ -28,28 +28,6 @@ class Project:
 
 PROJECTS: list[Project] = [
     Project(
-        name="yanga",
-        year_range="2023 — present",
-        subtitle="Yet Another Ninja Generator",
-        description="Teaming up with AI to develop a Python application for software product line engineering.",
-        github_url="https://github.com/cuinixam/yanga",
-        code_title="~/spl-build $",
-        code_html=(
-            '<span class="ac">$ yanga build --variant chassis-premium</span>\n\n'
-            '<span class="com"># resolving features…</span>\n'
-            '  <span class="ok">✓</span> brake_ctrl\n'
-            '  <span class="ok">✓</span> power_mgr\n'
-            '  <span class="ok">✓</span> telemetry\n'
-            '  <span class="ok">✓</span> diagnostics\n\n'
-            '<span class="com"># compiling components…</span>\n'
-            '  <span class="ok">✓</span> 47 source files\n'
-            '  <span class="ok">✓</span> 12 component tests\n'
-            '  <span class="ok">✓</span> integration suite\n\n'
-            '<span class="ac">Build succeeded in 12.4s</span>\n'
-            "artifacts: build/chassis_premium/"
-        ),
-    ),
-    Project(
         name="pypeline",
         year_range="2024 — present",
         subtitle="Define once, run anywhere",
@@ -74,49 +52,49 @@ PROJECTS: list[Project] = [
         ),
     ),
     Project(
-        name="spl-core",
-        year_range="2022 — present",
-        subtitle="CMake for software product lines",
-        description="My first CMake project to support engineering Software Product Lines. The shared foundation underneath every variant a team ships.",
-        github_url="https://github.com/avengineers/spl-core",
-        code_title="CMakeLists.txt",
+        name="yanga",
+        year_range="2023 — present",
+        subtitle="Yet Another Ninja Generator",
+        description="A Python CMake/Ninja build-system generator for C/C++ software product lines.",
+        github_url="https://github.com/cuinixam/yanga",
+        code_title="~/SPLed $",
         code_html=(
-            '<span class="ac">include</span>(spl)\n\n'
-            '<span class="ac">spl_add_component</span>(brake_ctrl\n'
-            '  <span class="kw">SOURCES</span>\n'
-            "    src/brake_ctrl.c\n"
-            "    src/brake_state.c\n"
-            '  <span class="kw">TESTS</span>\n'
-            "    test/brake_ctrl_test.cc)\n\n"
-            '<span class="ac">spl_add_component</span>(power_mgr\n'
-            '  <span class="kw">SOURCES</span> src/power_mgr.c\n'
-            '  <span class="kw">DEPENDS</span> brake_ctrl)\n\n'
-            '<span class="com"># Variants pick which components to include.</span>\n'
-            '<span class="com"># Core handles toolchain, tests, reports.</span>'
+            '<span class="ac">$ yanga run --variant Disco</span>\n\n'
+            '<span class="com"># resolving variant: Disco</span>\n'
+            '  <span class="ok">✓</span> light_controller\n'
+            '  <span class="ok">✓</span> brightness_controller\n'
+            '  <span class="ok">✓</span> main_control_knob\n'
+            '  <span class="ok">✓</span> power_button\n'
+            '  <span class="ok">✓</span> auto_off\n\n'
+            '<span class="com"># generating CMake/Ninja…</span>\n'
+            '  <span class="ok">✓</span> CMakeLists.txt\n'
+            '  <span class="ok">✓</span> variant.cmake\n'
+            '  <span class="ok">✓</span> component libraries\n\n'
+            '<span class="com"># building…</span>\n'
+            '  <span class="ok">✓</span> sources compiled\n'
+            '  <span class="ok">✓</span> unit tests passed\n'
+            '  <span class="ok">✓</span> Disco.elf\n\n'
+            '<span class="ac">Build succeeded</span>\n'
+            "artifacts: build/Disco/"
         ),
     ),
     Project(
-        name="SPLed",
-        year_range="training",
-        subtitle="An SPL you can hold in your head",
-        description=(
-            "A simple software product line for controlling an LED with different variants — Disco, Sleep, Spa. "
-            "The training repo we use to teach SPLE without anyone drowning in real-product complexity."
-        ),
-        github_url="https://github.com/avengineers/SPLed",
-        code_title="variants/",
+        name="clanguru",
+        year_range="2024 — present",
+        subtitle="C language utils & tools",
+        description="C language utils and tools based on the `clang` and `binutils` modules.",
+        github_url="https://github.com/cuinixam/clanguru",
+        code_title="~/clanguru $",
         code_html=(
-            '<span class="com"># Three variants. One source tree.</span>\n\n'
-            '<span class="ac">disco/</span>      LED blinks · adjustable frequency\n'
-            '<span class="ac">sleep/</span>      Constant color · adjustable brightness\n'
-            '<span class="ac">spa/</span>        Brightness pulsates · color cycles\n\n'
-            '<span class="com"># Same components, different feature sets.</span>\n'
-            '<span class="com"># Build any variant standalone:</span>\n\n'
-            '<span class="ac">$ yanga build --variant disco</span>\n'
-            '<span class="ac">$ yanga build --variant sleep</span>\n'
-            '<span class="ac">$ yanga build --variant spa</span>\n\n'
-            '<span class="ok">→</span> three products. one codebase.\n'
-            '<span class="ok">→</span> the smallest SPL that\'s still real.'
+            '<span class="ac">$ clanguru --help</span>\n\n'
+            '<span class="kw">Usage</span>: clanguru [OPTIONS] COMMAND [ARGS]...\n\n'
+            '<span class="com">C language utils and tools based on</span>\n'
+            '<span class="com">the libclang module.</span>\n\n'
+            '<span class="kw">Commands</span>:\n'
+            '  parse     <span class="com">Parse C source and print TU</span>\n'
+            '  docs      <span class="com">Generate docs for C/C++ sources</span>\n'
+            '  mock      <span class="com">Generate mocks for functions</span>\n'
+            '  analyze   <span class="com">Analyze object files dependencies</span>'
         ),
     ),
 ]

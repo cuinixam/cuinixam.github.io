@@ -40,10 +40,13 @@
 <section class="carousel-wrap" id="projects" style="height: {{ (projects|length) * 100 }}vh;">
   <div class="carousel-pin">
     <div class="carousel-head">
-      <h2>Things I've <span class="accent">built.</span></h2>
-      <div class="carousel-progress">
-        <span id="panelLabel">01 / {{ "%02d" | format(projects|length) }}</span>
-        <div class="bar"><div class="fill" id="carouselFill"></div></div>
+      <h2>Some things I am <span class="accent">working on.</span></h2>
+      <div class="see-all-group">
+        <a class="see-all" href="https://github.com/cuinixam/" target="_blank" rel="noopener">all projects</a>
+        <div class="carousel-progress">
+          <span id="panelLabel">01 / {{ "%02d" | format(projects|length) }}</span>
+          <div class="bar"><div class="fill" id="carouselFill"></div></div>
+        </div>
       </div>
     </div>
     <div class="carousel-track" id="carouselTrack">

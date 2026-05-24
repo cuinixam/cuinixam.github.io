@@ -383,14 +383,14 @@ section { position: relative; z-index: 1; }
   letter-spacing: -0.03em;
 }
 .section-head h2 .accent { color: var(--accent); }
-.section-head .see-all {
+.see-all {
   font-family: var(--mono);
   font-size: 0.85rem;
   color: var(--accent);
   text-decoration: none;
 }
-.section-head .see-all::after { content: " ↗"; color: var(--dim); }
-.section-head .see-all-group { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: end; }
+.see-all::after { content: " ↗"; color: var(--dim); }
+.see-all-group { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: end; }
 .writing-list { display: grid; gap: 0; }
 .writing-row {
   display: grid;
