@@ -15,7 +15,7 @@ for path in ["src", "tests"]:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Alexandru Maxiniuc"
-copyright = "2024, Alexandru Maxiniuc"
+copyright = "2026, Alexandru Maxiniuc"
 author = "Alexandru Maxiniuc"
 release = "0.0.0"
 

@@ -89,6 +89,21 @@
       "year": 2024,
       "title": "[Pypeline](https://github.com/cuinixam/pypeline)",
       "description": "Define your pipeline once in YAML and run it consistently across local environments and any CI/CD platform."
+    },
+    {
+      "year": 2024,
+      "title": "[Clanguru](https://github.com/cuinixam/clanguru)",
+      "description": "C/C++ analysis toolkit built on `libclang` and `nm`. One Typer CLI, four commands: parse translation units, extract documentation, generate test mocks, and visualize object-file dependency graphs."
+    },
+    {
+      "year": 2025,
+      "title": "Best Speaker Award at [ESE Kongress](https://ese-kongress.de/frontend/index.php?page_id=53115)",
+      "description": "The talk *A CI Journey – Less Pipelines, More Happy Developers*, co-presented with my colleague Karsten Günther, was recognized as one of the five best presentations at the Embedded Software Engineering Kongress 2025."
+    },
+    {
+      "year": 2026,
+      "title": "[Poks](https://github.com/cuinixam/poks)",
+      "description": "Cross-platform, user-space package manager for pre-built binary developer tools — CMake, SDKs, compilers. Inspired by Scoop; works on Windows, Linux, and macOS with no admin rights and no global shims."
     }
   ]
 }
