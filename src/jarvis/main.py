@@ -52,9 +52,11 @@ def landing(
     timeline_file: Path = typer.Option(help="Input timeline JSON file."),  # noqa: B008
     presentations_file: Path = typer.Option(help="Input presentations JSON file."),  # noqa: B008
     presentations_dir: Path = typer.Option(help="Directory of presentation HTML subdirs to copy into the output."),  # noqa: B008
+    teaching_file: Path = typer.Option(help="Input teaching JSON file."),  # noqa: B008
+    notebooks_dir: Path = typer.Option(help="Directory of notebook HTML subdirs to copy into the output."),  # noqa: B008
     output_dir: Path = typer.Option(help="Output directory (typically the Sphinx build root)."),  # noqa: B008
 ) -> None:
-    LandingWriter(timeline_file, presentations_file, presentations_dir, output_dir).write()
+    LandingWriter(timeline_file, presentations_file, presentations_dir, teaching_file, notebooks_dir, output_dir).write()
 
 
 def main() -> int:

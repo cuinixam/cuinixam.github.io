@@ -38,7 +38,7 @@ Steps 4 and 5 both write into `build/docs/`; step 5 deliberately overwrites Sphi
 | New talk (slide deck) | `docs/presentations.json` `talks` array + drop the static dir under `docs/presentations/` |
 | New demo (interactive HTML) | `docs/presentations.json` `demos` array + drop the static dir under `docs/presentations/` |
 | New featured project (carousel) | `PROJECTS` list at the top of `src/jarvis/landing.py` |
-| New notebook *(once teaching is migrated)* | `docs/teaching.json` + drop HTML under `docs/notebooks/` |
+| New notebook | `docs/teaching.json` + drop HTML under `docs/notebooks/` |
 | Landing page styles | `src/jarvis/templates/landing/assets/landing.css` |
 | Landing page layout / new sections | `src/jarvis/templates/landing/index.html.j2` |
 | Blog page styles (palette overrides) | `docs/_static/filament.css` |
@@ -59,7 +59,7 @@ The project is mid-migration toward the Sphinx-for-blogs-only model.
 | Old (Sphinx) | New | Status |
 |---|---|---|
 | `docs/presentations.md` + `html_extra_path = ["presentations"]` | `docs/presentations.json` + jarvis-copied dirs + landing sections | ✅ Done |
-| `docs/teaching.md` + `html_extra_path = ["notebooks"]` | `docs/teaching.json` + jarvis-copied dirs + landing section | ⏳ Pending |
+| `docs/teaching.md` + `html_extra_path = ["notebooks"]` | `docs/teaching.json` + jarvis-copied dirs + landing section | ✅ Done |
 | `docs/about.md` | jarvis-rendered `about.html` | ⏳ Pending |
 | `docs/timeline.md` (generated from JSON) | merged into the about page | ⏳ Pending |
 | `docs/index.md` (Sphinx tries to render an index doc) | minimal stub; `jarvis landing` overwrites the output | ⏳ Pending |

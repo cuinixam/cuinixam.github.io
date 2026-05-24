@@ -12,16 +12,8 @@ I'm not just another engineer.
 About me ℹ️
 :::
 :::{grid-item-card}
-:link: presentations.html
-Presentations 🎤
-:::
-:::{grid-item-card}
 :link: blogs.html
 My blog posts 📝
-:::
-:::{grid-item-card}
-:link: teaching.html
-Teaching 📚
 :::
 ::::
 
@@ -30,5 +22,4 @@ Teaching 📚
 :hidden:
 about
 blogs
-teaching
 ```

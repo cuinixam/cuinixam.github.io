@@ -75,7 +75,6 @@ html_theme_options = {
     "secondary_sidebar_items": {
         "index": [],
         "about": [],
-        "teaching": [],
         "timeline": [],
         "projects": [],
         "blogs/**": ["page-toc"],
@@ -107,14 +106,13 @@ html_static_path = ["_static"]
 html_sidebars = {
     "index": ["hello.html"],
     "about": ["hello.html"],
-    "teaching": ["hello.html"],
     "projects": ["hello.html"],
     "blogs": ["ablog/categories.html"],
     "blogs/**": ["ablog/recentposts.html"],
 }
 
-# Presentations are no longer copied by Sphinx — jarvis landing handles them.
-html_extra_path = ["notebooks"]
+# Presentations and notebooks are no longer copied by Sphinx — jarvis landing handles them.
+html_extra_path = []
 
 # -- ABlog ---------------------------------------------------
 

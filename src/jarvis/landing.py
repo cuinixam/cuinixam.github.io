@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
 
 from jarvis.presentations import Presentations
+from jarvis.teaching import Teaching
 from jarvis.timeline import Timeline
 
 
@@ -143,12 +144,16 @@ class LandingWriter:
         timeline_file: Path,
         presentations_file: Path,
         presentations_dir: Path,
+        teaching_file: Path,
+        notebooks_dir: Path,
         output_dir: Path,
         templates_dir: Path | None = None,
     ) -> None:
         self.timeline_file = timeline_file
         self.presentations_file = presentations_file
         self.presentations_dir = presentations_dir
+        self.teaching_file = teaching_file
+        self.notebooks_dir = notebooks_dir
         self.output_dir = output_dir
         self.templates_dir = templates_dir or Path(__file__).parent / "templates" / "landing"
 
@@ -157,6 +162,7 @@ class LandingWriter:
 
         timeline = Timeline.from_json_file(self.timeline_file)
         presentations = Presentations.from_json_file(self.presentations_file)
+        teaching = Teaching.from_json_file(self.teaching_file)
         env = Environment(
             loader=FileSystemLoader(str(self.templates_dir)),
             autoescape=select_autoescape(["html"]),
@@ -169,6 +175,7 @@ class LandingWriter:
             timeline_entries=timeline.entries,
             talks=presentations.talks,
             demos=presentations.demos,
+            notebooks=teaching.notebooks,
         )
         (self.output_dir / "index.html").write_text(html)
 
@@ -179,13 +186,14 @@ class LandingWriter:
                 shutil.rmtree(assets_dst)
             shutil.copytree(assets_src, assets_dst)
 
-        self._copy_presentation_dirs()
+        self._copy_subdirs(self.presentations_dir)
+        self._copy_subdirs(self.notebooks_dir)
 
-    def _copy_presentation_dirs(self) -> None:
-        """Copy each subdirectory of presentations_dir into output_dir (mirrors Sphinx html_extra_path behavior)."""
-        if not self.presentations_dir.exists():
+    def _copy_subdirs(self, src_dir: Path) -> None:
+        """Copy each subdirectory of src_dir into output_dir (mirrors Sphinx html_extra_path behavior)."""
+        if not src_dir.exists():
             return
-        for item in self.presentations_dir.iterdir():
+        for item in src_dir.iterdir():
             dst = self.output_dir / item.name
             if item.is_dir():
                 if dst.exists():

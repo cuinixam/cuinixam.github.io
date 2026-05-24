@@ -20,6 +20,7 @@
     <li><a href="blogs.html">writing</a></li>
     <li><a href="#talks">talks</a></li>
     <li><a href="#demos">demos</a></li>
+    <li><a href="#teaching">teaching</a></li>
     <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
   </ul>
 </nav>
@@ -115,6 +116,22 @@
       <div class="num">{{ "%02d" | format(loop.index) }}</div>
       <h3>{{ demo.title }}</h3>
       <p>{{ demo.description }}</p>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+<!-- TEACHING -->
+<section class="talks" id="teaching">
+  <div class="section-head">
+    <h2>Notebooks for <span class="accent">learning.</span></h2>
+  </div>
+  <div class="talks-grid">
+    {%- for notebook in notebooks %}
+    <a class="talk" href="{{ notebook.link }}">
+      <div class="num">{{ "%02d" | format(loop.index) }}</div>
+      <h3>{{ notebook.title }}</h3>
+      <p>{{ notebook.description }}</p>
     </a>
     {%- endfor %}
   </div>

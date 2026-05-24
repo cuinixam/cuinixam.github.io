@@ -2,7 +2,7 @@
 
 Working doc to pick up the redesign later. Architecture lives in [AGENTS.md](AGENTS.md); this file captures the *in-progress* state and parked decisions.
 
-Last touched: 2026-05-24.
+Last touched: 2026-05-24 (teaching migration complete).
 
 ## The vision (one paragraph)
 
@@ -39,6 +39,15 @@ The site is migrating from "Sphinx renders everything" to "Sphinx renders blogs 
   - `conf.py`: presentations removed from `html_sidebars`, `secondary_sidebar_items`, `html_extra_path`
   - `docs/index.md` toctree: removed `presentations` entry
 
+- **Teaching migration (full)** — same shape as presentations
+  - `docs/teaching.md` deleted
+  - `docs/teaching.json` (structure: `{ "notebooks": [...] }`)
+  - `src/jarvis/teaching.py` (Notebook + Teaching dataclasses)
+  - `jarvis landing` copies every subdir of `docs/notebooks/` into the build root via a generalised `_copy_subdirs` helper (same call now used for both `presentations/` and `notebooks/`)
+  - Landing renders the 3 notebooks in a single grid (section id `#teaching`, between `#demos` and `#about`)
+  - `conf.py`: teaching removed from `html_sidebars` + `secondary_sidebar_items`; `html_extra_path` is now `[]`
+  - `docs/index.md`: removed `teaching.html` card + toctree entry
+
 - **AGENTS.md + README.md rewrite** — current architecture + where-to-add-what table + personal-voice rule
 
 ## In flight (current design discussion, not yet implemented)
@@ -55,25 +64,17 @@ Agreed in chat but not yet coded — the new landing layout:
 
 ## What's next (ordered)
 
-1. **Teaching migration** (mirror of presentations)
-   - Delete `docs/teaching.md`
-   - `docs/teaching.json` (single list of notebooks)
-   - jarvis copies `docs/notebooks/<dir>/` into the build root
-   - Remove `notebooks` from `html_extra_path`
-   - Landing "Teaching" section + menu item
-   - Add menu item between `demos` and `writing` (or wherever fits visually)
-
-2. **Landing layout changes** (from the design discussion above)
+1. **Landing layout changes** (from the design discussion above)
    - Update nav: drop `github`, `timeline`; add `writing`, `about`
    - Add writing section to template (needs blog-frontmatter scanner — see open decision)
    - Move timeline section out of landing template
    - Update about section: short overview + "more about me ↗"
 
-3. **About page migration**
+2. **About page migration**
    - First step: add timeline content to about.md (either via `{include} timeline.md` directive or by inlining)
    - Eventually: migrate `about.md` itself to a jarvis-rendered `about.html`
 
-4. **Final cleanup toward "Sphinx for blogs only"**
+3. **Final cleanup toward "Sphinx for blogs only"**
    - `docs/index.md` → minimal stub (Sphinx needs a master_doc; jarvis overwrites the rendered output anyway)
    - Eliminate `docs/_templates/hello.html` if no longer referenced
    - Eliminate `docs/timeline.md` and `jarvis timeline` (timeline data goes straight from JSON into the about page)
@@ -99,6 +100,7 @@ Agreed in chat but not yet coded — the new landing layout:
 | Blog-page palette overrides | `docs/_static/filament.css` |
 | Timeline data | `docs/timeline.json` |
 | Presentations data (talks + demos) | `docs/presentations.json` |
+| Teaching data (notebooks) | `docs/teaching.json` |
 | Featured projects (carousel) | `PROJECTS` list at top of `src/jarvis/landing.py` |
 | Personal-voice rule (DO NOT touch) | `AGENTS.md` § Personal-voice rule |
 
@@ -110,4 +112,4 @@ Agreed in chat but not yet coded — the new landing layout:
 
 ## Resume signal
 
-When picking this up, the most likely next step is **teaching migration** (#1 above) — it's the same shape as presentations, just one more JSON file + one more landing section + a few `html_extra_path` / sidebar removals. Should take 10 minutes of edits + one pypeline run.
+When picking this up, the most likely next step is **landing layout changes** (#1 above). The teaching/about/writing decisions interlock — the writing section needs a data-source decision (frontmatter scan vs `writing.json`) before it can be coded, and the timeline-on-about decision affects how about.md grows. Either pick one open decision and act, or do the cheaper nav-only edits first (drop `github` + `timeline`, add `about` placeholder anchor) and defer writing/timeline until the open decisions settle.
