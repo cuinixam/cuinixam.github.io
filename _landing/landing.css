@@ -167,7 +167,10 @@ section { position: relative; z-index: 1; }
 /* ========== HORIZONTAL CAROUSEL ========== */
 .carousel-wrap {
   position: relative;
-  height: 400vh; /* (panels-1) * 100vh travel + 100vh sticky; JS scales correctly for any count */
+  /* --panel-count is set as an inline custom property by the template.
+     Height = panel_count * 100vh: (count-1)*100vh of scroll-driven travel
+     plus 100vh of sticky pinning. Falls back to 4 if unset. */
+  height: calc(var(--panel-count, 4) * 100vh);
   background: var(--bg-2);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
