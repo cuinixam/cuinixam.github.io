@@ -64,7 +64,7 @@ class AboutWriter:
         timeline = Timeline.from_json_file(self.timeline_file)
 
         env = Environment(
-            loader=FileSystemLoader(str(self.templates_dir)),
+            loader=FileSystemLoader([str(self.templates_dir), str(self.templates_dir.parent)]),
             autoescape=select_autoescape(["html"]),
         )
         env.filters["md"] = render_md_inline

@@ -82,6 +82,33 @@ section { position: relative; z-index: 1; }
   max-width: 1200px;
   margin: 0 auto;
 }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+.hero-text { min-width: 0; }
+.hero-art {
+  font-family: var(--mono);
+  font-size: clamp(0.32rem, 0.55vw, 0.48rem);
+  line-height: 1.2;
+  color: var(--text);
+  white-space: pre;
+  letter-spacing: 0;
+  user-select: none;
+  opacity: 0.94;
+  justify-self: end;
+  margin: 0;
+}
+.hero-art::before {
+  content: "// portrait.txt";
+  display: block;
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+}
 .hero .eyebrow::before { content: "$ "; color: var(--muted); }
 .hero .eyebrow::after { content: "whoami"; }
 .hero .eyebrow { margin-bottom: 1.5rem; }
@@ -573,9 +600,22 @@ nav a.brand:hover { color: var(--accent); }
 .about-hero h1 .accent { color: var(--accent); }
 .bio {
   padding: 2rem 2.5rem 6rem;
-  max-width: 720px;
+  max-width: 1000px;
   margin: 0 auto;
 }
+.bio-grid {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 3rem;
+  align-items: start;
+}
+.bio-photo {
+  width: 180px;
+  height: auto;
+  display: block;
+  margin: 0.4rem 0 0;
+}
+.bio-prose { min-width: 0; }
 .bio-prose p {
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   line-height: 1.75;
@@ -607,6 +647,11 @@ footer .copy { color: var(--dim); font-size: 0.78rem; }
   nav { padding: 1rem 1.25rem; }
   nav ul { gap: 1rem; }
   .hero, .timeline-section, .writing, .talks, .teaching, .about, .about-hero, .bio, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-art { justify-self: start; font-size: 0.5rem; opacity: 0.85; }
+  .hero-art::before { font-size: 0.7rem; }
+  .bio-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .bio-photo { display: none; }
   .carousel-wrap { height: auto; }
   .carousel-pin { position: relative; height: auto; }
   .carousel-track { flex-direction: column; transform: none !important; }
@@ -615,4 +660,7 @@ footer .copy { color: var(--dim); font-size: 0.78rem; }
   .talks-grid, .teach-grid { grid-template-columns: 1fr; }
   .writing-row { grid-template-columns: 90px 1fr; }
   .writing-row .tag { display: none; }
+}
+@media (max-width: 420px) {
+  .hero-art { display: none; }
 }

@@ -126,7 +126,7 @@ class LandingWriter:
         teaching = Teaching.from_json_file(self.teaching_file)
         writing = scan_blogs(self.blogs_dir)
         env = Environment(
-            loader=FileSystemLoader(str(self.templates_dir)),
+            loader=FileSystemLoader([str(self.templates_dir), str(self.templates_dir.parent)]),
             autoescape=select_autoescape(["html"]),
         )
 

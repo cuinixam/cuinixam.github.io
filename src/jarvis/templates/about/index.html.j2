@@ -25,8 +25,11 @@
 </section>
 
 <section class="bio">
-  <div class="bio-prose">
-    {{ body_html | safe }}
+  <div class="bio-grid">
+    <img class="bio-photo" src="_static/bio-photo-circle.png" alt="" aria-hidden="true" />
+    <div class="bio-prose">
+      {{ body_html | safe }}
+    </div>
   </div>
 </section>
 
