@@ -16,11 +16,11 @@
   <div class="brand">maxiniuc.com</div>
   <ul>
     <li><a href="#projects">projects</a></li>
-    <li><a href="#timeline">timeline</a></li>
     <li><a href="blogs.html">writing</a></li>
     <li><a href="#talks">talks</a></li>
     <li><a href="#demos">demos</a></li>
     <li><a href="#teaching">teaching</a></li>
+    <li><a href="#about">about</a></li>
     <li><a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a></li>
   </ul>
 </nav>
@@ -74,21 +74,6 @@
   </div>
 </section>
 
-<!-- TIMELINE -->
-<section class="timeline-section" id="timeline">
-  <div class="eyebrow">// the long version</div>
-  <h2>Twenty years of <span class="accent">making things work.</span></h2>
-  <div class="timeline" id="timelineList">
-    {%- for entry in timeline_entries %}
-    <div class="tl-entry">
-      <div class="year">{{ entry.year }}</div>
-      <div class="title">{{ entry.title | md }}</div>
-      <div class="desc">{{ entry.description | md }}</div>
-    </div>
-    {%- endfor %}
-  </div>
-</section>
-
 <!-- TALKS -->
 <section class="talks" id="talks">
   <div class="section-head">
@@ -139,7 +124,13 @@
 
 <!-- ABOUT -->
 <section class="about" id="about">
-  <div class="eyebrow">// about</div>
+  <div class="section-head">
+    <h2>About <span class="accent">me.</span></h2>
+    <div class="see-all-group">
+      <a class="see-all" href="about.html">full about</a>
+      <a class="see-all" href="about.html#timeline">timeline</a>
+    </div>
+  </div>
   <p>Currently I develop software applications for the automotive industry and I help individuals and teams to improve their software development skills.</p>
   <p class="muted">I am interested in engineering software product lines, software architecture and build systems.</p>
 </section>
@@ -177,23 +168,6 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-  })();
-
-  // ----- Timeline reveal -----
-  (function () {
-    const entries = document.querySelectorAll('.tl-entry');
-    const io = new IntersectionObserver((items) => {
-      items.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.18, rootMargin: '0px 0px -80px 0px' });
-    entries.forEach((c, i) => {
-      c.style.transitionDelay = (Math.min(i, 6) * 60) + 'ms';
-      io.observe(c);
-    });
   })();
 
   // ----- Card reveal (talks + teaching) -----

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{{ title }} — Alexandru Maxiniuc</title>
+<link rel="icon" href="_static/bio-photo-circle.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="_landing/landing.css" />
+</head>
+<body class="about-page">
+
+<nav>
+  <a class="brand" href="index.html">maxiniuc.com</a>
+  <ul>
+    <li><a href="index.html">← home</a></li>
+  </ul>
+</nav>
+
+<section class="about-hero">
+  <div class="eyebrow">// about</div>
+  <h1>{{ title }}<span class="accent">.</span></h1>
+</section>
+
+<section class="bio">
+  <div class="bio-prose">
+    {{ body_html | safe }}
+  </div>
+</section>
+
+<section class="timeline-section" id="timeline">
+  <div class="eyebrow">// the long version</div>
+  <h2>Twenty years of <span class="accent">making things work.</span></h2>
+  <div class="timeline">
+    {%- for entry in timeline_entries %}
+    <div class="tl-entry in">
+      <div class="year">{{ entry.year }}</div>
+      <div class="title">{{ entry.title | md }}</div>
+      <div class="desc">{{ entry.description | md }}</div>
+    </div>
+    {%- endfor %}
+  </div>
+</section>
+
+<footer>
+  <div>© <span id="year"></span> Alexandru Maxiniuc</div>
+  <div>
+    <a href="https://github.com/cuinixam/" target="_blank" rel="noopener">github</a>
+    <a href="https://www.linkedin.com/in/alexandru-maxiniuc-53604612" target="_blank" rel="noopener">linkedin</a>
+    <a href="blogs/atom.xml">rss</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

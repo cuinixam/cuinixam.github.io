@@ -390,6 +390,7 @@ section { position: relative; z-index: 1; }
   text-decoration: none;
 }
 .section-head .see-all::after { content: " ↗"; color: var(--dim); }
+.section-head .see-all-group { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: end; }
 .writing-list { display: grid; gap: 0; }
 .writing-row {
   display: grid;
@@ -530,6 +531,37 @@ section { position: relative; z-index: 1; }
 }
 .about p.muted { color: var(--muted); font-size: 1.1rem; }
 
+/* ========== ABOUT PAGE (about.html) ========== */
+.about-page nav .brand { color: var(--text); }
+.about-page nav .brand:hover { color: var(--accent); }
+.about-hero {
+  padding: 6rem 2.5rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.about-hero .eyebrow { margin-bottom: 1rem; }
+.about-hero h1 {
+  font-family: var(--mono);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0;
+}
+.about-hero h1 .accent { color: var(--accent); }
+.bio {
+  padding: 2rem 2.5rem 6rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.bio-prose p {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.75;
+  margin: 0 0 1.5rem;
+  color: var(--text);
+}
+.bio-prose p:last-child { margin-bottom: 0; }
+
 /* ========== FOOTER ========== */
 footer {
   padding: 5rem 2.5rem 3rem;
@@ -552,7 +584,7 @@ footer .copy { color: var(--dim); font-size: 0.78rem; }
 @media (max-width: 880px) {
   nav { padding: 1rem 1.25rem; }
   nav ul { gap: 1rem; }
-  .hero, .timeline-section, .writing, .talks, .teaching, .about, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .hero, .timeline-section, .writing, .talks, .teaching, .about, .about-hero, .bio, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
   .carousel-wrap { height: auto; }
   .carousel-pin { position: relative; height: auto; }
   .carousel-track { flex-direction: column; transform: none !important; }

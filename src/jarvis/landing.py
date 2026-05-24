@@ -1,17 +1,13 @@
 """Generate the standalone HTML landing page that overrides Sphinx's index."""
 
-import re
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
-import markdown as md
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from markupsafe import Markup
 
 from jarvis.presentations import Presentations
 from jarvis.teaching import Teaching
-from jarvis.timeline import Timeline
 
 
 @dataclass
@@ -125,23 +121,9 @@ PROJECTS: list[Project] = [
 ]
 
 
-_WRAPPING_P = re.compile(r"^<p>(.*)</p>$", re.DOTALL)
-
-
-def render_md_inline(text: str) -> Markup:
-    """Render inline markdown, stripping the wrapping <p> tag for single-paragraph input."""
-    html = md.markdown(text).strip()
-    m = _WRAPPING_P.match(html)
-    if m:
-        html = m.group(1)
-    # Input comes from timeline.json (project-owned), not from any external source — no XSS risk.
-    return Markup(html)  # noqa: S704
-
-
 class LandingWriter:
     def __init__(
         self,
-        timeline_file: Path,
         presentations_file: Path,
         presentations_dir: Path,
         teaching_file: Path,
@@ -149,7 +131,6 @@ class LandingWriter:
         output_dir: Path,
         templates_dir: Path | None = None,
     ) -> None:
-        self.timeline_file = timeline_file
         self.presentations_file = presentations_file
         self.presentations_dir = presentations_dir
         self.teaching_file = teaching_file
@@ -160,19 +141,16 @@ class LandingWriter:
     def write(self) -> None:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        timeline = Timeline.from_json_file(self.timeline_file)
         presentations = Presentations.from_json_file(self.presentations_file)
         teaching = Teaching.from_json_file(self.teaching_file)
         env = Environment(
             loader=FileSystemLoader(str(self.templates_dir)),
             autoescape=select_autoescape(["html"]),
         )
-        env.filters["md"] = render_md_inline
 
         tmpl = env.get_template("index.html.j2")
         html = tmpl.render(
             projects=PROJECTS,
-            timeline_entries=timeline.entries,
             talks=presentations.talks,
             demos=presentations.demos,
             notebooks=teaching.notebooks,

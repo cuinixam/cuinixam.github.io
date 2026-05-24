@@ -52,7 +52,8 @@ source_suffix = [
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "presentations"]
+# about.md is the prose source for the jarvis-rendered about.html — Sphinx no longer renders it.
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "presentations", "about.md"]
 
 # copy button for code block
 extensions.append("sphinx_copybutton")
@@ -74,7 +75,6 @@ html_theme_options = {
     # Explicit page list avoids wildcard overlap warnings between ** and blogs/**.
     "secondary_sidebar_items": {
         "index": [],
-        "about": [],
         "timeline": [],
         "projects": [],
         "blogs/**": ["page-toc"],
@@ -105,7 +105,6 @@ html_static_path = ["_static"]
 
 html_sidebars = {
     "index": ["hello.html"],
-    "about": ["hello.html"],
     "projects": ["hello.html"],
     "blogs": ["ablog/categories.html"],
     "blogs/**": ["ablog/recentposts.html"],

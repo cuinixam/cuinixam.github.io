@@ -20,6 +20,5 @@ My blog posts 📝
 ```{toctree}
 :maxdepth: 2
 :hidden:
-about
 blogs
 ```

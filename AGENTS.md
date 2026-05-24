@@ -13,9 +13,10 @@ The end state:
 | `index.html` (landing) | `jarvis landing` |
 | `about.html`, future non-blog pages | `jarvis landing` (planned) |
 | `blogs/**` (blog index + all posts) | Sphinx + ABlog |
+| `about.html` | `jarvis about` (prose from `docs/about.md`, timeline from `docs/timeline.json`) |
 | `<presentation_or_notebook>/**` (static HTML) | `jarvis landing` copies the dirs |
 
-If something is going to be new, do not reach for a `.md` file. The only `.md` source files in this project belong inside `docs/blogs/`.
+If something is going to be new, do not reach for a `.md` file. The only `.md` source files in this project belong inside `docs/blogs/`, plus `docs/about.md` as the prose source for the about page.
 
 ## Build pipeline
 
@@ -25,9 +26,10 @@ If something is going to be new, do not reach for a `.md` file. The only `.md` s
 2. **PreCommit** — ruff, ruff-format, mypy, codespell, hooks
 3. **PyTest** — tests
 4. **BuildDocs** — `sphinx-build docs build/docs` (writes blog pages and a stub `index.html`)
-5. **BuildLanding** — `jarvis landing …` (overwrites `index.html` with the real landing, copies static dirs)
+5. **BuildLanding** — `jarvis landing …` (overwrites `index.html` with the real landing, copies presentation + notebook dirs)
+6. **BuildAbout** — `jarvis about …` (writes `about.html` from `docs/about.md` + `docs/timeline.json`)
 
-Steps 4 and 5 both write into `build/docs/`; step 5 deliberately overwrites Sphinx's stub `index.html`.
+Steps 4–6 all write into `build/docs/`; step 5 deliberately overwrites Sphinx's stub `index.html`.
 
 ## Where to add what
 
@@ -39,8 +41,10 @@ Steps 4 and 5 both write into `build/docs/`; step 5 deliberately overwrites Sphi
 | New demo (interactive HTML) | `docs/presentations.json` `demos` array + drop the static dir under `docs/presentations/` |
 | New featured project (carousel) | `PROJECTS` list at the top of `src/jarvis/landing.py` |
 | New notebook | `docs/teaching.json` + drop HTML under `docs/notebooks/` |
-| Landing page styles | `src/jarvis/templates/landing/assets/landing.css` |
+| Landing page styles | `src/jarvis/templates/landing/assets/landing.css` (shared by landing + about) |
 | Landing page layout / new sections | `src/jarvis/templates/landing/index.html.j2` |
+| About-page bio prose | `docs/about.md` (everything up to the first H2 — first H2 onward is ignored) |
+| About-page layout | `src/jarvis/templates/about/index.html.j2` |
 | Blog page styles (palette overrides) | `docs/_static/filament.css` |
 
 If a presentation/notebook directory exists under `docs/presentations/` or `docs/notebooks/` but is **not** listed in the corresponding JSON, it is still copied into the build (URL works) but is not surfaced on the landing. This is how internal/private content (e.g. `docs/presentations/objectives_2024/`, `docs/presentations/alex/`) is handled.
@@ -60,8 +64,8 @@ The project is mid-migration toward the Sphinx-for-blogs-only model.
 |---|---|---|
 | `docs/presentations.md` + `html_extra_path = ["presentations"]` | `docs/presentations.json` + jarvis-copied dirs + landing sections | ✅ Done |
 | `docs/teaching.md` + `html_extra_path = ["notebooks"]` | `docs/teaching.json` + jarvis-copied dirs + landing section | ✅ Done |
-| `docs/about.md` | jarvis-rendered `about.html` | ⏳ Pending |
-| `docs/timeline.md` (generated from JSON) | merged into the about page | ⏳ Pending |
+| `docs/about.md` (Sphinx renders) | jarvis-rendered `about.html` (about.md is now prose source only; `exclude_patterns` keeps Sphinx out) | ✅ Done |
+| `docs/timeline.md` (generated from JSON) | inlined into `about.html` via jarvis (standalone `timeline.html` still rendered by Sphinx but orphaned — safe to remove next) | 🟡 Partial |
 | `docs/index.md` (Sphinx tries to render an index doc) | minimal stub; `jarvis landing` overwrites the output | ⏳ Pending |
 
 ## Common commands

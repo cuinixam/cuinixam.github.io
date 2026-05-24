@@ -14,9 +14,3 @@ When I obtained my first job I had no idea what is a V-model, design patterns or
 
 Currently I develop software applications for the automotive industry and I help individuals and teams to improve their software development skills.
 I am interested in engineering software product lines, software architecture and build systems.
-
-## A rough timeline
-
-```{include} timeline.md
-
-```
