@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install pypeline runner
-        run: pip install pypeline-runner>=1.24
+        run: pip install "pypeline-runner>=1.40.2"
         shell: bash
       - name: Run pypeline
         run: pypeline run
