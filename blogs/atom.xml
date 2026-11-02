@@ -2,10 +2,72 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://maxiniuc.com</id>
   <title>Alexandru Maxiniuc</title>
-  <updated>2026-05-24T14:39:52.002202+00:00</updated>
+  <updated>2026-11-02T18:19:39.965631+00:00</updated>
   <link href="https://maxiniuc.com"/>
   <link href="https://maxiniuc.com/blogs/atom.xml" rel="self"/>
   <generator uri="https://ablog.readthedocs.io/" version="0.11.12">ABlog</generator>
+  <entry>
+    <id>https://maxiniuc.com/blogs/2026/criticmark_review.html</id>
+    <title>Reviewing markdown with my AI agent, right in the file</title>
+    <updated>2026-11-02T00:00:00+00:00</updated>
+    <content type="html">&lt;section id="reviewing-markdown-with-my-ai-agent-right-in-the-file"&gt;
+
+&lt;p&gt;I write long plans, designs and brainstorms in markdown together with my AI agent.
+Giving feedback used to mean copying parts of the text into the chat.
+The agent answered by repeating my words or by numbering my points in its own way.&lt;/p&gt;
+&lt;p&gt;Now I comment directly in the file with &lt;a class="reference external" href="https://github.com/CriticMarkup/CriticMarkup-toolkit"&gt;CriticMarkup&lt;/a&gt;, and the agent replies in the same thread:&lt;/p&gt;
+&lt;div class="highlight-text notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;The timer {==starts with the steeping time==}{author=&amp;quot;Ana&amp;quot; date=&amp;quot;2026-11-02&amp;quot;&amp;gt;&amp;gt;Can the user change it?&amp;lt;&amp;lt;}{author=&amp;quot;Claude&amp;quot; date=&amp;quot;2026-11-02&amp;quot;&amp;gt;&amp;gt;Yes, with plus and minus buttons.&amp;lt;&amp;lt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;I use this for my second brain, for docs in code repositories, and for repositories that keep their backlog as markdown files.&lt;/p&gt;
+&lt;section id="why-a-vs-code-extension"&gt;
+&lt;h2&gt;Why a VS Code extension&lt;/h2&gt;
+&lt;p&gt;The &lt;a class="reference external" href="https://obsidian.md/plugins?id=track-changes"&gt;Track Changes plugin&lt;/a&gt; for Obsidian by Phil Baum does this well.
+The format extensions I use (authors, dates and threads) come from that plugin.
+But most of my documents are in repositories that are not Obsidian vaults.
+I also wanted a review view like a GitHub pull request.
+So I built &lt;a class="reference external" href="https://github.com/cuinixam/criticmark-review"&gt;CriticMark Review&lt;/a&gt;, which uses the same format as the plugin.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="The Review panel next to a markdown file" src="https://raw.githubusercontent.com/cuinixam/criticmark-review/main/docs/images/review-panel.png" /&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="the-loop"&gt;
+&lt;h2&gt;The loop&lt;/h2&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;I select text, right-click, &lt;strong&gt;Add Comment&lt;/strong&gt;, and type.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The agent replies in the file. The panel updates on its own.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I mark agreed threads as resolved.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When nothing is left to discuss, the agent applies the result and removes the threads.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+&lt;section id="setup"&gt;
+&lt;h2&gt;Setup&lt;/h2&gt;
+&lt;p&gt;Install the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;.vsix&lt;/span&gt;&lt;/code&gt; from the &lt;a class="reference external" href="https://github.com/cuinixam/criticmark-review/releases"&gt;latest release&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then tell your agent about the comments, for example in the &lt;code class="docutils literal notranslate"&gt;&lt;span class="pre"&gt;AGENTS.md&lt;/span&gt;&lt;/code&gt; of your repository:&lt;/p&gt;
+&lt;div class="highlight-markdown notranslate"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gu"&gt;## Review comments&lt;/span&gt;
+
+I review your work with CriticMarkup comments in the file.
+The format is described in https://github.com/cuinixam/criticmark-review/blob/main/docs/format.md.
+
+&lt;span class="k"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;When I say I left comments, read the whole file and reply in every open thread.
+&lt;span class="k"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;Append your reply right after the last comment of the thread, with your name and today&amp;#39;s date.
+&lt;span class="k"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;Do not reply to resolved threads and do not change anything else.
+&lt;span class="k"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;When I approve, apply what we agreed and remove all the review markup.
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://maxiniuc.com/blogs/2026/criticmark_review.html"/>
+    <summary>I write long plans, designs and brainstorms in markdown together with my AI agent.
+Giving feedback used to mean copying parts of the text into the chat.
+The agent answered by repeating my words or by numbering my points in its own way.Now I comment directly in the file with CriticMarkup, and the agent replies in the same thread:The Review panel next to a markdown file</summary>
+    <category term="ai" label="ai"/>
+    <category term="criticmarkup" label="criticmarkup"/>
+    <category term="markdown" label="markdown"/>
+    <category term="obsidian" label="obsidian"/>
+    <category term="review" label="review"/>
+    <category term="vscode" label="vs code"/>
+    <published>2026-11-02T00:00:00+00:00</published>
+  </entry>
   <entry>
     <id>https://maxiniuc.com/blogs/2026/smarty_p2.html</id>
     <title>Smarty - Matter on ESP32 with Zephyr - Part 2</title>
